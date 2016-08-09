@@ -18,8 +18,6 @@ const jQuery = require('jquery');
 window.$ = jQuery;
 const $3Dmol = require('../vendor/3Dmol');
 
-const BACKGROUND_COLOR = '0x73757C';
-
 function processCubeFile(cubeData, uuid) {
   const volumeData = new $3Dmol.VolumeData(cubeData, 'cube');
   this.pyObjects[uuid] = volumeData;
@@ -260,7 +258,7 @@ const MolWidget3DView = Backbone.View.extend({
     }
 
     glviewer.setStyle({}, { stick: {} });
-    glviewer.setBackgroundColor(BACKGROUND_COLOR, 1);
+    glviewer.setBackgroundColor(this.model.get('background_color'), this.model.get('background_opacity'));
     glviewer.zoomTo();
     glviewer.makeAtomsClickable();
     glviewer.render();
