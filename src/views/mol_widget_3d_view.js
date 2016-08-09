@@ -17,7 +17,6 @@ import Backbone from 'backbone';
 const jQuery = require('jquery');
 window.$ = jQuery;
 const $3Dmol = require('../vendor/3Dmol');
-const bipyridine = require('raw!../../example/js/bipyridine.sdf');
 
 const BACKGROUND_COLOR = '0x73757C';
 
@@ -187,6 +186,10 @@ function setBonds(bonds) {
 }
 
 const MolWidget3DView = Backbone.View.extend({
+  initialize() {
+    this.model.on('change', this.render.bind(this));
+  },
+
   render() {
     document.last_3d_widget = this;
     this.where = this.model.get('_where');
