@@ -250,7 +250,9 @@ const MolWidget3DView = Backbone.View.extend({
       // If no model data, just show a green sphere (the main 3dmol example)
       glviewer.addSphere({ radius: 10, color: 'green' });
     } else {
-      glviewer.addModel(modelData, 'sdf', { keepH: true });
+      glviewer.addModel(modelData, this.model.get('modelDataFormat'), {
+        keepH: true,
+      });
     }
 
     glviewer.setStyle({}, { stick: {} });

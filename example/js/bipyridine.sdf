@@ -1,4 +1,4 @@
-const bipyridine = `
+
  OpenBabel08091616573D
 
  20 21  0  0  0  0  0  0  0  0999 V2000
@@ -45,6 +45,3 @@ const bipyridine = `
  20 12  1  0  0  0  0
 M  END
 $$$$
-`;
-
-export default bipyridine;

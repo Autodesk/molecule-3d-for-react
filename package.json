@@ -1,7 +1,6 @@
 {
   "name": "nbmolviz3d",
   "version": "0.0.1",
-  "description": "",
   "description": "3D molecule visualization",
   "main": "dist/bundle.js",
   "keywords": [
@@ -30,6 +29,7 @@
     "mocha": "^2.4.5",
     "node-sass": "^3.6.0",
     "phantomjs-prebuilt": "^2.1.7",
+    "raw-loader": "^0.5.1",
     "sass-loader": "^3.2.0",
     "sinon": "^2.0.0-pre.2",
     "style-loader": "^0.13.1",
