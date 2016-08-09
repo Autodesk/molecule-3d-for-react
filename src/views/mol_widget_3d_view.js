@@ -18,7 +18,7 @@ const jQuery = require('jquery');
 window.$ = jQuery;
 const $3Dmol = require('../vendor/3Dmol');
 
-const DONOTSEND = ['GLViewer', 'GLModel'];
+const BACKGROUND_COLOR = '0x73757C';
 
 function processCubeFile(cubeData, uuid) {
   const volumeData = new $3Dmol.VolumeData(cubeData, 'cube');
@@ -205,8 +205,6 @@ const MolWidget3DView = Backbone.View.extend({
     }
 
     this.viewer = this.renderViewer();
-    this.listenTo(this.model, 'msg:custom',
-      this.handleMessage, this);
 
     if (this.send) {
       this.send({ event: 'ready' });
@@ -217,10 +215,6 @@ const MolWidget3DView = Backbone.View.extend({
     const glviewer = $3Dmol.createViewer(jQuery(this.mydiv), {
       defaultcolors: $3Dmol.rasmolElementColors,
     });
-    glviewer.addSphere({ radius: 10, color: 'green' });
-    glviewer.zoomTo();
-    glviewer.render();
-    glviewer.zoom(0.8, 2000);
     if (typeof($3Dmol.widgets) === 'undefined') {
       $3Dmol.widgets = {};
     }
@@ -249,6 +243,23 @@ const MolWidget3DView = Backbone.View.extend({
     glviewer.setBonds = setBonds;
     glviewer.adjustClipping = adjustClipping;
     document.last_3dmol_viewer = glviewer;  // for debugging
+
+    const modelData = this.model.get('modelData');
+
+    if (!modelData) {
+      // If no model data, just show a green sphere (the main 3dmol example)
+      glviewer.addSphere({ radius: 10, color: 'green' });
+    } else {
+      glviewer.addModel(modelData, 'sdf', { keepH: true });
+    }
+
+    glviewer.setStyle({}, { stick: {} });
+    glviewer.setBackgroundColor(BACKGROUND_COLOR, 1);
+    glviewer.zoomTo();
+    glviewer.makeAtomsClickable();
+    glviewer.render();
+    glviewer.zoom(0.8, 2000);
+
     return glviewer;
   },
 
@@ -285,50 +296,6 @@ const MolWidget3DView = Backbone.View.extend({
     this.notebook = jQuery('#notebook')[0];
     this.notebook.css('width', `-=${pane.style.width}`);
     this.notebook.style.left = 0;
-  },
-
-  handleMessage(message) {
-    this.messages.push(message);
-    if (message.event === 'function_call') {
-      this.handleFunctionCall(message);
-    }
-  },
-
-  handleFunctionCall(event) {
-    // TODO: handle exceptions
-    // console.log('MolViz3DBaseWidget received a function call: '
-    //    + event.function_name +'('+ event.arguments+')');
-    // try {
-    this.messages.push(event);
-    const myFunction = this.viewer[event.function_name];
-    let result = myFunction.apply(this.viewer, event.arguments);
-
-    try { // a hack to prevent circular references
-      if (DONOTSEND.indexOf(result.constructor.name) > -1) {
-        result = result.constructor.name;
-      }
-    } catch (err) { /* do nothing */
-    }
-
-    if (this.send) {
-      this.send({
-        call_id: event.call_id,
-        result,
-        function_name: event.function_name,
-        event: 'function_done',
-      });
-    }
-    /* } catch(e) {
-     console.log(e);
-     this.send({
-     call_id: event.call_id,
-     result: 'error',
-     exception: e,
-     function_name: event.function_name,
-     event: 'function_done'
-     })
-
-     }*/
   },
 });
 
