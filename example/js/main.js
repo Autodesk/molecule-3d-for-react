@@ -5,8 +5,8 @@ const bipyridine = require('raw!./bipyridine.sdf');
 Backbone.sync = () => {};
 
 const model = new MolWidget3DModel({
-  modelData: bipyridine,
-  modelDataFormat: 'sdf',
+  model_data: bipyridine,
+  model_data_format: 'sdf',
 });
 const view = new MolWidget3DView({
   model,

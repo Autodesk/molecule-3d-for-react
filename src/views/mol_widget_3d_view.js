@@ -17,6 +17,7 @@ import Backbone from 'backbone';
 const jQuery = require('jquery');
 window.$ = jQuery;
 const $3Dmol = require('../vendor/3Dmol');
+const bipyridine = require('raw!../../example/js/bipyridine.sdf');
 
 const BACKGROUND_COLOR = '0x73757C';
 
@@ -244,13 +245,13 @@ const MolWidget3DView = Backbone.View.extend({
     glviewer.adjustClipping = adjustClipping;
     document.last_3dmol_viewer = glviewer;  // for debugging
 
-    const modelData = this.model.get('modelData');
+    const modelData = this.model.get('model_data');
 
     if (!modelData) {
       // If no model data, just show a green sphere (the main 3dmol example)
       glviewer.addSphere({ radius: 10, color: 'green' });
     } else {
-      glviewer.addModel(modelData, this.model.get('modelDataFormat'), {
+      glviewer.addModel(modelData, this.model.get('model_data_format'), {
         keepH: true,
       });
     }
