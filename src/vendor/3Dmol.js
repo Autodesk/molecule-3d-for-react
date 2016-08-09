@@ -607,7 +607,7 @@
   }
 
   function encodeRun( array ){
-      if( array.length === 0 ) return new Int32Array();
+      if( array.length === 0 ) return new Int32Array(0);
       var i, il;
       // calculate output size
       var fullLength = 2;
@@ -7310,13 +7310,13 @@ $3Dmol.Geometry = (function() {
             if(this.lineidx > 0) //not always set so reclaim memory
                 this.lineArray = lineArr.subarray(0,this.lineidx);
             else
-                this.lineArray = new Uint16Array();
+                this.lineArray = new Uint16Array(0);
 
         }
         else {
-            this.normalArray = new Float32Array();
-            this.faceArray = new Uint16Array();
-            this.lineArray = new Uint16Array();
+            this.normalArray = new Float32Array(0);
+            this.faceArray = new Uint16Array(0);
+            this.lineArray = new Uint16Array(0);
         }
         if (radiusArr) {
             this.radiusArray = radiusArr.subarray(0, this.vertices);
@@ -16172,7 +16172,8 @@ $3Dmol.GLModel = (function() {
                     }
 
                     else if (atom.bondOrder[i] > 1) {
-                        var mfromCap = 0; mtoCap = 0; //multi bond caps
+                        var mfromCap = 0;
+												var mtoCap = 0; //multi bond caps
 
                         if(bondR != atomBondR) {
                             //assume jmol style multiple bonds - the radius doesn't fit within atom sphere
@@ -16222,14 +16223,14 @@ $3Dmol.GLModel = (function() {
                                 mp2 = new $3Dmol.Vector3().addVectors(p1b, p2b)
                                                 .multiplyScalar(0.5);
                                 if (atom.clickable || atom.hoverable) {
-                                    cylinder1a = new $3Dmol.Cylinder(p1a , mp , r);
-                                    cylinder1b = new $3Dmol.Cylinder(p1b , mp2 , r);
+                                    var cylinder1a = new $3Dmol.Cylinder(p1a , mp , r);
+                                    var cylinder1b = new $3Dmol.Cylinder(p1b , mp2 , r);
                                     atom.intersectionShape.cylinder.push(cylinder1a);
                                     atom.intersectionShape.cylinder.push(cylinder1b);
                                 }
                                 if (atom2.clickable || atom2.hoverable) {
-                                    cylinder2a = new $3Dmol.Cylinder(p2a , mp , r);
-                                    cylinder2b = new $3Dmol.Cylinder(p2b , mp2 , r);
+                                    var cylinder2a = new $3Dmol.Cylinder(p2a , mp , r);
+                                    var cylinder2b = new $3Dmol.Cylinder(p2b , mp2 , r);
                                     atom2.intersectionShape.cylinder.push(cylinder2a);
                                     atom2.intersectionShape.cylinder.push(cylinder2b);
                                 }
@@ -16279,17 +16280,17 @@ $3Dmol.GLModel = (function() {
                                         .multiplyScalar(0.5);
 
                                 if (atom.clickable || atom.hoverable) {
-                                    cylinder1a = new $3Dmol.Cylinder(p1a.clone(), mp.clone(), r);
-                                    cylinder1b = new $3Dmol.Cylinder(p1b.clone(), mp2.clone(), r);
-                                    cylinder1c = new $3Dmol.Cylinder(p1.clone(), mp3.clone(), r);
+                                    var cylinder1a = new $3Dmol.Cylinder(p1a.clone(), mp.clone(), r);
+                                    var cylinder1b = new $3Dmol.Cylinder(p1b.clone(), mp2.clone(), r);
+                                    var cylinder1c = new $3Dmol.Cylinder(p1.clone(), mp3.clone(), r);
                                     atom.intersectionShape.cylinder.push(cylinder1a);
                                     atom.intersectionShape.cylinder.push(cylinder1b);
                                     atom.intersectionShape.cylinder.push(cylinder1c);
                                 }
                                 if (atom2.clickable || atom2.hoverable) {
-                                    cylinder2a = new $3Dmol.Cylinder(p2a.clone(), mp.clone(), r);
-                                    cylinder2b = new $3Dmol.Cylinder(p2b.clone(), mp2.clone(), r);
-                                    cylinder2c = new $3Dmol.Cylinder(p2.clone(), mp3.clone(), r);
+                                    var cylinder2a = new $3Dmol.Cylinder(p2a.clone(), mp.clone(), r);
+                                    var cylinder2b = new $3Dmol.Cylinder(p2b.clone(), mp2.clone(), r);
+                                    var cylinder2c = new $3Dmol.Cylinder(p2.clone(), mp3.clone(), r);
                                     atom2.intersectionShape.cylinder.push(cylinder2a);
                                     atom2.intersectionShape.cylinder.push(cylinder2b);
                                     atom2.intersectionShape.cylinder.push(cylinder2c);
