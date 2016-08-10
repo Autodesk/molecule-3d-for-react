@@ -1,4 +1,42 @@
-# Molecular Visualization
+# nbmolviz3d
+
+## Installation
+
+    npm install nbmolviz3d
+
+## Usage
+nbmolviz3d is a Backbone module, so you can use it like this:
+
+    import Backbone from 'backbone';
+    import { Nbmolviz3dModel, Nbmolviz3dView } from 'nbmolviz3d';
+
+    const model = new MolWidget3DModel({
+      model_data: bipyridineDotSDF,
+      model_data_format: 'sdf',
+    });
+    const view = new MolWidget3DView({
+      model,
+      el: document.querySelector('.app'),
+    });
+
+    view.render();
+
+See example/js/main.js for a working example.
+
+## API
+All interaction with nbmolviz3d is done via the data in the model `MolWidget3DModel`.  Changing any of these values will immediately reflect in the visualization in the DOM.
+
+### background_color {String} ['#73757C']
+The background color of the visualization.
+
+### background_opacity {Number 0-1} [1.0]
+The opacity of the background.
+
+### model_data {String}
+The actual text of the molecule input file.
+
+### model_data_format {String}
+The file format of `model_data`, for example `sdf`.
 
 ## Development
 A typical development flow might be to run the example while editing the code, where you'll want any changes to be immediately reflected in the example running in the browser.  In that case you should run:
