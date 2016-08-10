@@ -194,11 +194,15 @@ const MolWidget3DView = Backbone.View.extend({
     this.messages = [];
     this.viewerId = this.model.get('viewerId');
     if (this.where === 'inline') {
-      this.mydiv = document.createElement('div');
+      this.mydiv = this.mydiv || document.createElement('div');
+      this.mydiv.classList.add('nbmolviz3d');
       this.mydiv.style.width = this.model.get('_width');
       this.mydiv.style.height = this.model.get('_height');
       this.mydiv.style.position = 'relative';
-      this.el.appendChild(this.mydiv);
+
+      if (!this.el.querySelector('.nbmolviz3d')) {
+        this.el.appendChild(this.mydiv);
+      }
     } else if (this.where === 'right') {
       this.pane = this.getRightPane();
       this.divId = '#molviz_viewer_pane';
@@ -214,7 +218,7 @@ const MolWidget3DView = Backbone.View.extend({
   },
 
   renderViewer() {
-    const glviewer = $3Dmol.createViewer(jQuery(this.mydiv), {
+    const glviewer = $3Dmol.viewers[this.viewerId] ||$3Dmol.createViewer(jQuery(this.mydiv), {
       defaultcolors: $3Dmol.rasmolElementColors,
     });
     if (typeof($3Dmol.widgets) === 'undefined') {
