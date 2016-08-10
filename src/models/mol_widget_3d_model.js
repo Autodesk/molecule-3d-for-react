@@ -23,7 +23,6 @@ const MolWidget3DModel = Backbone.Model.extend({
     _view_module: 'nbmolviz-js',
     _width: '500px',
     _height: '500px',
-    _where: 'inline',
     viewerId: '',
     click_selection: -1,
     background_color: '0x73757C',

@@ -190,24 +190,17 @@ const MolWidget3DView = Backbone.View.extend({
 
   render() {
     document.last_3d_widget = this;
-    this.where = this.model.get('_where');
     this.messages = [];
     this.viewerId = this.model.get('viewerId');
-    if (this.where === 'inline') {
-      this.mydiv = this.mydiv || document.createElement('div');
-      this.mydiv.classList.add('nbmolviz3d');
-      this.mydiv.style.width = this.model.get('_width');
-      this.mydiv.style.height = this.model.get('_height');
-      this.mydiv.style.position = 'relative';
 
-      if (!this.el.querySelector('.nbmolviz3d')) {
-        this.el.appendChild(this.mydiv);
-      }
-    } else if (this.where === 'right') {
-      this.pane = this.getRightPane();
-      this.divId = '#molviz_viewer_pane';
-    } else {
-      throw new Error(`ERROR: did not recognize this.where=${this.where}`);
+    this.mydiv = this.mydiv || document.createElement('div');
+    this.mydiv.classList.add('nbmolviz3d');
+    this.mydiv.style.width = this.model.get('_width');
+    this.mydiv.style.height = this.model.get('_height');
+    this.mydiv.style.position = 'relative';
+
+    if (!this.el.querySelector('.nbmolviz3d')) {
+      this.el.appendChild(this.mydiv);
     }
 
     this.viewer = this.renderViewer();
@@ -280,30 +273,6 @@ const MolWidget3DView = Backbone.View.extend({
     };
     this.model.set('_click_selection', result);
     this.model.save();
-  },
-
-  getRightPane() {
-    let pane = jQuery('#molviz_viewer_pane');
-    if (pane.length !== 0) {
-      const paneStyle = {
-        right: 0, top: 0,
-        position: 'absolute',
-        height: '100%',
-        width: '40%',
-      };
-      pane = document.createElement('div');
-      pane.id = 'molviz_viewer_pane';
-      jQuery.extend(pane.style, paneStyle);
-      jQuery('#site')[0].appendChild(pane);
-      this.makeNotebookFit(pane);
-    }
-    return pane;
-  },
-
-  makeNotebookFit(pane) {
-    this.notebook = jQuery('#notebook')[0];
-    this.notebook.css('width', `-=${pane.style.width}`);
-    this.notebook.style.left = 0;
   },
 });
 
