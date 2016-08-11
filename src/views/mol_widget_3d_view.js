@@ -186,6 +186,8 @@ function setBonds(bonds) {
 const MolWidget3DView = Backbone.View.extend({
   initialize() {
     this.model.on('change', this.render.bind(this));
+
+    window.nbmolviz3d = this;
   },
 
   render() {
@@ -254,7 +256,7 @@ const MolWidget3DView = Backbone.View.extend({
       });
     }
 
-    glviewer.setStyle({}, { stick: {} });
+    glviewer.setStyle({}, { [this.model.get('visualization_style')]: {} });
     glviewer.setBackgroundColor(this.model.get('background_color'), this.model.get('background_opacity'));
     glviewer.zoomTo();
     glviewer.makeAtomsClickable();
