@@ -17,6 +17,7 @@ import Backbone from 'backbone';
 const jQuery = require('jquery');
 window.$ = jQuery;
 const $3Dmol = require('../vendor/3Dmol');
+import moleculeUtils from '../utils/molecule_utils';
 
 function processCubeFile(cubeData, uuid) {
   const volumeData = new $3Dmol.VolumeData(cubeData, 'cube');
@@ -213,7 +214,7 @@ const MolWidget3DView = Backbone.View.extend({
   },
 
   renderViewer() {
-    const glviewer = $3Dmol.viewers[this.viewerId] ||$3Dmol.createViewer(jQuery(this.mydiv), {
+    const glviewer = $3Dmol.viewers[this.viewerId] || $3Dmol.createViewer(jQuery(this.mydiv), {
       defaultcolors: $3Dmol.rasmolElementColors,
     });
     if (typeof($3Dmol.widgets) === 'undefined') {
@@ -245,19 +246,22 @@ const MolWidget3DView = Backbone.View.extend({
     glviewer.adjustClipping = adjustClipping;
     document.last_3dmol_viewer = glviewer;  // for debugging
 
-    const modelData = this.model.get('model_data');
+    const modelData = JSON.parse(this.model.get('model_data'));
 
     if (!modelData) {
       // If no model data, just show a green sphere (the main 3dmol example)
       glviewer.addSphere({ radius: 10, color: 'green' });
     } else {
-      glviewer.addModel(modelData, this.model.get('model_data_format'), {
+      glviewer.addModel(moleculeUtils.modelDataToCDJSON(modelData), 'json', {
         keepH: true,
       });
     }
 
     glviewer.setStyle({}, { [this.model.get('visualization_style')]: {} });
-    glviewer.setBackgroundColor(this.model.get('background_color'), this.model.get('background_opacity'));
+    glviewer.setBackgroundColor(
+      this.model.get('background_color'),
+      this.model.get('background_opacity')
+    );
     glviewer.zoomTo();
     glviewer.makeAtomsClickable();
     glviewer.render();

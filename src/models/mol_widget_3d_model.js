@@ -36,7 +36,6 @@ const MolWidget3DModel = Backbone.Model.extend({
     msg_throttle: 3,
     visible: true,
     model_data: '',
-    model_data_format: '',
     visualization_style: 'stick',
   },
 });
