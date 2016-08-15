@@ -19,6 +19,8 @@ window.$ = jQuery;
 const $3Dmol = require('../vendor/3Dmol');
 import moleculeUtils from '../utils/molecule_utils';
 
+const DEFAULT_STYLE = 'stick';
+
 function processCubeFile(cubeData, uuid) {
   const volumeData = new $3Dmol.VolumeData(cubeData, 'cube');
   this.pyObjects[uuid] = volumeData;
@@ -187,8 +189,6 @@ function setBonds(bonds) {
 const MolWidget3DView = Backbone.View.extend({
   initialize() {
     this.model.on('change', this.render.bind(this));
-
-    window.nbmolviz3d = this;
   },
 
   render() {
@@ -257,7 +257,12 @@ const MolWidget3DView = Backbone.View.extend({
       });
     }
 
-    glviewer.setStyle({}, { [this.model.get('visualization_style')]: {} });
+    const styles = this.model.get('styles');
+    modelData.atoms.forEach((atom, i) => {
+      const style = styles[i] || DEFAULT_STYLE;
+      glviewer.setStyle({ serial: atom.serial }, { [style]: {} });
+    });
+
     glviewer.setBackgroundColor(
       this.model.get('background_color'),
       this.model.get('background_opacity')
