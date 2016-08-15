@@ -246,7 +246,7 @@ const MolWidget3DView = Backbone.View.extend({
     glviewer.adjustClipping = adjustClipping;
     document.last_3dmol_viewer = glviewer;  // for debugging
 
-    const modelData = JSON.parse(this.model.get('model_data'));
+    const modelData = this.model.get('model_data');
 
     if (!modelData) {
       // If no model data, just show a green sphere (the main 3dmol example)
