@@ -19128,6 +19128,8 @@ $3Dmol.GLViewer = (function() {
 
         });
 
+        var mouseButton;
+
         var _handleMouseDown = this._handleMouseDown = function(ev) {
             ev.preventDefault();
             if (!scene)
