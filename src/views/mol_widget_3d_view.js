@@ -77,34 +77,6 @@ function adjustClipping(minimum) {
   this.setSlab(slab.near, slab.far);
 }
 
-function setAtomColor(atomJson, color) {
-  const atoms = this.selectedAtoms(atomJson);
-  atoms.map((atom) => {
-    const newAtom = atom;
-    for (const s of Object.keys(newAtom.style)) {
-      newAtom.style[s].color = color;
-    }
-
-    return newAtom;
-  });
-
-  this.forceRedraw();
-}
-
-function unsetAtomColor(atomJSON) {
-  const atoms = this.selectedAtoms(atomJSON);
-  atoms.map((atom) => {
-    const newAtom = atom;
-    for (const s of Object.keys(newAtom.style)) {
-      newAtom.style[s].color = undefined;
-    }
-
-    return newAtom;
-  });
-
-  this.forceRedraw();
-}
-
 function setColorArray(mapping) {
   const atoms = this.selectedAtoms();
   for (const color of Object.keys(mapping)) {
@@ -173,10 +145,6 @@ function forceRedraw() {
   this.getModel().forceRedraw();
 }
 
-function makeAtomsClickable() {
-  this.setClickable({}, true, this.widget.setSelectionTrait);
-}
-
 function setBonds(bonds) {
   const atoms = this.selectedAtoms();
   bonds.forEach((bond) => {
@@ -214,6 +182,7 @@ const MolWidget3DView = Backbone.View.extend({
   },
 
   renderViewer() {
+    const firstRender = !$3Dmol.viewers[this.viewerId];
     const glviewer = $3Dmol.viewers[this.viewerId] || $3Dmol.createViewer(jQuery(this.mydiv), {
       defaultcolors: $3Dmol.rasmolElementColors,
     });
@@ -232,15 +201,12 @@ const MolWidget3DView = Backbone.View.extend({
     glviewer.addFrameFromList = addFrameFromList;
     glviewer.drawIsosurface = drawIsosurface;
     glviewer.widget = this;
-    glviewer.makeAtomsClickable = makeAtomsClickable;
     glviewer.renderPyShape = renderPyShape;
     glviewer.renderPyLabel = renderPyLabel;
     glviewer.removePyShape = removePyShape;
     glviewer.removePyLabel = removePyLabel;
-    glviewer.setAtomColor = setAtomColor;
     glviewer.setPositions = setPositions;
     glviewer.forceRedraw = forceRedraw;
-    glviewer.unsetAtomColor = unsetAtomColor;
     glviewer.batchCommands = batchCommands;
     glviewer.setBonds = setBonds;
     glviewer.adjustClipping = adjustClipping;
@@ -260,30 +226,44 @@ const MolWidget3DView = Backbone.View.extend({
     const styles = this.model.get('styles');
     modelData.atoms.forEach((atom, i) => {
       const style = styles[i] || DEFAULT_STYLE;
-      glviewer.setStyle({ serial: atom.serial }, { [style]: {} });
+      const styleProps = {};
+
+      if (this.model.get('selected_atoms').indexOf(atom.serial) !== -1) {
+        styleProps.color = '0x1FF3FE';
+      }
+
+      glviewer.setStyle({ serial: atom.serial }, { [style]: styleProps });
     });
 
     glviewer.setBackgroundColor(
       this.model.get('background_color'),
       this.model.get('background_opacity')
     );
-    glviewer.zoomTo();
-    glviewer.makeAtomsClickable();
+    glviewer.setClickable({}, true, this.onClick.bind(this));
     glviewer.render();
-    glviewer.zoom(0.8, 2000);
+
+    if (firstRender) {
+      glviewer.zoomTo();
+      glviewer.zoom(0.8, 2000);
+    }
 
     return glviewer;
   },
 
-  setSelectionTrait() {
-    const result = {
-      model: this.model,
-      index: this.index,
-      serial: this.serial,
-      pyid: this.pyid,
-    };
-    this.model.set('_click_selection', result);
+  onClick(atom) {
+    const selection = this.model.get('selected_atoms');
+    const index = selection.indexOf(atom.serial);
+
+    // Toggle the selection of the clicked atom
+    if (index !== -1) {
+      selection.splice(index, 1);
+    } else {
+      selection.push(atom.serial);
+    }
+
+    this.model.set('selected_atoms', selection);
     this.model.save();
+    this.model.trigger('change');
   },
 });
 
