@@ -16,6 +16,7 @@ const moleculeUtils = {
     const bonds = modelData.bonds.map((bond) => ({
       b: bond.atom1_index,
       e: bond.atom2_index,
+      o: bond.bond_order,
     }));
 
     return {
