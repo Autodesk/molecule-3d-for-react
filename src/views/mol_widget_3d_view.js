@@ -254,7 +254,7 @@ const MolWidget3DView = Backbone.View.extend({
     });
 
     glviewer.setBackgroundColor(
-      this.model.get('background_color'),
+      libUtils.colorStringToNumber(this.model.get('background_color')),
       this.model.get('background_opacity')
     );
     glviewer.setClickable({}, true, this.onClick.bind(this));

@@ -25,7 +25,7 @@ const MolWidget3DModel = Backbone.Model.extend({
     _height: '500px',
     viewerId: '',
     _click_selection: -1,
-    background_color: '0x73757C',
+    background_color: '#73757C',
     background_opacity: 1.0,
     color: null,
     font_family: '',

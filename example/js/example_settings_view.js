@@ -65,7 +65,7 @@ const ExampleSettingsView = Backbone.View.extend({
     this.el.appendChild(bgColorInput);
     const bgOpacityInput = document.createElement('input');
     bgOpacityInput.value = this.model.get('background_opacity');
-    bgOpacityInput.addEventListener('blur', this.onBlurBGColor.bind(this));
+    bgOpacityInput.addEventListener('blur', this.onBlurBGOpacity.bind(this));
     this.el.appendChild(bgOpacityInput);
 
     return this;
