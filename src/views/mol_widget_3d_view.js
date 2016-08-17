@@ -18,8 +18,9 @@ const jQuery = require('jquery');
 window.$ = jQuery;
 const $3Dmol = require('../vendor/3Dmol');
 import moleculeUtils from '../utils/molecule_utils';
+import libUtils from '../utils/lib_utils';
 
-const DEFAULT_STYLE = 'stick';
+const DEFAULT_VISUALIZATION_TYPE = 'stick';
 
 function processCubeFile(cubeData, uuid) {
   const volumeData = new $3Dmol.VolumeData(cubeData, 'cube');
@@ -157,6 +158,11 @@ function setBonds(bonds) {
 const MolWidget3DView = Backbone.View.extend({
   initialize() {
     this.model.on('change', this.render.bind(this));
+
+    // debug
+    this.listenTo(this.model, 'msg:custom', (event) => {
+      console.log('omg message', event.function_name, event.arguments);
+    });
   },
 
   render() {
@@ -225,14 +231,26 @@ const MolWidget3DView = Backbone.View.extend({
 
     const styles = this.model.get('styles');
     modelData.atoms.forEach((atom, i) => {
-      const style = styles[i] || DEFAULT_STYLE;
-      const styleProps = {};
+      const style = styles[i] || {};
+      const libStyle = {};
+      const visualizationType = style.visualization_type || DEFAULT_VISUALIZATION_TYPE;
+
+      libStyle[visualizationType] = {};
+      Object.keys(style).forEach((styleKey) => {
+        libStyle[visualizationType][styleKey] = style[styleKey];
+      });
 
       if (this.model.get('selected_atoms').indexOf(atom.serial) !== -1) {
-        styleProps.color = '0x1FF3FE';
+        libStyle[visualizationType].color = 0x1FF3FE;
       }
 
-      glviewer.setStyle({ serial: atom.serial }, { [style]: styleProps });
+      if (typeof libStyle[visualizationType].color === 'string') {
+        libStyle[visualizationType].color = libUtils.colorStringToNumber(
+          libStyle[visualizationType].color
+        );
+      }
+
+      glviewer.setStyle({ serial: atom.serial }, libStyle);
     });
 
     glviewer.setBackgroundColor(

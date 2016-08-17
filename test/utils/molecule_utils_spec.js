@@ -10,7 +10,7 @@ describe('moleculeUtils', () => {
 
     describe('when given valid modelData', () => {
       before(() => {
-        modelData = JSON.parse(bipyridineModelData);
+        modelData = bipyridineModelData;
       });
 
       it('returns ChemDoodle json', () => {
@@ -23,7 +23,7 @@ describe('moleculeUtils', () => {
           expect(typeof atom.y).to.equal('number');
           expect(typeof atom.z).to.equal('number');
           expect(typeof atom.mass).to.equal('number');
-        })
+        });
       });
     });
   });
