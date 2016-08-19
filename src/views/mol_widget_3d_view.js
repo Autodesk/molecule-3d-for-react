@@ -158,11 +158,6 @@ function setBonds(bonds) {
 const MolWidget3DView = Backbone.View.extend({
   initialize() {
     this.model.on('change', this.render.bind(this));
-
-    // debug
-    this.listenTo(this.model, 'msg:custom', (event) => {
-      console.log('omg message', event.function_name, event.arguments);
-    });
   },
 
   render() {
@@ -226,6 +221,15 @@ const MolWidget3DView = Backbone.View.extend({
     } else {
       glviewer.addModel(moleculeUtils.modelDataToCDJSON(modelData), 'json', {
         keepH: true,
+      });
+
+      // Hack in chain and residue data, since it's not supported by chemdoodle json
+      glviewer.getModel().selectedAtoms().forEach((atom) => {
+        const modifiedAtom = atom;
+        modifiedAtom.atom = modelData.atoms[atom.serial].name;
+        modifiedAtom.chain = modelData.atoms[atom.serial].chain;
+        modifiedAtom.resi = modelData.atoms[atom.serial].residue_index;
+        modifiedAtom.resn = modelData.atoms[atom.serial].residue_name;
       });
     }
 
