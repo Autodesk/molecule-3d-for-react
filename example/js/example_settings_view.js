@@ -1,8 +1,22 @@
 import Backbone from 'backbone';
+import aidModelData from './3aid_model_data';
+import aidStyles from './3aid_styles';
+import bipyridineModelData from './bipyridine_model_data';
+import bipyridineStyles from './bipyridine_styles';
 
 const ExampleSettingsView = Backbone.View.extend({
   initialize() {
     this.model.on('change', this.render.bind(this));
+  },
+
+  onClickSmallButton(event) {
+    this.model.set('model_data', bipyridineModelData);
+    this.model.set('styles', bipyridineStyles);
+  },
+
+  onClickLargeButton(event) {
+    this.model.set('model_data', aidModelData);
+    this.model.set('styles', aidStyles);
   },
 
   onBlurSelection(event) {
@@ -27,6 +41,16 @@ const ExampleSettingsView = Backbone.View.extend({
 
   render() {
     this.el.innerHTML = '';
+
+    const smallButton = document.createElement('button');
+    smallButton.innerHTML = 'Small Molecule';
+    smallButton.addEventListener('click', this.onClickSmallButton.bind(this));
+    this.el.appendChild(smallButton);
+
+    const largeButton = document.createElement('button');
+    largeButton.innerHTML = 'Large Molecule';
+    largeButton.addEventListener('click', this.onClickLargeButton.bind(this));
+    this.el.appendChild(largeButton);
 
     const selectionLabel = document.createElement('h4');
     selectionLabel.innerHTML = 'selected_atoms';

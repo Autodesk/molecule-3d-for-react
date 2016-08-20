@@ -195,6 +195,8 @@ const MolWidget3DView = Backbone.View.extend({
     $3Dmol.last_viewer = glviewer;
     $3Dmol.last_widget = this;
 
+    glviewer.clear();
+
     // Maybe want to remove this monkeypatching some day ...
     glviewer.setColorArray = setColorArray;
     glviewer.processCubeFile = processCubeFile;

@@ -1,35 +1,15 @@
 import Backbone from 'backbone';
 import { MolWidget3DModel, MolWidget3DView } from '../../src/main.js';
 import ExampleSettingsView from './example_settings_view';
-import bipyridineModelData from './bipyridine_model_data';
+import aidModelData from './3aid_model_data';
+import aidStyles from './3aid_styles';
 
 Backbone.sync = () => {};
 
 // Set up nbmolviz3d
 const model = new MolWidget3DModel({
-  model_data: bipyridineModelData,
-  styles: [
-    { visualization_type: 'stick', color: '#fedcba' },
-    { visualization_type: 'stick', color: '#abcdef' },
-    { visualization_type: 'stick', color: '#abcdef' },
-    { visualization_type: 'stick', color: '#abcdef' },
-    { visualization_type: 'stick', color: '#abcdef' },
-    { visualization_type: 'stick', color: '#abcdef' },
-    { visualization_type: 'stick', color: '#abcdef' },
-    { visualization_type: 'stick', color: '#fedcba' },
-    { visualization_type: 'stick', color: '#abcdef' },
-    { visualization_type: 'stick', color: '#abcdef' },
-    { visualization_type: 'stick', color: '#abcdef' },
-    { visualization_type: 'stick', color: '#abcdef' },
-    { visualization_type: 'stick', color: '#bada55' },
-    { visualization_type: 'stick', color: '#bada55' },
-    { visualization_type: 'stick', color: '#bada55' },
-    { visualization_type: 'stick', color: '#bada55' },
-    { visualization_type: 'stick', color: '#bada55' },
-    { visualization_type: 'stick', color: '#bada55' },
-    { visualization_type: 'stick', color: '#bada55' },
-    { visualization_type: 'stick', color: '#bada55' },
-  ],
+  model_data: aidModelData,
+  styles: aidStyles,
 });
 const view = new MolWidget3DView({
   model,
