@@ -259,6 +259,12 @@ const MolWidget3DView = Backbone.View.extend({
       glviewer.setStyle({ serial: atom.serial }, libStyle);
     });
 
+    // Shape
+    const shape = this.model.get('shape');
+    if (shape.type) {
+      glviewer[`add${shape.type}`](libUtils.getShapeSpec(shape, glviewer.widget.setSelectionTrait));
+    }
+
     glviewer.setBackgroundColor(
       libUtils.colorStringToNumber(this.model.get('background_color')),
       this.model.get('background_opacity')

@@ -1,3 +1,5 @@
+import shapeConstants from '../constants/shape_constants';
+
 /**
  * Utils for working with the 3dmol.js library
  */
@@ -23,6 +25,38 @@ const libUtils = {
     }
 
     return colorInt;
+  },
+
+  /**
+   * Given a shape object from the main model, return a shape spec ready to go into 3Dmol.js
+   * @param shape {Object}
+   * @returns {Object}
+   */
+  getShapeSpec(shape, callback) {
+    const shapeSpec = {
+      alpha: 0.8,
+      callback,
+      clickable: false,
+      color: 0x00FE03,
+      radius: shape.radius,
+    };
+
+    // TODO add to spec based on shape.type
+    if (shape.type === shapeConstants.ARROW) {
+      shapeSpec.start = shape.start;
+      shapeSpec.end = shape.end;
+    } else if (shape.type === shapeConstants.SPHERE) {
+      shapeSpec.center = shape.center;
+    } else if (shape.type === shapeConstants.CYLINDER) {
+      shapeSpec.fromCap = true;
+      shapeSpec.toCap = true;
+      shapeSpec.start = shape.start;
+      shapeSpec.end = shape.end;
+    } else {
+      throw new Error('Invalid shape type.');
+    }
+
+    return shapeSpec;
   },
 };
 

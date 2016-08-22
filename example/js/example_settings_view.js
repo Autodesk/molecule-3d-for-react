@@ -80,6 +80,16 @@ const ExampleSettingsView = Backbone.View.extend({
     stylesTA.addEventListener('blur', this.onBlurStyles.bind(this));
     this.el.appendChild(stylesTA);
 
+    const shapesLabel = document.createElement('h4');
+    shapesLabel.innerHTML = 'shape';
+    this.el.appendChild(shapesLabel);
+    const shapesTA = document.createElement('textarea');
+    shapesTA.cols = '60';
+    shapesTA.rows = '3';
+    shapesTA.value = JSON.stringify(this.model.get('shape'));
+    shapesTA.addEventListener('blur', this.onBlurStyles.bind(this));
+    this.el.appendChild(shapesTA);
+
     const bgLabel = document.createElement('h4');
     bgLabel.innerHTML = 'background_color and background_opacity';
     this.el.appendChild(bgLabel);

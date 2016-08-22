@@ -10,6 +10,19 @@ Backbone.sync = () => {};
 const model = new MolWidget3DModel({
   model_data: aidModelData,
   styles: aidStyles,
+  shape: {
+    type: 'Arrow',
+    start: {
+      x: 0,
+      y: 0,
+      z: -2.5,
+    },
+    end: {
+      x: 0,
+      y: 0,
+      z: 3,
+    },
+  },
 });
 const view = new MolWidget3DView({
   model,
