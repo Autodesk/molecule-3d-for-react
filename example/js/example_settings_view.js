@@ -3,40 +3,45 @@ import aidModelData from './3aid_model_data';
 import aidStyles from './3aid_styles';
 import bipyridineModelData from './bipyridine_model_data';
 import bipyridineStyles from './bipyridine_styles';
+import selectionTypesConstants from '../../src/constants/selection_types_constants';
 
 const ExampleSettingsView = Backbone.View.extend({
   initialize() {
     this.model.on('change', this.render.bind(this));
   },
 
-  onClickSmallButton(event) {
+  onClickSmallButton() {
     this.model.set('model_data', bipyridineModelData);
     this.model.set('styles', bipyridineStyles);
   },
 
-  onClickLargeButton(event) {
+  onClickLargeButton() {
     this.model.set('model_data', aidModelData);
     this.model.set('styles', aidStyles);
   },
 
   onBlurSelection(event) {
-    this.model.set('selected_atoms', JSON.parse(event.currentTarget.value));
+    this.model.set('selected_atoms', JSON.parse(event.target.value));
   },
 
   onBlurModelData(event) {
-    this.model.set('model_data', JSON.parse(event.currentTarget.value));
+    this.model.set('model_data', JSON.parse(event.target.value));
   },
 
   onBlurStyles(event) {
-    this.model.set('styles', JSON.parse(event.currentTarget.value));
+    this.model.set('styles', JSON.parse(event.target.value));
   },
 
   onBlurBGColor(event) {
-    this.model.set('background_color', event.currentTarget.value);
+    this.model.set('background_color', event.target.value);
   },
 
   onBlurBGOpacity(event) {
-    this.model.set('background_opacity', event.currentTarget.value);
+    this.model.set('background_opacity', event.target.value);
+  },
+
+  onChangeSelectionSelect(event) {
+    this.model.set('selection_type', event.target.value);
   },
 
   render() {
@@ -101,6 +106,19 @@ const ExampleSettingsView = Backbone.View.extend({
     bgOpacityInput.value = this.model.get('background_opacity');
     bgOpacityInput.addEventListener('blur', this.onBlurBGOpacity.bind(this));
     this.el.appendChild(bgOpacityInput);
+
+    const selectionTypeLabel = document.createElement('h4');
+    selectionTypeLabel.innerHTML = 'background_color and background_opacity';
+    this.el.appendChild(selectionTypeLabel);
+    const selectionSelect = document.createElement('select');
+    selectionSelect.addEventListener('change', this.onChangeSelectionSelect.bind(this));
+    const selectionOptions = Object.values(selectionTypesConstants).map((selectionType) => {
+      const selectionOption = document.createElement('option');
+      selectionOption.innerHTML = selectionType;
+      return selectionOption;
+    });
+    selectionOptions.forEach(selectionSelect.appendChild.bind(selectionSelect));
+    this.el.appendChild(selectionSelect);
 
     return this;
   },

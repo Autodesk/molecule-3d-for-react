@@ -3,6 +3,8 @@ import { MolWidget3DModel, MolWidget3DView } from '../../src/main.js';
 import ExampleSettingsView from './example_settings_view';
 import aidModelData from './3aid_model_data';
 import aidStyles from './3aid_styles';
+import selectionTypesConstants from '../../src/constants/selection_types_constants';
+import 'babel-polyfill';
 
 Backbone.sync = () => {};
 
@@ -23,6 +25,7 @@ const model = new MolWidget3DModel({
       z: 3,
     },
   },
+  selection_type: selectionTypesConstants.ATOM,
 });
 const view = new MolWidget3DView({
   model,

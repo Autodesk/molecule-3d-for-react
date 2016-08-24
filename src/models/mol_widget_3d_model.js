@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 import Backbone from 'backbone';
+import selectionTypesConstants from '../constants/selection_types_constants';
 
 const MolWidget3DModel = Backbone.Model.extend({
   defaults: {
@@ -38,6 +39,7 @@ const MolWidget3DModel = Backbone.Model.extend({
     model_data: '',
     styles: [],
     selected_atoms: [],
+    selection_type: selectionTypesConstants.ATOM,
     shape: {
       type: '',
       x: null,
