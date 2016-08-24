@@ -281,17 +281,13 @@ const MolWidget3DView = Backbone.View.extend({
   },
 
   onClick(atom) {
-    const selection = this.model.get('selected_atoms');
-    const index = selection.indexOf(atom.serial);
+    const selectionType = this.model.get('selection_type');
+    const selectedAtoms = this.model.get('selected_atoms');
 
-    // Toggle the selection of the clicked atom
-    if (index !== -1) {
-      selection.splice(index, 1);
-    } else {
-      selection.push(atom.serial);
-    }
-
-    this.model.set('selected_atoms', selection);
+    this.model.set(
+      'selected_atoms',
+      moleculeUtils.addSelection(selectedAtoms, atom, selectionType)
+    );
     this.model.save();
     this.model.trigger('change');
   },

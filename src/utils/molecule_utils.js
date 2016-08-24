@@ -1,3 +1,5 @@
+import selectionTypesConstants from '../constants/selection_types_constants';
+
 const moleculeUtils = {
   /**
    * Given molecule model data, return a JSON object in ChemDoodle format
@@ -25,6 +27,23 @@ const moleculeUtils = {
         b: bonds,
       }],
     };
+  },
+
+  // TODO if selection_type is residue or chain, select all atoms in the clicked atom's
+  // residue/chain
+  addSelection(selectedAtoms, clickedAtom, selectionType) {
+    const selectedAtomsOut = selectedAtoms.slice();
+    const index = selectedAtoms.indexOf(clickedAtom.serial);
+
+    if (selectionType === selectionTypesConstants.ATOM) {
+      if (index !== -1) {
+        selectedAtomsOut.splice(index, 1);
+      } else {
+        selectedAtomsOut.push(clickedAtom.serial);
+      }
+    }
+
+    return selectedAtomsOut;
   },
 };
 
