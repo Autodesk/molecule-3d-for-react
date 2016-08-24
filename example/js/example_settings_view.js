@@ -108,7 +108,7 @@ const ExampleSettingsView = Backbone.View.extend({
     this.el.appendChild(bgOpacityInput);
 
     const selectionTypeLabel = document.createElement('h4');
-    selectionTypeLabel.innerHTML = 'background_color and background_opacity';
+    selectionTypeLabel.innerHTML = 'selection_type';
     this.el.appendChild(selectionTypeLabel);
     const selectionSelect = document.createElement('select');
     selectionSelect.addEventListener('change', this.onChangeSelectionSelect.bind(this));
@@ -118,6 +118,7 @@ const ExampleSettingsView = Backbone.View.extend({
       return selectionOption;
     });
     selectionOptions.forEach(selectionSelect.appendChild.bind(selectionSelect));
+    selectionSelect.value = this.model.get('selection_type');
     this.el.appendChild(selectionSelect);
 
     return this;

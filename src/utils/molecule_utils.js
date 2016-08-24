@@ -31,19 +31,46 @@ const moleculeUtils = {
 
   // TODO if selection_type is residue or chain, select all atoms in the clicked atom's
   // residue/chain
-  addSelection(selectedAtoms, clickedAtom, selectionType) {
-    const selectedAtomsOut = selectedAtoms.slice();
-    const index = selectedAtoms.indexOf(clickedAtom.serial);
+  addSelection(atoms, selectedAtoms, clickedAtom, selectionType) {
+    let selectedAtomsOut = selectedAtoms.slice();
+    const clickedIndex = selectedAtoms.indexOf(clickedAtom.serial);
+    const toggleOn = clickedIndex === -1;
 
     if (selectionType === selectionTypesConstants.ATOM) {
-      if (index !== -1) {
-        selectedAtomsOut.splice(index, 1);
-      } else {
+      if (toggleOn) {
         selectedAtomsOut.push(clickedAtom.serial);
+      } else {
+        selectedAtomsOut.splice(clickedIndex, 1);
       }
+
+      return selectedAtomsOut;
+    }
+
+    if (toggleOn) {
+      atoms.forEach((atom) => {
+        if (moleculeUtils.isSameGroup(clickedAtom, atom, selectionType)) {
+          selectedAtomsOut.push(atom.serial);
+        }
+      });
+    } else {
+      selectedAtomsOut = selectedAtomsOut.filter((atomSerial) => {
+        const atom = atoms[atomSerial];
+        return !moleculeUtils.isSameGroup(clickedAtom, atom, selectionType);
+      });
     }
 
     return selectedAtomsOut;
+  },
+
+  isSameGroup(atomA, atomB, selectionType) {
+    if (selectionType === selectionTypesConstants.RESIDUE) {
+      return atomA.residue_index === atomB.residue_index;
+    }
+    if (selectionType === selectionTypesConstants.CHAIN) {
+      return atomA.chain === atomB.chain;
+    }
+
+    throw new Error('selectionType must be either residue or chain');
   },
 };
 

@@ -280,14 +280,19 @@ const MolWidget3DView = Backbone.View.extend({
     return glviewer;
   },
 
-  onClick(atom) {
+  onClick(glAtom) {
+    const atoms = this.model.get('model_data').atoms;
+    const atom = atoms[glAtom.serial];
     const selectionType = this.model.get('selection_type');
     const selectedAtoms = this.model.get('selected_atoms');
-
-    this.model.set(
-      'selected_atoms',
-      moleculeUtils.addSelection(selectedAtoms, atom, selectionType)
+    const newSelectedAtoms = moleculeUtils.addSelection(
+      atoms,
+      selectedAtoms,
+      atom,
+      selectionType
     );
+
+    this.model.set('selected_atoms', newSelectedAtoms);
     this.model.save();
     this.model.trigger('change');
   },
