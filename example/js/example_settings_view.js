@@ -44,6 +44,10 @@ const ExampleSettingsView = Backbone.View.extend({
     this.model.set('selection_type', event.target.value);
   },
 
+  onChangeLabelsInput(event) {
+    this.model.set('atom_labels_shown', event.target.checked);
+  },
+
   render() {
     this.el.innerHTML = '';
 
@@ -120,6 +124,15 @@ const ExampleSettingsView = Backbone.View.extend({
     selectionOptions.forEach(selectionSelect.appendChild.bind(selectionSelect));
     selectionSelect.value = this.model.get('selection_type');
     this.el.appendChild(selectionSelect);
+
+    const labelsLabel = document.createElement('h4');
+    labelsLabel.innerHTML = 'labels';
+    this.el.appendChild(labelsLabel);
+    const labelsInput = document.createElement('input');
+    labelsInput.type = 'checkbox';
+    labelsInput.checked = this.model.get('atom_labels_shown');
+    labelsInput.addEventListener('change', this.onChangeLabelsInput.bind(this));
+    this.el.appendChild(labelsInput);
 
     return this;
   },

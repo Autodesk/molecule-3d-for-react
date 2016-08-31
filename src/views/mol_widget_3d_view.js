@@ -21,6 +21,7 @@ import moleculeUtils from '../utils/molecule_utils';
 import libUtils from '../utils/lib_utils';
 
 const DEFAULT_VISUALIZATION_TYPE = 'stick';
+const DEFAULT_FONT_SIZE = 14;
 
 function processCubeFile(cubeData, uuid) {
   const volumeData = new $3Dmol.VolumeData(cubeData, 'cube');
@@ -256,8 +257,23 @@ const MolWidget3DView = Backbone.View.extend({
         );
       }
 
+      if (this.model.get('atom_labels_shown')) {
+        glviewer.addLabel(atom.name, {
+          fontSize: DEFAULT_FONT_SIZE,
+          position: {
+            x: atom.positions[0],
+            y: atom.positions[1],
+            z: atom.positions[2],
+          },
+        });
+      }
+
       glviewer.setStyle({ serial: atom.serial }, libStyle);
     });
+
+    if (!this.model.get('atom_labels_shown')) {
+      glviewer.removeAllLabels();
+    }
 
     // Shape
     const shape = this.model.get('shape');
@@ -269,6 +285,7 @@ const MolWidget3DView = Backbone.View.extend({
       libUtils.colorStringToNumber(this.model.get('background_color')),
       this.model.get('background_opacity')
     );
+
     glviewer.setClickable({}, true, this.onClick.bind(this));
     glviewer.render();
 
