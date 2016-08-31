@@ -48,6 +48,10 @@ const ExampleSettingsView = Backbone.View.extend({
     this.model.set('atom_labels_shown', event.target.checked);
   },
 
+  onBlurOrbitalInput(event) {
+    this.model.set('orbital', event.target.value);
+  },
+
   render() {
     this.el.innerHTML = '';
 
@@ -133,6 +137,16 @@ const ExampleSettingsView = Backbone.View.extend({
     labelsInput.checked = this.model.get('atom_labels_shown');
     labelsInput.addEventListener('change', this.onChangeLabelsInput.bind(this));
     this.el.appendChild(labelsInput);
+
+    const orbitalLabel = document.createElement('h4');
+    orbitalLabel.innerHTML = 'orbital';
+    this.el.appendChild(orbitalLabel);
+    const orbitalTA = document.createElement('textarea');
+    orbitalTA.cols = '60';
+    orbitalTA.rows = '6';
+    orbitalTA.value = JSON.stringify(this.model.get('orbital'));
+    orbitalTA.addEventListener('blur', this.onBlurOrbitalInput.bind(this));
+    this.el.appendChild(orbitalTA);
 
     return this;
   },

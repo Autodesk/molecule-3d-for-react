@@ -1,8 +1,11 @@
 import Backbone from 'backbone';
 import { MolWidget3DModel, MolWidget3DView } from '../../src/main.js';
 import ExampleSettingsView from './example_settings_view';
-import aidModelData from './3aid_model_data';
-import aidStyles from './3aid_styles';
+// import modelData from './3aid_model_data';
+// import styles from './3aid_styles';
+import modelData from './bipyridine_model_data';
+import styles from './bipyridine_styles';
+import orbital from './orbital';
 import selectionTypesConstants from '../../src/constants/selection_types_constants';
 import 'babel-polyfill';
 
@@ -10,8 +13,8 @@ Backbone.sync = () => {};
 
 // Set up nbmolviz3d
 const model = new MolWidget3DModel({
-  model_data: aidModelData,
-  styles: aidStyles,
+  model_data: modelData,
+  styles,
   shape: {
     type: 'Arrow',
     start: {
@@ -26,6 +29,7 @@ const model = new MolWidget3DModel({
     },
   },
   selection_type: selectionTypesConstants.ATOM,
+  orbital,
 });
 const view = new MolWidget3DView({
   model,

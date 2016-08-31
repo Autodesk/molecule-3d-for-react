@@ -41,7 +41,6 @@ const libUtils = {
       radius: shape.radius,
     };
 
-    // TODO add to spec based on shape.type
     if (shape.type === shapeConstants.ARROW) {
       shapeSpec.start = shape.start;
       shapeSpec.end = shape.end;

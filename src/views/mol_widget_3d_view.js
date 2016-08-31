@@ -22,6 +22,8 @@ import libUtils from '../utils/lib_utils';
 
 const DEFAULT_VISUALIZATION_TYPE = 'stick';
 const DEFAULT_FONT_SIZE = 14;
+const ORBITAL_COLOR_POSITIVE = 0xff0000;
+const ORBITAL_COLOR_NEGATIVE = 0x0000ff;
 
 function processCubeFile(cubeData, uuid) {
   const volumeData = new $3Dmol.VolumeData(cubeData, 'cube');
@@ -276,9 +278,28 @@ const MolWidget3DView = Backbone.View.extend({
     }
 
     // Shape
+    glviewer.removeAllShapes();
     const shape = this.model.get('shape');
     if (shape.type) {
       glviewer[`add${shape.type}`](libUtils.getShapeSpec(shape, glviewer.widget.setSelectionTrait));
+    }
+
+    // Orbital
+    glviewer.removeAllSurfaces();
+    const orbital = this.model.get('orbital');
+
+    if (orbital.cube_file) {
+      const volumeData = new $3Dmol.VolumeData(orbital.cube_file, 'cube');
+      glviewer.addIsosurface(volumeData, {
+        isoVal: orbital.iso_val,
+        color: ORBITAL_COLOR_POSITIVE,
+        opacity: orbital.opacity,
+      });
+      glviewer.addIsosurface(volumeData, {
+        isoVal: -orbital.iso_val,
+        color: ORBITAL_COLOR_NEGATIVE,
+        opacity: orbital.opacity,
+      });
     }
 
     glviewer.setBackgroundColor(
