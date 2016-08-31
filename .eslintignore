@@ -1,2 +1,5 @@
 src/vendor/
 example/js/bipyridine_model_data.js
+example/js/bipyridine_styles.js
+example/js/3aid_model_data.js
+example/js/3aid_styles.js
