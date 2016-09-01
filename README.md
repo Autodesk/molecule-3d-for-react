@@ -32,11 +32,27 @@ The background color of the visualization.
 ### background_opacity {Number 0-1} [1.0]
 The opacity of the background.
 
-### model_data {String}
-The actual text of the molecule input file.
+### model_data {Object}
+JSON data representing the actual molecular input.  Of the form:
 
-### model_data_format {String}
-The file format of `model_data`, for example `sdf`.
+    {
+      atoms: [{
+        serial,
+        name,
+        elem,
+        mass_magnitude,
+        residue_index,
+        esidue_name,
+        chain,
+        positions,
+        momenta,
+      }, ... ],
+      bonds: [{
+        atom1_index,
+        atom2_index,
+        bond_order,
+      }, ... ],
+    }
 
 ## Development
 A typical development flow might be to run the example while editing the code, where you'll want any changes to be immediately reflected in the example running in the browser.  In that case you should run:
