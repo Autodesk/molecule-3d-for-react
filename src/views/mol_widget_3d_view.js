@@ -74,13 +74,6 @@ function drawBond(atom1, atom2, order, spec) {
 }
 */
 
-function adjustClipping(minimum) {
-  const slab = this.getSlab();
-  if (slab.near > -minimum) slab.near = -minimum;
-  if (slab.far < minimum) slab.far = minimum;
-  this.setSlab(slab.near, slab.far);
-}
-
 function setColorArray(mapping) {
   const atoms = this.selectedAtoms();
   for (const color of Object.keys(mapping)) {
@@ -215,7 +208,6 @@ const MolWidget3DView = Backbone.View.extend({
     glviewer.forceRedraw = forceRedraw;
     glviewer.batchCommands = batchCommands;
     glviewer.setBonds = setBonds;
-    glviewer.adjustClipping = adjustClipping;
     document.last_3dmol_viewer = glviewer;  // for debugging
 
     const modelData = this.model.get('model_data');
