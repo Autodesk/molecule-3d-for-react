@@ -164,4 +164,71 @@ describe('moleculeUtils', () => {
       });
     });
   });
+
+  describe('isSameGroup', () => {
+    let selectionType;
+    let atomA;
+    let atomB;
+
+    beforeEach(() => {
+      atomA = { serial: 0 };
+      atomB = { serial: 1 };
+    });
+
+    describe('when selectionType is residue', () => {
+      beforeEach(() => {
+        selectionType = selectionTypesConstants.RESIDUE;
+      });
+
+      describe('when atoms are same residue', () => {
+        beforeEach(() => {
+          atomA.residue_index = 0;
+          atomB.residue_index = 0;
+        });
+
+        it('returns true', () => {
+          expect(moleculeUtils.isSameGroup(atomA, atomB, selectionType)).to.equal(true);
+        });
+      });
+
+      describe('when atoms are different residue', () => {
+        beforeEach(() => {
+          atomA.residue_index = 0;
+          atomB.residue_index = 1;
+        });
+
+        it('returns true', () => {
+          expect(moleculeUtils.isSameGroup(atomA, atomB, selectionType)).to.equal(false);
+        });
+      });
+    });
+
+    describe('when selectionType is chain', () => {
+      beforeEach(() => {
+        selectionType = selectionTypesConstants.CHAIN;
+      });
+
+      describe('when atoms are same chain', () => {
+        beforeEach(() => {
+          atomA.chain = 'A';
+          atomB.chain = 'A';
+        });
+
+        it('returns true', () => {
+          expect(moleculeUtils.isSameGroup(atomA, atomB, selectionType)).to.equal(true);
+        });
+      });
+
+      describe('when atoms are different residue', () => {
+        beforeEach(() => {
+          atomA.chain = 'A';
+          atomB.chain = 'B';
+        });
+
+        it('returns true', () => {
+          expect(moleculeUtils.isSameGroup(atomA, atomB, selectionType)).to.equal(false);
+        });
+      });
+    });
+  });
 });

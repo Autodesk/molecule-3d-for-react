@@ -29,8 +29,15 @@ const moleculeUtils = {
     };
   },
 
-  // TODO if selection_type is residue or chain, select all atoms in the clicked atom's
-  // residue/chain
+  /**
+   * Return a new selection of atoms considering a clicked atom, the current selection type, and
+   * the currently selected atoms
+   * @param atoms {Array of Atoms}
+   * @param selectedAtoms {Array of Atoms}
+   * @param clickedAtom {Atom}
+   * @param selectionType {String}
+   * @returns {Array of Atoms}
+   */
   addSelection(atoms, selectedAtoms, clickedAtom, selectionType) {
     let selectedAtomsOut = selectedAtoms.slice();
     const clickedIndex = selectedAtoms.indexOf(clickedAtom.serial);
@@ -62,6 +69,13 @@ const moleculeUtils = {
     return selectedAtomsOut;
   },
 
+  /**
+   * Returns a boolean indicating if the given atoms are of the same type (residue or chain)
+   * @param atomA {Atom}
+   * @param atomB {Atom}
+   * @param selectionType {String}
+   * @returns {Boolean}
+   */
   isSameGroup(atomA, atomB, selectionType) {
     if (selectionType === selectionTypesConstants.RESIDUE) {
       return atomA.residue_index === atomB.residue_index;
