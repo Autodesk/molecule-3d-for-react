@@ -192,6 +192,7 @@ const MolWidget3DView = Backbone.View.extend({
     $3Dmol.last_widget = this;
 
     glviewer.clear();
+    glviewer.removeAllShapes();
 
     // Maybe want to remove this monkeypatching some day ...
     glviewer.setColorArray = setColorArray;
@@ -212,10 +213,7 @@ const MolWidget3DView = Backbone.View.extend({
 
     const modelData = this.model.get('model_data');
 
-    if (!modelData) {
-      // If no model data, just show a green sphere (the main 3dmol example)
-      glviewer.addSphere({ radius: 10, color: 'green' });
-    } else {
+    if (modelData) {
       glviewer.addModel(moleculeUtils.modelDataToCDJSON(modelData), 'json', {
         keepH: true,
       });
@@ -270,7 +268,6 @@ const MolWidget3DView = Backbone.View.extend({
     }
 
     // Shape
-    glviewer.removeAllShapes();
     const shape = this.model.get('shape');
     if (shape.type) {
       glviewer[`add${shape.type}`](libUtils.getShapeSpec(shape, glviewer.widget.setSelectionTrait));
