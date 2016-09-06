@@ -50,7 +50,6 @@ const MolWidget3DModel = Backbone.Model.extend({
     orbital: {
       cube_file: '',
       iso_val: null,
-      color: null,
       opacity: null,
     },
   },

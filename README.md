@@ -26,12 +26,6 @@ See example/js/main.js for a working example.
 ## API
 All interaction with nbmolviz3d is done via the data in the model `MolWidget3DModel`.  Changing any of these values will immediately reflect in the visualization in the DOM.
 
-### background_color {String} ['#73757C']
-The background color of the visualization.
-
-### background_opacity {Number 0-1} [1.0]
-The opacity of the background.
-
 ### model_data {Object}
 JSON data representing the actual molecular input.  Of the form:
 
@@ -52,6 +46,50 @@ JSON data representing the actual molecular input.  Of the form:
         atom2_index,
         bond_order,
       }, ... ],
+    }
+
+### background_color {String} ['#73757C']
+The background color of the visualization.
+
+### background_opacity {Number 0-1} [1.0]
+The opacity of the background.
+
+### atom_labels_shown {Boolean} [false]
+Indicates whether or not to show text labels on all atoms.
+
+### styles {Array of Objects} [[]]
+An array indicating how to style individual atoms.  Atoms are indicated by index, so the first style in this array corresponds to the first atom in `model_data.atoms`.  Of the form:
+
+    [
+      {
+        visualization_type: 'stick'|'sphere'|'cartoon',
+        color: '#abcdef',
+      }, ...
+    ]
+
+### selected_atoms {Array of Numbers} [[]]
+An array of atom serials indicating which atoms should be visually selected.
+
+### selection_type {String} ['Atom']
+A string indicating whether clicks select atoms ('Atom'), residues ('Residue'), or chains ('Chain').
+
+### shape {Object} [{}]
+Indicates a shape to display in the visualization using 3Dmol.js's [addShape method](http://3dmol.csb.pitt.edu/doc/$3Dmol.GLViewer.html#addShape).  For example:
+
+    {
+      type: 'Sphere',
+	  x: 0,
+	  y: 0,
+	  z: 0,
+    }
+
+### orbital {Object} [{}]
+Indicates an orbital to display using 3Dmol.js's [addIsosurface method](http://3dmol.csb.pitt.edu/doc/$3Dmol.GLViewer.html#addIsosurface).  Of the type:
+
+	{
+      cube_file,
+      iso_val,
+      opacity,
     }
 
 ## Development
