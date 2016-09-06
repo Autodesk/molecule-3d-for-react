@@ -156,7 +156,9 @@ const MolWidget3DView = Backbone.View.extend({
     this.model.on('change', this.render.bind(this));
   },
 
-  render() {
+  render(event) {
+    const modelDataChanged = !event || Object.keys(event.changed).indexOf('model_data') !== -1;
+
     document.last_3d_widget = this;
     this.messages = [];
     this.viewerId = this.model.get('viewerId');
@@ -171,15 +173,14 @@ const MolWidget3DView = Backbone.View.extend({
       this.el.appendChild(this.mydiv);
     }
 
-    this.viewer = this.renderViewer();
+    this.viewer = this.renderViewer(modelDataChanged);
 
     if (this.send) {
       this.send({ event: 'ready' });
     }
   },
 
-  renderViewer() {
-    const firstRender = !$3Dmol.viewers[this.viewerId];
+  renderViewer(modelDataChanged) {
     const glviewer = $3Dmol.viewers[this.viewerId] || $3Dmol.createViewer(jQuery(this.mydiv), {
       defaultcolors: $3Dmol.rasmolElementColors,
     });
@@ -292,7 +293,7 @@ const MolWidget3DView = Backbone.View.extend({
     glviewer.setClickable({}, true, this.onClick.bind(this));
     glviewer.render();
 
-    if (firstRender) {
+    if (modelDataChanged) {
       glviewer.zoomTo();
       glviewer.zoom(0.8, 2000);
     }
