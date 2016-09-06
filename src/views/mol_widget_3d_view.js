@@ -262,10 +262,6 @@ const MolWidget3DView = Backbone.View.extend({
       glviewer.setStyle({ serial: atom.serial }, libStyle);
     });
 
-    if (!this.model.get('atom_labels_shown')) {
-      glviewer.removeAllLabels();
-    }
-
     // Shape
     const shape = this.model.get('shape');
     if (shape.type) {
