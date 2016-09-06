@@ -321,7 +321,6 @@ const MolWidget3DView = Backbone.View.extend({
 
     this.model.set('selected_atoms', newSelectedAtoms);
     this.model.save();
-    this.model.trigger('change');
   },
 });
 
