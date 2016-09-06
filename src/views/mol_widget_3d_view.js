@@ -273,7 +273,6 @@ const MolWidget3DView = Backbone.View.extend({
     }
 
     // Orbital
-    glviewer.removeAllSurfaces();
     const orbital = this.model.get('orbital');
 
     if (orbital.cube_file) {
