@@ -192,7 +192,6 @@ const MolWidget3DView = Backbone.View.extend({
     $3Dmol.last_widget = this;
 
     glviewer.clear();
-    glviewer.removeAllShapes();
 
     // Maybe want to remove this monkeypatching some day ...
     glviewer.setColorArray = setColorArray;
