@@ -21,7 +21,7 @@ const ExampleSettingsView = Backbone.View.extend({
   },
 
   onBlurSelection(event) {
-    this.model.set('selected_atoms', JSON.parse(event.target.value));
+    this.model.set('selected_atom_indices', JSON.parse(event.target.value));
   },
 
   onBlurModelData(event) {
@@ -70,10 +70,10 @@ const ExampleSettingsView = Backbone.View.extend({
     this.el.appendChild(largeButton);
 
     const selectionLabel = document.createElement('h4');
-    selectionLabel.innerHTML = 'selected_atoms';
+    selectionLabel.innerHTML = 'selected_atom_indices';
     this.el.appendChild(selectionLabel);
     const selectionInput = document.createElement('input');
-    selectionInput.value = JSON.stringify(this.model.get('selected_atoms'));
+    selectionInput.value = JSON.stringify(this.model.get('selected_atom_indices'));
     selectionInput.addEventListener('blur', this.onBlurSelection.bind(this));
     this.el.appendChild(selectionInput);
 

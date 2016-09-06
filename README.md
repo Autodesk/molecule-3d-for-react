@@ -67,8 +67,8 @@ An array indicating how to style individual atoms.  Atoms are indicated by index
       }, ...
     ]
 
-### selected_atoms {Array of Numbers} [[]]
-An array of atom serials indicating which atoms should be visually selected.
+### selected_atom_indices {Array of Numbers} [[]]
+An array of atom indices indicating which atoms should be visually selected.
 
 ### selection_type {String} ['Atom']
 A string indicating whether clicks select atoms ('Atom'), residues ('Residue'), or chains ('Chain').

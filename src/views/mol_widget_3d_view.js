@@ -46,8 +46,8 @@ const MolWidget3DView = Backbone.View.extend({
 
     this.mydiv = this.mydiv || document.createElement('div');
     this.mydiv.classList.add('nbmolviz3d');
-    this.mydiv.style.width = this.model.get('_width');
-    this.mydiv.style.height = this.model.get('_height');
+    this.mydiv.style.width = this.model.get('width');
+    this.mydiv.style.height = this.model.get('height');
     this.mydiv.style.position = 'relative';
 
     if (!this.el.querySelector('.nbmolviz3d')) {
@@ -95,7 +95,7 @@ const MolWidget3DView = Backbone.View.extend({
         libStyle[visualizationType][styleKey] = style[styleKey];
       });
 
-      if (this.model.get('selected_atoms').indexOf(atom.serial) !== -1) {
+      if (this.model.get('selected_atom_indices').indexOf(atom.serial) !== -1) {
         libStyle[visualizationType].color = 0x1FF3FE;
       }
 
@@ -161,15 +161,15 @@ const MolWidget3DView = Backbone.View.extend({
     const atoms = this.model.get('model_data').atoms;
     const atom = atoms[glAtom.serial];
     const selectionType = this.model.get('selection_type');
-    const selectedAtoms = this.model.get('selected_atoms');
-    const newSelectedAtoms = moleculeUtils.addSelection(
+    const selectedAtomIndices = this.model.get('selected_atom_indices');
+    const newSelectedAtomIndices = moleculeUtils.addSelection(
       atoms,
-      selectedAtoms,
+      selectedAtomIndices,
       atom,
       selectionType
     );
 
-    this.model.set('selected_atoms', newSelectedAtoms);
+    this.model.set('selected_atom_indices', newSelectedAtomIndices);
     this.model.save();
   },
 });

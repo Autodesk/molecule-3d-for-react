@@ -18,28 +18,18 @@ import selectionTypesConstants from '../constants/selection_types_constants';
 
 const MolWidget3DModel = Backbone.Model.extend({
   defaults: {
-    _model_name: 'MolWidget3DModel',
-    _view_name: 'MolWidget3DView',
-    _model_module: 'nbmolviz-js',
-    _view_module: 'nbmolviz-js',
-    _width: '500px',
-    _height: '500px',
-    viewerId: '',
-    _click_selection: -1,
     atom_labels_shown: false,
     background_color: '#73757C',
     background_opacity: 1.0,
-    color: null,
-    font_family: '',
-    font_size: '',
-    font_style: '',
-    font_weight: '',
-    layout: undefined,
-    msg_throttle: 3,
-    visible: true,
+    height: '500px',
     model_data: { atoms: [], bonds: [] },
+    orbital: {
+      cube_file: '',
+      iso_val: null,
+      opacity: null,
+    },
     styles: [],
-    selected_atoms: [],
+    selected_atom_indices: [],
     selection_type: selectionTypesConstants.ATOM,
     shape: {
       type: '',
@@ -47,11 +37,7 @@ const MolWidget3DModel = Backbone.Model.extend({
       y: null,
       z: null,
     },
-    orbital: {
-      cube_file: '',
-      iso_val: null,
-      opacity: null,
-    },
+    width: '500px',
   },
 });
 
