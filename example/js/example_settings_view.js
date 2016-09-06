@@ -53,7 +53,7 @@ const ExampleSettingsView = Backbone.View.extend({
   },
 
   onBlurOrbitalInput(event) {
-    this.model.set('orbital', event.target.value);
+    this.model.set('orbital', JSON.parse(event.target.value));
   },
 
   render() {
