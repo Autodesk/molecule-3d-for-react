@@ -17,140 +17,14 @@ import Backbone from 'backbone';
 const jQuery = require('jquery');
 window.$ = jQuery;
 const $3Dmol = require('../vendor/3Dmol');
-import moleculeUtils from '../utils/molecule_utils';
 import environmentConstants from '../constants/environment_constants';
 import libUtils from '../utils/lib_utils';
+import moleculeUtils from '../utils/molecule_utils';
 
 const DEFAULT_VISUALIZATION_TYPE = 'stick';
 const DEFAULT_FONT_SIZE = 14;
 const ORBITAL_COLOR_POSITIVE = 0xff0000;
 const ORBITAL_COLOR_NEGATIVE = 0x0000ff;
-
-function processCubeFile(cubeData, uuid) {
-  const volumeData = new $3Dmol.VolumeData(cubeData, 'cube');
-  this.pyObjects[uuid] = volumeData;
-}
-
-function batchCommands(commands) {
-  const results = [];
-  const viewer = this;
-  commands.forEach((cmd) => {
-    const fn = viewer[cmd[0]];
-    const args = cmd[1];
-    fn.apply(viewer, args);
-    // results.push( fn.apply(viewer, args));
-  });
-  return results; // results are disabled because they sometimes lead to recursive JSON.
-}
-
-function renderPyShape(shape, spec, uuid, clickable) {
-  const newSpec = spec;
-  if (clickable === true) {
-    newSpec.clickable = true;
-    newSpec.callback = this.widget.setSelectionTrait;
-  }
-  const newShape = this[`add${shape}`](newSpec);
-  newShape.pyid = uuid;
-  this.pyObjects[uuid] = newShape;
-}
-
-function removePyShape(shapeId) {
-  const shape = this.pyObjects[shapeId];
-  this.removeShape(shape);
-}
-
-/*
-function drawBond(atom1, atom2, order, spec) {
-  const newSpec = spec;
-  newSpec.start = {
-    x: atom1.x,
-    y: atom1.y,
-    z: atom1.z,
-  };
-  newSpec.end = {
-    x: atom1.x,
-    y: atom1.y,
-    z: atom1.z,
-  };
-}
-*/
-
-function setColorArray(mapping) {
-  const atoms = this.selectedAtoms();
-  for (const color of Object.keys(mapping)) {
-    if (!mapping.hasOwnProperty(color)) continue;
-
-    mapping[color].index.forEach((ind) => { // this is probably fragile
-      const atom = atoms[ind];
-      if (atom.index !== ind) {
-        throw new Error(`selectedAtoms()[${ind}].index != ${ind}`);
-      }
-      const style = atom.style;
-      for (const s of Object.keys(style)) {
-        if (style.hasOwnProperty(s)) {
-          style[s].color = color;
-        }
-      }
-    });
-  }
-  this.forceRedraw();
-}
-
-function renderPyLabel(text, spec, uuid) {
-  const label = this.addLabel(text, spec);
-  this.pyObjects[uuid] = label;
-}
-
-function removePyLabel(labelId) {
-  const label = this.pyObjects[labelId];
-  this.removeLabel(label);
-}
-
-
-function drawIsosurface(dataId, shapeId, spec) {
-  const data = this.pyObjects[dataId];
-  const shape = this.addIsosurface(data, spec);
-  this.pyObjects[shapeId] = shape;
-}
-
-function addFrameFromList(positionList) {
-  const oldatoms = this.selectedAtoms({});
-  const newatoms = [];
-  for (let i = 0; i < oldatoms.length; i++) {
-    const atom = jQuery.extend({}, oldatoms[i]);
-    atom.x = positionList[i][0];
-    atom.y = positionList[i][1];
-    atom.z = positionList[i][2];
-    newatoms.push(atom);
-  }
-  const model = this.getModel(0);
-  return model.addFrame(newatoms);
-}
-
-function setPositions(positionList) {
-  const atoms = this.selectedAtoms();
-  for (let i = 0; i < atoms.length; i++) {
-    const atom = atoms[i];
-    atom.x = positionList[i][0];
-    atom.y = positionList[i][1];
-    atom.z = positionList[i][2];
-  }
-  this.forceRedraw();
-}
-
-function forceRedraw() {
-  // relies on adding the forceRedraw method
-  this.getModel().forceRedraw();
-}
-
-function setBonds(bonds) {
-  const atoms = this.selectedAtoms();
-  bonds.forEach((bond) => {
-    const a = atoms[bond.index];
-    a.bonds = bond.nbr;
-    a.bondOrder = bond.order;
-  });
-}
 
 const MolWidget3DView = Backbone.View.extend({
   initialize() {
@@ -194,23 +68,7 @@ const MolWidget3DView = Backbone.View.extend({
 
     glviewer.clear();
 
-    // Maybe want to remove this monkeypatching some day ...
-    glviewer.setColorArray = setColorArray;
-    glviewer.processCubeFile = processCubeFile;
-    glviewer.pyObjects = {};
-    glviewer.addFrameFromList = addFrameFromList;
-    glviewer.drawIsosurface = drawIsosurface;
-    glviewer.renderPyShape = renderPyShape;
-    glviewer.renderPyLabel = renderPyLabel;
-    glviewer.removePyShape = removePyShape;
-    glviewer.removePyLabel = removePyLabel;
-    glviewer.setPositions = setPositions;
-    glviewer.forceRedraw = forceRedraw;
-    glviewer.batchCommands = batchCommands;
-    glviewer.setBonds = setBonds;
-
     const modelData = this.model.get('model_data');
-
     if (modelData) {
       glviewer.addModel(moleculeUtils.modelDataToCDJSON(modelData), 'json', {
         keepH: true,
