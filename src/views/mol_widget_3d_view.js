@@ -169,7 +169,6 @@ const MolWidget3DView = Backbone.View.extend({
     const modelDataChanged = !event || Object.keys(event.changed).indexOf('model_data') !== -1;
 
     this.messages = [];
-    this.viewerId = this.model.get('viewerId');
 
     this.mydiv = this.mydiv || document.createElement('div');
     this.mydiv.classList.add('nbmolviz3d');
@@ -181,7 +180,7 @@ const MolWidget3DView = Backbone.View.extend({
       this.el.appendChild(this.mydiv);
     }
 
-    this.viewer = this.renderViewer(modelDataChanged);
+    this.glviewer = this.renderViewer(modelDataChanged);
 
     if (this.send) {
       this.send({ event: 'ready' });
@@ -189,18 +188,9 @@ const MolWidget3DView = Backbone.View.extend({
   },
 
   renderViewer(modelDataChanged) {
-    const glviewer = $3Dmol.viewers[this.viewerId] || $3Dmol.createViewer(jQuery(this.mydiv), {
+    const glviewer = this.glviewer || $3Dmol.createViewer(jQuery(this.mydiv), {
       defaultcolors: $3Dmol.rasmolElementColors,
     });
-    this.glviewer = glviewer;
-
-    if (typeof($3Dmol.widgets) === 'undefined') {
-      $3Dmol.widgets = {};
-    }
-    $3Dmol.viewers[this.viewerId] = glviewer;
-    $3Dmol.widgets[this.viewerId] = this;
-    $3Dmol.last_viewer = glviewer;
-    $3Dmol.last_widget = this;
 
     glviewer.clear();
 
@@ -210,7 +200,6 @@ const MolWidget3DView = Backbone.View.extend({
     glviewer.pyObjects = {};
     glviewer.addFrameFromList = addFrameFromList;
     glviewer.drawIsosurface = drawIsosurface;
-    glviewer.widget = this;
     glviewer.renderPyShape = renderPyShape;
     glviewer.renderPyLabel = renderPyLabel;
     glviewer.removePyShape = removePyShape;
@@ -275,7 +264,7 @@ const MolWidget3DView = Backbone.View.extend({
     // Shape
     const shape = this.model.get('shape');
     if (shape.type) {
-      glviewer[`add${shape.type}`](libUtils.getShapeSpec(shape, glviewer.widget.setSelectionTrait));
+      glviewer[`add${shape.type}`](libUtils.getShapeSpec(shape, this.setSelectionTrait));
     }
 
     // Orbital
