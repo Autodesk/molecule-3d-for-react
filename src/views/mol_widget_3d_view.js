@@ -18,6 +18,7 @@ const jQuery = require('jquery');
 window.$ = jQuery;
 const $3Dmol = require('../vendor/3Dmol');
 import moleculeUtils from '../utils/molecule_utils';
+import environmentConstants from '../constants/environment_constants';
 import libUtils from '../utils/lib_utils';
 
 const DEFAULT_VISUALIZATION_TYPE = 'stick';
@@ -153,13 +154,20 @@ function setBonds(bonds) {
 
 const MolWidget3DView = Backbone.View.extend({
   initialize() {
+    if (process.env.NODE_ENV === environmentConstants.DEVELOPMENT) {
+      if (!window.nbmolviz3d) {
+        window.nbmolviz3d = [];
+      }
+
+      window.nbmolviz3d.push(this);
+    }
+
     this.model.on('change', this.render.bind(this));
   },
 
   render(event) {
     const modelDataChanged = !event || Object.keys(event.changed).indexOf('model_data') !== -1;
 
-    document.last_3d_widget = this;
     this.messages = [];
     this.viewerId = this.model.get('viewerId');
 
@@ -184,6 +192,8 @@ const MolWidget3DView = Backbone.View.extend({
     const glviewer = $3Dmol.viewers[this.viewerId] || $3Dmol.createViewer(jQuery(this.mydiv), {
       defaultcolors: $3Dmol.rasmolElementColors,
     });
+    this.glviewer = glviewer;
+
     if (typeof($3Dmol.widgets) === 'undefined') {
       $3Dmol.widgets = {};
     }
@@ -209,7 +219,6 @@ const MolWidget3DView = Backbone.View.extend({
     glviewer.forceRedraw = forceRedraw;
     glviewer.batchCommands = batchCommands;
     glviewer.setBonds = setBonds;
-    document.last_3dmol_viewer = glviewer;  // for debugging
 
     const modelData = this.model.get('model_data');
 
