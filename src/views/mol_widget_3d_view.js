@@ -270,7 +270,6 @@ const MolWidget3DView = Backbone.View.extend({
 
     // Orbital
     const orbital = this.model.get('orbital');
-
     if (orbital.cube_file) {
       const volumeData = new $3Dmol.VolumeData(orbital.cube_file, 'cube');
       glviewer.addIsosurface(volumeData, {
