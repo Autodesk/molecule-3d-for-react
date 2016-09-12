@@ -1,3 +1,4 @@
+const InlineEnvironmentVariablesPlugin = require('inline-environment-variables-webpack-plugin');
 const path = require('path');
 
 module.exports = {
@@ -31,5 +32,8 @@ module.exports = {
       },
     ],
   },
+  plugins: [
+    new InlineEnvironmentVariablesPlugin(),
+  ],
   devtool: 'source-map',
 };

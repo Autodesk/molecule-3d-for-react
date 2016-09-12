@@ -7278,7 +7278,8 @@ $3Dmol.Geometry = (function() {
 
         for (var i = 0; i < this.faceidx / 3; ++i) {
 
-            faceoffset = i*3; lineoffset = faceoffset*2;
+            faceoffset = i*3;
+            var lineoffset = faceoffset*2;
             var a = faceArr[faceoffset], b = faceArr[faceoffset+1], c = faceArr[faceoffset+2];
 
             lineArr[lineoffset] = a; lineArr[lineoffset+1] = b;
@@ -7676,7 +7677,7 @@ $3Dmol.Raycaster = (function() {
 
             w_0.subVectors(v1, raycaster.ray.origin);
 
-            lineProj = w_0.dot(v3);
+            var lineProj = w_0.dot(v3);
             rayProj = w_0.dot(raycaster.ray.direction);
 
             normProj = clamp(raycaster.ray.direction.dot(v3));
@@ -14426,8 +14427,8 @@ $3Dmol.drawCartoon = (function() {
 
   var defaultDrawCartoon = function(group, atomList, gradientScheme, quality) {
     quality = parseInt(parseFloat(quality) * 5) || 5;
-    drawCartoon(group, atomList, gradientScheme, fill = true,
-        doNotSmoothen = false, num = quality, div = quality);
+    drawCartoon(group, atomList, gradientScheme, true,
+        false, quality, quality);
   }
 
   return defaultDrawCartoon;
@@ -19127,6 +19128,8 @@ $3Dmol.GLViewer = (function() {
             isDragging = false;
 
         });
+
+        var mouseButton;
 
         var _handleMouseDown = this._handleMouseDown = function(ev) {
             ev.preventDefault();

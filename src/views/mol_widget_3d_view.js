@@ -17,266 +17,159 @@ import Backbone from 'backbone';
 const jQuery = require('jquery');
 window.$ = jQuery;
 const $3Dmol = require('../vendor/3Dmol');
+import environmentConstants from '../constants/environment_constants';
+import libUtils from '../utils/lib_utils';
+import moleculeUtils from '../utils/molecule_utils';
 
-function processCubeFile(cubeData, uuid) {
-  const volumeData = new $3Dmol.VolumeData(cubeData, 'cube');
-  this.pyObjects[uuid] = volumeData;
-}
-
-function batchCommands(commands) {
-  const results = [];
-  const viewer = this;
-  commands.forEach((cmd) => {
-    const fn = viewer[cmd[0]];
-    const args = cmd[1];
-    fn.apply(viewer, args);
-    // results.push( fn.apply(viewer, args));
-  });
-  return results; // results are disabled because they sometimes lead to recursive JSON.
-}
-
-function renderPyShape(shape, spec, uuid, clickable) {
-  const newSpec = spec;
-  if (clickable === true) {
-    newSpec.clickable = true;
-    newSpec.callback = this.widget.setSelectionTrait;
-  }
-  const newShape = this[`add${shape}`](newSpec);
-  newShape.pyid = uuid;
-  this.pyObjects[uuid] = newShape;
-}
-
-function removePyShape(shapeId) {
-  const shape = this.pyObjects[shapeId];
-  this.removeShape(shape);
-}
-
-/*
-function drawBond(atom1, atom2, order, spec) {
-  const newSpec = spec;
-  newSpec.start = {
-    x: atom1.x,
-    y: atom1.y,
-    z: atom1.z,
-  };
-  newSpec.end = {
-    x: atom1.x,
-    y: atom1.y,
-    z: atom1.z,
-  };
-}
-*/
-
-function adjustClipping(minimum) {
-  const slab = this.getSlab();
-  if (slab.near > -minimum) slab.near = -minimum;
-  if (slab.far < minimum) slab.far = minimum;
-  this.setSlab(slab.near, slab.far);
-}
-
-function setAtomColor(atomJson, color) {
-  const atoms = this.selectedAtoms(atomJson);
-  atoms.map((atom) => {
-    const newAtom = atom;
-    for (const s of Object.keys(newAtom.style)) {
-      newAtom.style[s].color = color;
-    }
-
-    return newAtom;
-  });
-
-  this.forceRedraw();
-}
-
-function unsetAtomColor(atomJSON) {
-  const atoms = this.selectedAtoms(atomJSON);
-  atoms.map((atom) => {
-    const newAtom = atom;
-    for (const s of Object.keys(newAtom.style)) {
-      newAtom.style[s].color = undefined;
-    }
-
-    return newAtom;
-  });
-
-  this.forceRedraw();
-}
-
-function setColorArray(mapping) {
-  const atoms = this.selectedAtoms();
-  for (const color of Object.keys(mapping)) {
-    if (!mapping.hasOwnProperty(color)) continue;
-
-    mapping[color].index.forEach((ind) => { // this is probably fragile
-      const atom = atoms[ind];
-      if (atom.index !== ind) {
-        throw new Error(`selectedAtoms()[${ind}].index != ${ind}`);
-      }
-      const style = atom.style;
-      for (const s of Object.keys(style)) {
-        if (style.hasOwnProperty(s)) {
-          style[s].color = color;
-        }
-      }
-    });
-  }
-  this.forceRedraw();
-}
-
-function renderPyLabel(text, spec, uuid) {
-  const label = this.addLabel(text, spec);
-  this.pyObjects[uuid] = label;
-}
-
-function removePyLabel(labelId) {
-  const label = this.pyObjects[labelId];
-  this.removeLabel(label);
-}
-
-
-function drawIsosurface(dataId, shapeId, spec) {
-  const data = this.pyObjects[dataId];
-  const shape = this.addIsosurface(data, spec);
-  this.pyObjects[shapeId] = shape;
-}
-
-function addFrameFromList(positionList) {
-  const oldatoms = this.selectedAtoms({});
-  const newatoms = [];
-  for (let i = 0; i < oldatoms.length; i++) {
-    const atom = jQuery.extend({}, oldatoms[i]);
-    atom.x = positionList[i][0];
-    atom.y = positionList[i][1];
-    atom.z = positionList[i][2];
-    newatoms.push(atom);
-  }
-  const model = this.getModel(0);
-  return model.addFrame(newatoms);
-}
-
-function setPositions(positionList) {
-  const atoms = this.selectedAtoms();
-  for (let i = 0; i < atoms.length; i++) {
-    const atom = atoms[i];
-    atom.x = positionList[i][0];
-    atom.y = positionList[i][1];
-    atom.z = positionList[i][2];
-  }
-  this.forceRedraw();
-}
-
-function forceRedraw() {
-  // relies on adding the forceRedraw method
-  this.getModel().forceRedraw();
-}
-
-function makeAtomsClickable() {
-  this.setClickable({}, true, this.widget.setSelectionTrait);
-}
-
-function setBonds(bonds) {
-  const atoms = this.selectedAtoms();
-  bonds.forEach((bond) => {
-    const a = atoms[bond.index];
-    a.bonds = bond.nbr;
-    a.bondOrder = bond.order;
-  });
-}
+const DEFAULT_VISUALIZATION_TYPE = 'stick';
+const DEFAULT_FONT_SIZE = 14;
+const ORBITAL_COLOR_POSITIVE = 0xff0000;
+const ORBITAL_COLOR_NEGATIVE = 0x0000ff;
 
 const MolWidget3DView = Backbone.View.extend({
   initialize() {
-    this.model.on('change', this.render.bind(this));
+    if (process.env.NODE_ENV === environmentConstants.DEVELOPMENT) {
+      if (!window.nbmolviz3d) {
+        window.nbmolviz3d = [];
+      }
 
-    window.nbmolviz3d = this;
+      window.nbmolviz3d.push(this);
+    }
+
+    this.model.on('change', this.render.bind(this));
   },
 
-  render() {
-    document.last_3d_widget = this;
+  render(event) {
+    const modelDataChanged = !event || Object.keys(event.changed).indexOf('model_data') !== -1;
+
     this.messages = [];
-    this.viewerId = this.model.get('viewerId');
 
     this.mydiv = this.mydiv || document.createElement('div');
     this.mydiv.classList.add('nbmolviz3d');
-    this.mydiv.style.width = this.model.get('_width');
-    this.mydiv.style.height = this.model.get('_height');
+    this.mydiv.style.width = this.model.get('width');
+    this.mydiv.style.height = this.model.get('height');
     this.mydiv.style.position = 'relative';
 
     if (!this.el.querySelector('.nbmolviz3d')) {
       this.el.appendChild(this.mydiv);
     }
 
-    this.viewer = this.renderViewer();
+    this.glviewer = this.renderViewer(modelDataChanged);
 
     if (this.send) {
       this.send({ event: 'ready' });
     }
   },
 
-  renderViewer() {
-    const glviewer = $3Dmol.viewers[this.viewerId] || $3Dmol.createViewer(jQuery(this.mydiv), {
+  renderViewer(modelDataChanged) {
+    const glviewer = this.glviewer || $3Dmol.createViewer(jQuery(this.mydiv), {
       defaultcolors: $3Dmol.rasmolElementColors,
     });
-    if (typeof($3Dmol.widgets) === 'undefined') {
-      $3Dmol.widgets = {};
-    }
-    $3Dmol.viewers[this.viewerId] = glviewer;
-    $3Dmol.widgets[this.viewerId] = this;
-    $3Dmol.last_viewer = glviewer;
-    $3Dmol.last_widget = this;
 
-    // Maybe want to remove this monkeypatching some day ...
-    glviewer.setColorArray = setColorArray;
-    glviewer.processCubeFile = processCubeFile;
-    glviewer.pyObjects = {};
-    glviewer.addFrameFromList = addFrameFromList;
-    glviewer.drawIsosurface = drawIsosurface;
-    glviewer.widget = this;
-    glviewer.makeAtomsClickable = makeAtomsClickable;
-    glviewer.renderPyShape = renderPyShape;
-    glviewer.renderPyLabel = renderPyLabel;
-    glviewer.removePyShape = removePyShape;
-    glviewer.removePyLabel = removePyLabel;
-    glviewer.setAtomColor = setAtomColor;
-    glviewer.setPositions = setPositions;
-    glviewer.forceRedraw = forceRedraw;
-    glviewer.unsetAtomColor = unsetAtomColor;
-    glviewer.batchCommands = batchCommands;
-    glviewer.setBonds = setBonds;
-    glviewer.adjustClipping = adjustClipping;
-    document.last_3dmol_viewer = glviewer;  // for debugging
+    glviewer.clear();
 
     const modelData = this.model.get('model_data');
-
-    if (!modelData) {
-      // If no model data, just show a green sphere (the main 3dmol example)
-      glviewer.addSphere({ radius: 10, color: 'green' });
-    } else {
-      glviewer.addModel(modelData, this.model.get('model_data_format'), {
+    if (modelData) {
+      glviewer.addModel(moleculeUtils.modelDataToCDJSON(modelData), 'json', {
         keepH: true,
+      });
+
+      // Hack in chain and residue data, since it's not supported by chemdoodle json
+      glviewer.getModel().selectedAtoms().forEach((atom) => {
+        const modifiedAtom = atom;
+        modifiedAtom.atom = modelData.atoms[atom.serial].name;
+        modifiedAtom.chain = modelData.atoms[atom.serial].chain;
+        modifiedAtom.resi = modelData.atoms[atom.serial].residue_index;
+        modifiedAtom.resn = modelData.atoms[atom.serial].residue_name;
       });
     }
 
-    glviewer.setStyle({}, { [this.model.get('visualization_style')]: {} });
+    const styles = this.model.get('styles');
+    modelData.atoms.forEach((atom, i) => {
+      const style = styles[i] || {};
+      const libStyle = {};
+      const visualizationType = style.visualization_type || DEFAULT_VISUALIZATION_TYPE;
+
+      libStyle[visualizationType] = {};
+      Object.keys(style).forEach((styleKey) => {
+        libStyle[visualizationType][styleKey] = style[styleKey];
+      });
+
+      if (this.model.get('selected_atom_indices').indexOf(atom.serial) !== -1) {
+        libStyle[visualizationType].color = 0x1FF3FE;
+      }
+
+      if (typeof libStyle[visualizationType].color === 'string') {
+        libStyle[visualizationType].color = libUtils.colorStringToNumber(
+          libStyle[visualizationType].color
+        );
+      }
+
+      if (this.model.get('atom_labels_shown')) {
+        glviewer.addLabel(atom.name, {
+          fontSize: DEFAULT_FONT_SIZE,
+          position: {
+            x: atom.positions[0],
+            y: atom.positions[1],
+            z: atom.positions[2],
+          },
+        });
+      }
+
+      glviewer.setStyle({ serial: atom.serial }, libStyle);
+    });
+
+    // Shape
+    const shape = this.model.get('shape');
+    if (shape.type) {
+      glviewer[`add${shape.type}`](libUtils.getShapeSpec(shape, this.setSelectionTrait));
+    }
+
+    // Orbital
+    const orbital = this.model.get('orbital');
+    if (orbital.cube_file) {
+      const volumeData = new $3Dmol.VolumeData(orbital.cube_file, 'cube');
+      glviewer.addIsosurface(volumeData, {
+        isoVal: orbital.iso_val,
+        color: ORBITAL_COLOR_POSITIVE,
+        opacity: orbital.opacity,
+      });
+      glviewer.addIsosurface(volumeData, {
+        isoVal: -orbital.iso_val,
+        color: ORBITAL_COLOR_NEGATIVE,
+        opacity: orbital.opacity,
+      });
+    }
+
     glviewer.setBackgroundColor(
-      this.model.get('background_color'),
+      libUtils.colorStringToNumber(this.model.get('background_color')),
       this.model.get('background_opacity')
     );
-    glviewer.zoomTo();
-    glviewer.makeAtomsClickable();
+
+    glviewer.setClickable({}, true, this.onClick.bind(this));
     glviewer.render();
-    glviewer.zoom(0.8, 2000);
+
+    if (modelDataChanged) {
+      glviewer.zoomTo();
+      glviewer.zoom(0.8, 2000);
+    }
 
     return glviewer;
   },
 
-  setSelectionTrait() {
-    const result = {
-      model: this.model,
-      index: this.index,
-      serial: this.serial,
-      pyid: this.pyid,
-    };
-    this.model.set('_click_selection', result);
+  onClick(glAtom) {
+    const atoms = this.model.get('model_data').atoms;
+    const atom = atoms[glAtom.serial];
+    const selectionType = this.model.get('selection_type');
+    const selectedAtomIndices = this.model.get('selected_atom_indices');
+    const newSelectedAtomIndices = moleculeUtils.addSelection(
+      atoms,
+      selectedAtomIndices,
+      atom,
+      selectionType
+    );
+
+    this.model.set('selected_atom_indices', newSelectedAtomIndices);
     this.model.save();
   },
 });
