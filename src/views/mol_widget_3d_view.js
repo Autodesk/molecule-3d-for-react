@@ -213,7 +213,7 @@ const MolWidget3DView = Backbone.View.extend({
   },
 
   renderViewer() {
-    const glviewer = $3Dmol.viewers[this.viewerId] ||$3Dmol.createViewer(jQuery(this.mydiv), {
+    const glviewer = $3Dmol.viewers[this.viewerId] || $3Dmol.createViewer(jQuery(this.mydiv), {
       defaultcolors: $3Dmol.rasmolElementColors,
     });
     if (typeof($3Dmol.widgets) === 'undefined') {
@@ -257,7 +257,10 @@ const MolWidget3DView = Backbone.View.extend({
     }
 
     glviewer.setStyle({}, { [this.model.get('visualization_style')]: {} });
-    glviewer.setBackgroundColor(this.model.get('background_color'), this.model.get('background_opacity'));
+    glviewer.setBackgroundColor(
+      this.model.get('background_color'),
+      this.model.get('background_opacity')
+    );
     glviewer.zoomTo();
     glviewer.makeAtomsClickable();
     glviewer.render();
