@@ -1,7 +1,7 @@
 # nbmolviz3d
 A data-bound 3D molecule visualizer based on [3Dmol.js](http://3dmol.csb.pitt.edu).
 
-<img src="https://raw.githubusercontent.com/autodesk/nbmolviz3d/master/doc/close_screenshot.png" alt="screen shot" width="500" />
+<img src="https://raw.githubusercontent.com/autodesk/nbmolviz3d/master/doc/close_screenshot.png" alt="screen shot" width="400" />
 
 ## Installation
 
@@ -96,7 +96,7 @@ Indicates an orbital to display using 3Dmol.js's [addIsosurface method](http://3
 
 ## Example
 
-<img src="https://raw.githubusercontent.com/autodesk/nbmolviz3d/master/doc/example_screenshot.png" alt="screen shot" width="500" />
+<img src="https://raw.githubusercontent.com/autodesk/nbmolviz3d/master/doc/example_screenshot.png" alt="screen shot" width="400" />
 
 An example is included which provides data-bound inputs that you can play with to see how they affect the visualization.  To run it, use the command:
 
