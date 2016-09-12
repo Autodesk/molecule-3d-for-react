@@ -1,6 +1,6 @@
 {
   "name": "nbmolviz3d",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "3D molecule visualization",
   "main": "dist/bundle.js",
   "keywords": [
@@ -47,6 +47,6 @@
   "license": "Apache 2.0",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Autodesk/nbmolviz2d.git"
+    "url": "https://github.com/Autodesk/nbmolviz3d.git"
   }
 }
