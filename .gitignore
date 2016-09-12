@@ -1,4 +1,7 @@
 dist/
 node_modules/
 npm-debug.log
+reports/
+selenium-debug.log
+screenshots/
 .DS_Store
