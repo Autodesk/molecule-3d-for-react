@@ -94,10 +94,16 @@ Indicates an orbital to display using 3Dmol.js's [addIsosurface method](http://3
       opacity,
     }
 
-## Development
-A typical development flow might be to run the example while editing the code, where you'll want any changes to be immediately reflected in the example running in the browser.  In that case you should run:
+## Example
+
+<img src="https://raw.githubusercontent.com/autodesk/nbmolviz3d/master/doc/example_screenshot.png" alt="screen shot" width="500" />
+
+An example is included which provides data-bound inputs that you can play with to see how they affect the visualization.  To run it, use the command:
 
     npm run example
+
+## Development
+Running the example above will also set up a typical development flow, where any changes to the code will be immediately reflected in the browser.
 
 ### Development within another project
 If you're using this in another project and want to make changes to this repository locally and see them reflected in your other project, first you'll need to do some setup.  You can point your other project to use the local copy of molecular-visualization like this:
