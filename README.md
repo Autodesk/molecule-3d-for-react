@@ -11,8 +11,7 @@ nbmolviz3d is a Backbone module, so you can use it like this:
     import { Nbmolviz3dModel, Nbmolviz3dView } from 'nbmolviz3d';
 
     const model = new MolWidget3DModel({
-      model_data: bipyridineDotSDF,
-      model_data_format: 'sdf',
+      model_data: myModelData,
     });
     const view = new MolWidget3DView({
       model,
@@ -21,7 +20,7 @@ nbmolviz3d is a Backbone module, so you can use it like this:
 
     view.render();
 
-See example/js/main.js for a working example.
+See [example/js/main.js](https://github.com/Autodesk/nbmolviz3d/blob/master/example/js/main.js) for a working example.
 
 ## API
 All interaction with nbmolviz3d is done via the data in the model `MolWidget3DModel`.  Changing any of these values will immediately reflect in the visualization in the DOM.
