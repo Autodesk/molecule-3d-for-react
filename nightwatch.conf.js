@@ -17,14 +17,16 @@ module.exports = {
   test_settings: {
     default: {
       screenshots: {
-        enabled: true, // if you want to keep screenshots
+        enabled: false, // if you want to keep screenshots
         path: './screenshots', // save screenshots here
       },
       globals: {
         waitForConditionTimeout: 5000, // sometimes internet is slow so wait.
       },
+      launch_url: 'http://localhost:4000',
       desiredCapabilities: { // use Chrome as the default browser for tests
         browserName: 'chrome',
+        javascriptEnabled: true,
       },
     },
     chrome: {
