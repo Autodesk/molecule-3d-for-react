@@ -32,7 +32,7 @@
     "phantomjs-prebuilt": "^2.1.7",
     "raw-loader": "^0.5.1",
     "sass-loader": "^3.2.0",
-    "selenium-binaries": "^0.8.0",
+    "selenium-binaries": "0.8.0",
     "sinon": "^2.0.0-pre.2",
     "style-loader": "^0.13.1",
     "webpack": "^1.13.0",
