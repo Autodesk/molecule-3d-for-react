@@ -1,3 +1,4 @@
+import 'babel-polyfill';
 import Backbone from 'backbone';
 import { MolWidget3DModel, MolWidget3DView } from '../../src/main.js';
 import ExampleSettingsView from './example_settings_view';
@@ -7,7 +8,6 @@ import modelData from './bipyridine_model_data';
 import styles from './bipyridine_styles';
 import orbital from './orbital';
 import selectionTypesConstants from '../../src/constants/selection_types_constants';
-import 'babel-polyfill';
 
 Backbone.sync = () => {};
 
