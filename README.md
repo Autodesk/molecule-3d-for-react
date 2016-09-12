@@ -1,7 +1,7 @@
 # nbmolviz3d
 A data-bound 3D molecule visualizer based on [3Dmol.js](http://3dmol.csb.pitt.edu).
 
-<img src="https://raw.githubusercontent.com/autodesk/nbmolviz3d/master/doc/close_screenshot.png" alt="screen shot" width="500" />
+<img src="https://raw.githubusercontent.com/autodesk/nbmolviz3d/master/doc/close_screenshot.png" alt="screen shot" width="400" />
 
 ## Installation
 
@@ -94,22 +94,28 @@ Indicates an orbital to display using 3Dmol.js's [addIsosurface method](http://3
       opacity,
     }
 
-## Development
-A typical development flow might be to run the example while editing the code, where you'll want any changes to be immediately reflected in the example running in the browser.  In that case you should run:
+## Example
+
+<img src="https://raw.githubusercontent.com/autodesk/nbmolviz3d/master/doc/example_screenshot.png" alt="screen shot" width="400" />
+
+An example is included which provides data-bound inputs that you can play with to see how they affect the visualization.  To run it, use the command:
 
     npm run example
 
-### Development within another project
-If you're using this in another project and want to make changes to this repository locally and see them reflected in your other project, first you'll need to do some setup.  You can point your other project to use the local copy of molecular-visualization like this:
+## Development
+Running the example above will also set up a typical development flow, where any changes to the code will be immediately reflected in the browser.
 
-    cd ~/path/to/molecular-visualization
+### Development within another project
+If you're using this in another project and want to make changes to this repository locally and see them reflected in your other project, first you'll need to do some setup.  You can point your other project to use the local copy of nbmolviz3d like this:
+
+    cd ~/path/to/nbmolviz3d
     npm link
     cd ~/path/to/other-project
-    npm link molecular-visualization
+    npm link nbmolviz3d
 
 See [this great blog post](http://justjs.com/posts/npm-link-developing-your-own-npm-modules-without-tears) for more info on `npm link`.
 
-Once you've linked your other project, you'll need to build molecular-visualization (and likely your other project, too) every time you want your changes to reflect in your other project.  You can do this manually with `npm run build`.  If you want to rebuild molecular-visualization automatically every time a change is made, run `npm run watch`.
+Once you've linked your other project, you'll need to build nbmolviz3d (and likely your other project, too) every time you want your changes to reflect in your other project.  You can do this manually with `npm run build`.  If you want to rebuild nbmolviz3d automatically every time a change is made, run `npm run watch`.
 
 ## License
 
