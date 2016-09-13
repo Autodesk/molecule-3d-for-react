@@ -117,6 +117,15 @@ See [this great blog post](http://justjs.com/posts/npm-link-developing-your-own-
 
 Once you've linked your other project, you'll need to build nbmolviz3d (and likely your other project, too) every time you want your changes to reflect in your other project.  You can do this manually with `npm run build`.  If you want to rebuild nbmolviz3d automatically every time a change is made, run `npm run watch`.
 
+### Releasing a new version
+A new version should be released via npm every time new code is merged to master.  Currently, this process is manual and obviously must be done by a collaborator of the npm package.
+
+On master, upgrading the version looks like the following:
+
+    npm version patch -m "Upgrade to %s for reasons"
+    git push origin master
+    npm publish
+
 ## License
 
 Copyright 2016 Autodesk Inc.
