@@ -124,6 +124,7 @@ On master, upgrading the version looks like the following:
 
     npm version patch -m "Upgrade to %s for reasons"
     git push origin master
+    git push origin --tags
     npm publish
 
 ## License
