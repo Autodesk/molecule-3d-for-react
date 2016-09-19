@@ -32,8 +32,8 @@ const ExampleSettingsView = Backbone.View.extend({
     this.model.set('styles', JSON.parse(event.target.value));
   },
 
-  onBlurShape(event) {
-    this.model.set('shape', JSON.parse(event.target.value));
+  onBlurShapes(event) {
+    this.model.set('shapes', JSON.parse(event.target.value));
   },
 
   onBlurBGColor(event) {
@@ -98,13 +98,13 @@ const ExampleSettingsView = Backbone.View.extend({
     this.el.appendChild(stylesTA);
 
     const shapesLabel = document.createElement('h4');
-    shapesLabel.innerHTML = 'shape';
+    shapesLabel.innerHTML = 'shapes';
     this.el.appendChild(shapesLabel);
     const shapesTA = document.createElement('textarea');
     shapesTA.cols = '60';
     shapesTA.rows = '3';
-    shapesTA.value = JSON.stringify(this.model.get('shape'));
-    shapesTA.addEventListener('blur', this.onBlurShape.bind(this));
+    shapesTA.value = JSON.stringify(this.model.get('shapes'));
+    shapesTA.addEventListener('blur', this.onBlurShapes.bind(this));
     this.el.appendChild(shapesTA);
 
     const bgLabel = document.createElement('h4');

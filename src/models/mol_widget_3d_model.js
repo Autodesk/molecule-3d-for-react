@@ -31,12 +31,7 @@ const MolWidget3DModel = Backbone.Model.extend({
     styles: {},
     selected_atom_indices: [],
     selection_type: selectionTypesConstants.ATOM,
-    shape: {
-      type: '',
-      x: null,
-      y: null,
-      z: null,
-    },
+    shape: [],
     width: '500px',
   },
 });
