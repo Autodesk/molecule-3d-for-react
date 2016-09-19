@@ -15,7 +15,7 @@ Backbone.sync = () => {};
 const model = new MolWidget3DModel({
   model_data: modelData,
   styles,
-  shape: {
+  shapes: [{
     type: 'Arrow',
     start: {
       x: 0,
@@ -27,7 +27,7 @@ const model = new MolWidget3DModel({
       y: 0,
       z: 3,
     },
-  },
+  }],
   selection_type: selectionTypesConstants.ATOM,
   orbital,
 });

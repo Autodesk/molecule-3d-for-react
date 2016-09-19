@@ -119,11 +119,12 @@ const MolWidget3DView = Backbone.View.extend({
       glviewer.setStyle({ serial: atom.serial }, libStyle);
     });
 
-    // Shape
-    const shape = this.model.get('shape');
-    if (shape.type) {
-      glviewer[`add${shape.type}`](libUtils.getShapeSpec(shape, this.setSelectionTrait));
-    }
+    // Shapes
+    this.model.get('shapes').forEach((shape) => {
+      if (shape.type) {
+        glviewer[`add${shape.type}`](libUtils.getShapeSpec(shape, this.setSelectionTrait));
+      }
+    });
 
     // Orbital
     const orbital = this.model.get('orbital');
