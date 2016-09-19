@@ -33,13 +33,13 @@ const libUtils = {
    * @returns {Object}
    */
   getShapeSpec(shape, callback) {
-    const shapeSpec = {
+    const shapeSpec = Object.assign({}, {
       alpha: 0.8,
       callback,
       clickable: false,
       color: 0x00FE03,
       radius: shape.radius,
-    };
+    }, shape);
 
     if (shape.type === shapeConstants.ARROW) {
       shapeSpec.start = shape.start;
