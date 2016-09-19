@@ -16,12 +16,13 @@
 
 // Set up jquery for Backbone
 import jquery from 'jquery';
+import MolWidget3DModel from './models/mol_widget_3d_model';
+import MolWidget3DView from './views/mol_widget_3d_view';
+
 if (window) {
   window.jquery = jquery;
   window.$ = jquery;
 }
 
-import MolWidget3DModel from './models/mol_widget_3d_model';
-import MolWidget3DView from './views/mol_widget_3d_view';
 
 export { MolWidget3DModel, MolWidget3DView };

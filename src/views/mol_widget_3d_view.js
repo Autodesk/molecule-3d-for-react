@@ -14,12 +14,14 @@
  * limitations under the License.
  */
 import Backbone from 'backbone';
-const jQuery = require('jquery');
-window.$ = jQuery;
-const $3Dmol = require('../vendor/3Dmol');
 import environmentConstants from '../constants/environment_constants';
 import libUtils from '../utils/lib_utils';
 import moleculeUtils from '../utils/molecule_utils';
+
+const jQuery = require('jquery');
+
+window.$ = jQuery;
+const $3Dmol = require('../vendor/3Dmol');
 
 const DEFAULT_VISUALIZATION_TYPE = 'stick';
 const DEFAULT_FONT_SIZE = 14;
@@ -44,7 +46,7 @@ const MolWidget3DView = Backbone.View.extend({
 
     this.messages = [];
 
-    this.mydiv = this.mydiv || document.createElement('div');
+    this.mydiv = this.mydiv || window.document.createElement('div');
     this.mydiv.classList.add('nbmolviz3d');
     this.mydiv.style.width = this.model.get('width');
     this.mydiv.style.height = this.model.get('height');

@@ -3,4 +3,8 @@
   "rules": {
     "react/jsx-no-bind": 0,
   },
+  "globals": {
+    "window": true,
+    "document": true,
+  },
 }

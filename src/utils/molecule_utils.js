@@ -7,7 +7,7 @@ const moleculeUtils = {
    * @returns {String}
    */
   modelDataToCDJSON(modelData) {
-    const atoms = modelData.atoms.map((atom) => ({
+    const atoms = modelData.atoms.map(atom => ({
       l: atom.elem,
       x: atom.positions[0],
       y: atom.positions[1],
@@ -15,7 +15,7 @@ const moleculeUtils = {
       mass: atom.mass_magnitude,
     }));
 
-    const bonds = modelData.bonds.map((bond) => ({
+    const bonds = modelData.bonds.map(bond => ({
       b: bond.atom1_index,
       e: bond.atom2_index,
       o: bond.bond_order,
