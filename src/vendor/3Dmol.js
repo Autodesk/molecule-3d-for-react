@@ -24074,7 +24074,7 @@ $3Dmol.Parsers = (function() {
         atoms.modelData = [];
         var lines = str.split(/\r?\n|\r/);
         while(lines.length > 0) {
-            pdbinfo = getSinglePDB(lines, options, sslookup);
+            var pdbinfo = getSinglePDB(lines, options, sslookup);
             var modelatoms = pdbinfo[0];
             var modelData = pdbinfo[1];
             lines = pdbinfo[2];
