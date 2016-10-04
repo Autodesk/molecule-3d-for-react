@@ -18,6 +18,7 @@
 import jquery from 'jquery';
 import MolWidget3DModel from './models/mol_widget_3d_model';
 import MolWidget3DView from './views/mol_widget_3d_view';
+import Nbmolviz3dReact from './views/nbmolviz3d_react.jsx';
 
 if (window) {
   window.jquery = jquery;
@@ -25,4 +26,4 @@ if (window) {
 }
 
 
-export { MolWidget3DModel, MolWidget3DView };
+export { MolWidget3DModel, MolWidget3DView, Nbmolviz3dReact };
