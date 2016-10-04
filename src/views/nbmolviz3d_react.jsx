@@ -30,7 +30,7 @@ class Nbmolviz3dReact extends React.Component {
 }
 
 Nbmolviz3dReact.propTypes = {
-  modelData: React.PropTypes.object,
+  modelData: React.PropTypes.string.isRequired,
 };
 
 export default Nbmolviz3dReact;

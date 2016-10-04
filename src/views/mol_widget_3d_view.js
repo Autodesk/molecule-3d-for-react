@@ -71,7 +71,11 @@ const MolWidget3DView = Backbone.View.extend({
     glviewer.clear();
 
     const modelData = this.model.get('model_data');
-    if (modelData) {
+    if (typeof modelData === 'string') {
+      glviewer.addModel(modelData, 'pdb', {
+        keepH: true,
+      });
+    } else if (typeof modelData === 'object') {
       glviewer.addModel(moleculeUtils.modelDataToCDJSON(modelData), 'json', {
         keepH: true,
       });
@@ -87,39 +91,43 @@ const MolWidget3DView = Backbone.View.extend({
     }
 
     const styles = this.model.get('styles');
-    modelData.atoms.forEach((atom, i) => {
-      const style = styles[i] || {};
-      const libStyle = {};
-      const visualizationType = style.visualization_type || DEFAULT_VISUALIZATION_TYPE;
+    if (modelData.atoms) {
+      modelData.atoms.forEach((atom, i) => {
+        const style = styles[i] || {};
+        const libStyle = {};
+        const visualizationType = style.visualization_type || DEFAULT_VISUALIZATION_TYPE;
 
-      libStyle[visualizationType] = {};
-      Object.keys(style).forEach((styleKey) => {
-        libStyle[visualizationType][styleKey] = style[styleKey];
-      });
-
-      if (this.model.get('selected_atom_indices').indexOf(atom.serial) !== -1) {
-        libStyle[visualizationType].color = 0x1FF3FE;
-      }
-
-      if (typeof libStyle[visualizationType].color === 'string') {
-        libStyle[visualizationType].color = libUtils.colorStringToNumber(
-          libStyle[visualizationType].color
-        );
-      }
-
-      if (this.model.get('atom_labels_shown')) {
-        glviewer.addLabel(atom.name, {
-          fontSize: DEFAULT_FONT_SIZE,
-          position: {
-            x: atom.positions[0],
-            y: atom.positions[1],
-            z: atom.positions[2],
-          },
+        libStyle[visualizationType] = {};
+        Object.keys(style).forEach((styleKey) => {
+          libStyle[visualizationType][styleKey] = style[styleKey];
         });
-      }
 
-      glviewer.setStyle({ serial: atom.serial }, libStyle);
-    });
+        if (this.model.get('selected_atom_indices').indexOf(atom.serial) !== -1) {
+          libStyle[visualizationType].color = 0x1FF3FE;
+        }
+
+        if (typeof libStyle[visualizationType].color === 'string') {
+          libStyle[visualizationType].color = libUtils.colorStringToNumber(
+            libStyle[visualizationType].color
+          );
+        }
+
+        if (this.model.get('atom_labels_shown')) {
+          glviewer.addLabel(atom.name, {
+            fontSize: DEFAULT_FONT_SIZE,
+            position: {
+              x: atom.positions[0],
+              y: atom.positions[1],
+              z: atom.positions[2],
+            },
+          });
+        }
+
+        glviewer.setStyle({ serial: atom.serial }, libStyle);
+      });
+    } else {
+      glviewer.setStyle({}, {stick:{}});
+    }
 
     // Shapes
     this.model.get('shapes').forEach((shape) => {
