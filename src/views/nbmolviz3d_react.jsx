@@ -4,7 +4,14 @@ import MolWidget3DView from '../views/mol_widget_3d_view';
 
 class Nbmolviz3dReact extends React.Component {
   componentDidMount() {
-    console.log('zomg!', this.props.modelData);
+    this.renderNbmolviz();
+  }
+
+  componentDidUpdate() {
+    this.renderNbmolviz();
+  }
+
+  renderNbmolviz() {
     const model = new MolWidget3DModel({
       model_data: this.props.modelData,
     });
