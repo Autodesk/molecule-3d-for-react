@@ -2,7 +2,7 @@
   "name": "nbmolviz3d",
   "version": "0.1.4",
   "description": "3D molecule visualization",
-  "main": "dist/bundle.js",
+  "main": "src/main.js",
   "files": [
     "dist/"
   ],
