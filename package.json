@@ -4,7 +4,8 @@
   "description": "3D molecule visualization",
   "main": "src/main.js",
   "files": [
-    "dist/"
+    "dist/",
+    "src/"
   ],
   "keywords": [
     "molecule",
