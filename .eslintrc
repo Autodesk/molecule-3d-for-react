@@ -2,6 +2,7 @@
   "extends": "airbnb",
   "rules": {
     "react/jsx-no-bind": 0,
+    "react/no-unused-prop-types": 1,
   },
   "globals": {
     "window": true,

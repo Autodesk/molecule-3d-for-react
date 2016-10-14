@@ -14,10 +14,25 @@ const ORBITAL_COLOR_POSITIVE = 0xff0000;
 const ORBITAL_COLOR_NEGATIVE = 0x0000ff;
 
 class Nbmolviz3dReact extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      selectedAtomIndices: props.selectedAtomIndices,
+    };
+  }
+
   componentDidMount() {
     this.renderNbmolviz();
   }
 
+  componentWillReceiveProps(nextProps) {
+    this.setState({
+      selectedAtomIndices: nextProps.selectedAtomIndices,
+    });
+  }
+
+  /*
   shouldComponentUpdate(nextProps) {
     const changingModelData = IMap.isMap(nextProps.modelData) &&
       (nextProps.modelData !== this.props.modelData);
@@ -25,6 +40,7 @@ class Nbmolviz3dReact extends React.Component {
 
     return changingModelData || changingBG;
   }
+  */
 
   componentDidUpdate() {
     this.renderNbmolviz();
@@ -36,7 +52,7 @@ class Nbmolviz3dReact extends React.Component {
     const atoms = modelData.atoms;
     const atom = atoms[glAtom.serial];
     const selectionType = this.props.selectionType;
-    const selectedAtomIndices = this.props.selectedAtomIndices;
+    const selectedAtomIndices = this.state.selectedAtomIndices;
     const newSelectedAtomIndices = moleculeUtils.addSelection(
       atoms,
       selectedAtomIndices,
@@ -47,6 +63,10 @@ class Nbmolviz3dReact extends React.Component {
     this.setState({
       selectedAtomIndices: newSelectedAtomIndices,
     });
+
+    if (this.props.onChangeSelection) {
+      this.props.onChangeSelection(newSelectedAtomIndices);
+    }
   }
 
   renderNbmolviz() {
@@ -87,7 +107,7 @@ class Nbmolviz3dReact extends React.Component {
         libStyle[visualizationType][styleKey] = style[styleKey];
       });
 
-      if (this.props.selectedAtomIndices.indexOf(atom.serial) !== -1) {
+      if (this.state.selectedAtomIndices.indexOf(atom.serial) !== -1) {
         libStyle[visualizationType].color = 0x1FF3FE;
       }
 
@@ -187,6 +207,7 @@ Nbmolviz3dReact.propTypes = {
     React.PropTypes.instanceOf(IMap),
     React.PropTypes.object,
   ]).isRequired,
+  onChangeSelection: React.PropTypes.func,
   orbital: React.PropTypes.shape({
     cube_file: React.PropTypes.string,
     iso_val: React.PropTypes.number,
@@ -199,7 +220,7 @@ Nbmolviz3dReact.propTypes = {
     selectionTypesConstants.CHAIN,
   ]),
   shapes: React.PropTypes.arrayOf(React.PropTypes.object),
-  styles: React.PropTypes.arrayOf(React.PropTypes.object),
+  styles: React.PropTypes.objectOf(React.PropTypes.object),
   width: React.PropTypes.string,
 };
 
