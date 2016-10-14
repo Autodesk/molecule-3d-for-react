@@ -33,30 +33,27 @@ const moleculeUtils = {
    * Return a new selection of atoms considering a clicked atom, the current selection type, and
    * the currently selected atoms
    * @param atoms {Array of Atoms}
-   * @param selectedAtoms {Array of Atoms}
+   * @param selectedAtoms {Immutable.Set of Atoms}
    * @param clickedAtom {Atom}
    * @param selectionType {String}
    * @returns {Array of Atoms}
    */
   addSelection(atoms, selectedAtoms, clickedAtom, selectionType) {
-    let selectedAtomsOut = selectedAtoms.slice();
-    const clickedIndex = selectedAtoms.indexOf(clickedAtom.serial);
-    const toggleOn = clickedIndex === -1;
+    let selectedAtomsOut = selectedAtoms;
+    const toggleOn = !selectedAtoms.has(clickedAtom.serial);
 
     if (selectionType === selectionTypesConstants.ATOM) {
       if (toggleOn) {
-        selectedAtomsOut.push(clickedAtom.serial);
-      } else {
-        selectedAtomsOut.splice(clickedIndex, 1);
+        return selectedAtomsOut.add(clickedAtom.serial);
       }
 
-      return selectedAtomsOut;
+      return selectedAtomsOut.delete(clickedAtom.serial);
     }
 
     if (toggleOn) {
       atoms.forEach((atom) => {
         if (moleculeUtils.isSameGroup(clickedAtom, atom, selectionType)) {
-          selectedAtomsOut.push(atom.serial);
+          selectedAtomsOut = selectedAtomsOut.add(atom.serial);
         }
       });
     } else {

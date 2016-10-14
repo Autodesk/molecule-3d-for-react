@@ -1,6 +1,6 @@
 import jQuery from 'jquery';
 import React from 'react';
-import { Map as IMap } from 'immutable';
+import { Map as IMap, Set as ISet } from 'immutable';
 import libUtils from '../utils/lib_utils';
 import moleculeUtils from '../utils/molecule_utils';
 import selectionTypesConstants from '../constants/selection_types_constants';
@@ -17,8 +17,13 @@ class Nbmolviz3dReact extends React.Component {
   constructor(props) {
     super(props);
 
+    let selectedAtomIndices = props.selectedAtomIndices;
+    if (!ISet.isSet(selectedAtomIndices)) {
+      selectedAtomIndices = new ISet(selectedAtomIndices);
+    }
+
     this.state = {
-      selectedAtomIndices: props.selectedAtomIndices,
+      selectedAtomIndices,
     };
   }
 
@@ -27,8 +32,13 @@ class Nbmolviz3dReact extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    let selectedAtomIndices = nextProps.selectedAtomIndices;
+    if (!ISet.isSet(selectedAtomIndices)) {
+      selectedAtomIndices = new ISet(selectedAtomIndices);
+    }
+
     this.setState({
-      selectedAtomIndices: nextProps.selectedAtomIndices,
+      selectedAtomIndices,
     });
   }
 
@@ -52,10 +62,9 @@ class Nbmolviz3dReact extends React.Component {
     const atoms = modelData.atoms;
     const atom = atoms[glAtom.serial];
     const selectionType = this.props.selectionType;
-    const selectedAtomIndices = this.state.selectedAtomIndices;
     const newSelectedAtomIndices = moleculeUtils.addSelection(
       atoms,
-      selectedAtomIndices,
+      this.state.selectedAtomIndices,
       atom,
       selectionType
     );
@@ -65,7 +74,7 @@ class Nbmolviz3dReact extends React.Component {
     });
 
     if (this.props.onChangeSelection) {
-      this.props.onChangeSelection(newSelectedAtomIndices);
+      this.props.onChangeSelection(newSelectedAtomIndices.toJS());
     }
   }
 
@@ -107,7 +116,7 @@ class Nbmolviz3dReact extends React.Component {
         libStyle[visualizationType][styleKey] = style[styleKey];
       });
 
-      if (this.state.selectedAtomIndices.indexOf(atom.serial) !== -1) {
+      if (this.state.selectedAtomIndices.has(atom.serial)) {
         libStyle[visualizationType].color = 0x1FF3FE;
       }
 
@@ -191,10 +200,10 @@ Nbmolviz3dReact.defaultProps = {
   backgroundColor: '#73757c',
   height: '500px',
   orbital: {},
-  selectedAtomIndices: [],
+  selectedAtomIndices: new ISet(),
   selectionType: selectionTypesConstants.ATOM,
   shapes: [],
-  styles: [],
+  styles: {},
   width: '500px',
 };
 
@@ -213,7 +222,10 @@ Nbmolviz3dReact.propTypes = {
     iso_val: React.PropTypes.number,
     opacity: React.PropTypes.number,
   }),
-  selectedAtomIndices: React.PropTypes.arrayOf(React.PropTypes.number),
+  selectedAtomIndices: React.PropTypes.oneOfType([
+    React.PropTypes.object,
+    React.PropTypes.arrayOf(React.PropTypes.number),
+  ]),
   selectionType: React.PropTypes.oneOf([
     selectionTypesConstants.ATOM,
     selectionTypesConstants.RESIDUE,
