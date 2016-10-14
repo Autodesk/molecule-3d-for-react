@@ -31,16 +31,6 @@ class Nbmolviz3dReact extends React.Component {
     });
   }
 
-  /*
-  shouldComponentUpdate(nextProps) {
-    const changingModelData = IMap.isMap(nextProps.modelData) &&
-      (nextProps.modelData !== this.props.modelData);
-    const changingBG = nextProps.backgroundColor !== this.props.backgroundColor;
-
-    return changingModelData || changingBG;
-  }
-  */
-
   componentWillUpdate() {
     this.oldModelData = this.props.modelData;
   }
