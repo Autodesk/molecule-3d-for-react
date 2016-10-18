@@ -25,5 +25,4 @@ if (window) {
   window.$ = jquery;
 }
 
-
 export { MolWidget3DModel, MolWidget3DView, Nbmolviz3dReact };

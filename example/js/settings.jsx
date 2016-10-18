@@ -30,7 +30,7 @@ class Settings extends React.Component {
     this.onChangeLabelsInput = this.onChangeLabelsInput.bind(this);
 
     this.state = {
-      selectedAtomIndices: JSON.stringify(props.selectedAtomIndices),
+      selectedAtomIds: JSON.stringify(props.selectedAtomIds),
       modelData: JSON.stringify(props.modelData),
       shapes: JSON.stringify(props.shapes),
       styles: JSON.stringify(props.styles),
@@ -44,7 +44,7 @@ class Settings extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     this.setState({
-      selectedAtomIndices: JSON.stringify(nextProps.selectedAtomIndices),
+      selectedAtomIds: JSON.stringify(nextProps.selectedAtomIds),
       styles: JSON.stringify(nextProps.styles),
       shapes: JSON.stringify(nextProps.shapes),
       modelData: JSON.stringify(nextProps.modelData),
@@ -69,7 +69,7 @@ class Settings extends React.Component {
   }
 
   onChangeSelection(event) {
-    this.setState({ selectedAtomIndices: event.target.value });
+    this.setState({ selectedAtomIds: event.target.value });
   }
 
   onChangeModelData(event) {
@@ -134,9 +134,9 @@ class Settings extends React.Component {
         <button onClick={this.onClickSmallButton}>Small Molecule</button>
         <button onClick={this.onClickLargeButton}>Large Molecule</button>
 
-        <h4>selectedAtomIndices</h4>
+        <h4>selectedAtomIds</h4>
         <input
-          value={this.state.selectedAtomIndices}
+          value={this.state.selectedAtomIds}
           onChange={this.onChangeSelection}
           onBlur={this.onBlurSelection}
         />
@@ -217,7 +217,7 @@ Settings.defaultProps = {
   backgroundOpacity: 1.0,
   backgroundColor: '',
   orbital: {},
-  selectedAtomIndices: [],
+  selectedAtomIds: [],
   selectionType: selectionTypesConstants.ATOM,
   shapes: [],
   styles: [],
@@ -248,7 +248,7 @@ Settings.propTypes = {
     opacity: React.PropTypes.number,
     cube_file: React.PropTypes.string,
   }),
-  selectedAtomIndices: React.PropTypes.arrayOf(React.PropTypes.number),
+  selectedAtomIds: React.PropTypes.arrayOf(React.PropTypes.number),
   selectionType: React.PropTypes.string,
 };
 

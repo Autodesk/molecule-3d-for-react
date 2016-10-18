@@ -43,7 +43,7 @@ class Example extends React.Component {
       styles,
       shapes,
       orbital,
-      selectedAtomIndices: [],
+      selectedAtomIds: [],
     };
   }
 
@@ -51,8 +51,8 @@ class Example extends React.Component {
     this.setState({ modelData: newModelData, styles: newStyles });
   }
 
-  onChangeSelection(newSelectedAtomIndices) {
-    this.setState({ selectedAtomIndices: newSelectedAtomIndices });
+  onChangeSelection(newSelectedAtomIds) {
+    this.setState({ selectedAtomIds: newSelectedAtomIds });
   }
 
   onChangeModelData(newModelData) {
@@ -96,7 +96,7 @@ class Example extends React.Component {
           backgroundColor={this.state.backgroundColor}
           backgroundOpacity={this.state.backgroundOpacity}
           modelData={this.state.modelData}
-          selectedAtomIndices={this.state.selectedAtomIndices}
+          selectedAtomIds={this.state.selectedAtomIds}
           selectionType={this.state.selectionType}
           shapes={this.state.shapes}
           styles={this.state.styles}
@@ -119,7 +119,7 @@ class Example extends React.Component {
           onChangeAtomLabelsShown={this.onChangeAtomLabelsShown}
           onChangeOrbital={this.onChangeOrbital}
           orbital={this.state.orbital}
-          selectedAtomIndices={this.state.selectedAtomIndices}
+          selectedAtomIds={this.state.selectedAtomIds}
           selectionType={this.state.selectionType}
           shapes={this.state.shapes}
           styles={this.state.styles}

@@ -17,7 +17,7 @@ class Nbmolviz3dReact extends React.Component {
     super(props);
 
     this.state = {
-      selectedAtomIndices: props.selectedAtomIndices,
+      selectedAtomIds: props.selectedAtomIds,
     };
   }
 
@@ -27,7 +27,7 @@ class Nbmolviz3dReact extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     this.setState({
-      selectedAtomIndices: nextProps.selectedAtomIndices,
+      selectedAtomIds: nextProps.selectedAtomIds,
     });
   }
 
@@ -43,19 +43,19 @@ class Nbmolviz3dReact extends React.Component {
     const atoms = this.props.modelData.atoms;
     const atom = atoms[glAtom.serial];
     const selectionType = this.props.selectionType;
-    const newSelectedAtomIndices = moleculeUtils.addSelection(
+    const newSelectedAtomIds = moleculeUtils.addSelection(
       atoms,
-      this.state.selectedAtomIndices,
+      this.state.selectedAtomIds,
       atom,
       selectionType
     );
 
     this.setState({
-      selectedAtomIndices: newSelectedAtomIndices,
+      selectedAtomIds: newSelectedAtomIds,
     });
 
     if (this.props.onChangeSelection) {
-      this.props.onChangeSelection(newSelectedAtomIndices);
+      this.props.onChangeSelection(newSelectedAtomIds);
     }
   }
 
@@ -96,7 +96,7 @@ class Nbmolviz3dReact extends React.Component {
         libStyle[visualizationType][styleKey] = style[styleKey];
       });
 
-      if (this.state.selectedAtomIndices.indexOf(atom.serial) !== -1) {
+      if (this.state.selectedAtomIds.indexOf(atom.serial) !== -1) {
         libStyle[visualizationType].color = 0x1FF3FE;
       }
 
@@ -170,7 +170,8 @@ class Nbmolviz3dReact extends React.Component {
           margin: '0 auto',
         }}
         ref={(c) => { this.container = c; }}
-      />
+      >
+      </div>
     );
   }
 }
@@ -181,7 +182,7 @@ Nbmolviz3dReact.defaultProps = {
   backgroundColor: '#73757c',
   height: '500px',
   orbital: {},
-  selectedAtomIndices: [],
+  selectedAtomIds: [],
   selectionType: selectionTypesConstants.ATOM,
   shapes: [],
   styles: {},
@@ -203,7 +204,7 @@ Nbmolviz3dReact.propTypes = {
     iso_val: React.PropTypes.number,
     opacity: React.PropTypes.number,
   }),
-  selectedAtomIndices: React.PropTypes.arrayOf(React.PropTypes.number),
+  selectedAtomIds: React.PropTypes.arrayOf(React.PropTypes.number),
   selectionType: React.PropTypes.oneOf([
     selectionTypesConstants.ATOM,
     selectionTypesConstants.RESIDUE,
