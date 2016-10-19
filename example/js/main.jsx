@@ -11,6 +11,7 @@ import orbital from './orbital';
 
 const shapes = [{
   type: 'Arrow',
+  color: '#00ff00',
   start: {
     x: 0,
     y: 0,
