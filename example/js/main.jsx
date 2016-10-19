@@ -1,7 +1,7 @@
 import 'babel-polyfill';
 import React from 'react';
 import { render } from 'react-dom';
-import { Nbmolviz3dReact } from '../../src/main.js';
+import ReactMolecule3d from '../../src/main.js';
 import Settings from './settings.jsx';
 // import modelData from './3aid_model_data';
 // import styles from './3aid_styles';
@@ -91,7 +91,7 @@ class Example extends React.Component {
   render() {
     return (
       <div style={{ display: 'flex' }}>
-        <Nbmolviz3dReact
+        <ReactMolecule3d
           atomLabelsShown={this.state.atomLabelsShown}
           backgroundColor={this.state.backgroundColor}
           backgroundOpacity={this.state.backgroundOpacity}
@@ -131,5 +131,5 @@ class Example extends React.Component {
 
 render(
   <Example />,
-  document.querySelector('.nbmolviz3d')
+  document.querySelector('.react-molecule-3d')
 );

@@ -252,22 +252,4 @@ Settings.propTypes = {
   selectionType: React.PropTypes.string,
 };
 
-/*
-const ExampleSettingsView = Backbone.View.extend({
-  render() {
-    const orbitalLabel = document.createElement('h4');
-    orbitalLabel.innerHTML = 'orbital';
-    this.el.appendChild(orbitalLabel);
-    const orbitalTA = document.createElement('textarea');
-    orbitalTA.cols = '60';
-    orbitalTA.rows = '6';
-    orbitalTA.value = JSON.stringify(this.model.get('orbital'));
-    orbitalTA.addEventListener('blur', this.onBlurOrbitalInput.bind(this));
-    this.el.appendChild(orbitalTA);
-
-    return this;
-  },
-});
-*/
-
 export default Settings;

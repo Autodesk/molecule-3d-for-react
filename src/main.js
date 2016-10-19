@@ -13,16 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import ReactMolecule3d from './components/react_molecule_3d.jsx';
 
-// Set up jquery for Backbone
-import jquery from 'jquery';
-import MolWidget3DModel from './models/mol_widget_3d_model';
-import MolWidget3DView from './views/mol_widget_3d_view';
-import Nbmolviz3dReact from './views/nbmolviz3d_react.jsx';
-
-if (window) {
-  window.jquery = jquery;
-  window.$ = jquery;
-}
-
-export { MolWidget3DModel, MolWidget3DView, Nbmolviz3dReact };
+export default ReactMolecule3d;

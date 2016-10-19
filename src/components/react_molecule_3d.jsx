@@ -12,7 +12,7 @@ const DEFAULT_FONT_SIZE = 14;
 const ORBITAL_COLOR_POSITIVE = 0xff0000;
 const ORBITAL_COLOR_NEGATIVE = 0x0000ff;
 
-class Nbmolviz3dReact extends React.Component {
+class ReactMolecule3d extends React.Component {
   constructor(props) {
     super(props);
 
@@ -22,7 +22,7 @@ class Nbmolviz3dReact extends React.Component {
   }
 
   componentDidMount() {
-    this.renderNbmolviz();
+    this.render3dMol();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -36,7 +36,7 @@ class Nbmolviz3dReact extends React.Component {
   }
 
   componentDidUpdate() {
-    this.renderNbmolviz();
+    this.render3dMol();
   }
 
   onClick(glAtom) {
@@ -59,7 +59,7 @@ class Nbmolviz3dReact extends React.Component {
     }
   }
 
-  renderNbmolviz() {
+  render3dMol() {
     const modelData = this.props.modelData;
 
     if (!modelData.atoms.length || !modelData.bonds.length) {
@@ -162,7 +162,7 @@ class Nbmolviz3dReact extends React.Component {
   render() {
     return (
       <div
-        className="nbmolviz3d"
+        className="react-molecule-3d"
         style={{
           width: this.props.width,
           height: this.props.height,
@@ -176,7 +176,7 @@ class Nbmolviz3dReact extends React.Component {
   }
 }
 
-Nbmolviz3dReact.defaultProps = {
+ReactMolecule3d.defaultProps = {
   atomLabelsShown: false,
   backgroundOpacity: 1.0,
   backgroundColor: '#73757c',
@@ -189,7 +189,7 @@ Nbmolviz3dReact.defaultProps = {
   width: '500px',
 };
 
-Nbmolviz3dReact.propTypes = {
+ReactMolecule3d.propTypes = {
   atomLabelsShown: React.PropTypes.bool,
   backgroundColor: React.PropTypes.string,
   backgroundOpacity: React.PropTypes.number,
@@ -215,4 +215,4 @@ Nbmolviz3dReact.propTypes = {
   width: React.PropTypes.string,
 };
 
-export default Nbmolviz3dReact;
+export default ReactMolecule3d;
