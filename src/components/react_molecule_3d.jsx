@@ -39,7 +39,7 @@ class ReactMolecule3d extends React.Component {
     this.render3dMol();
   }
 
-  onClick(glAtom) {
+  onClick = (glAtom) => {
     const atoms = this.props.modelData.atoms;
     const atom = atoms[glAtom.serial];
     const selectionType = this.props.selectionType;
@@ -148,7 +148,7 @@ class ReactMolecule3d extends React.Component {
       this.props.backgroundOpacity
     );
 
-    glviewer.setClickable({}, true, this.onClick.bind(this));
+    glviewer.setClickable({}, true, this.onClick);
     glviewer.render();
 
     if (!moleculeUtils.modelDataEquivalent(this.oldModelData, this.props.modelData)) {
@@ -170,8 +170,7 @@ class ReactMolecule3d extends React.Component {
           margin: '0 auto',
         }}
         ref={(c) => { this.container = c; }}
-      >
-      </div>
+      />
     );
   }
 }

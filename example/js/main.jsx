@@ -28,17 +28,6 @@ class Example extends React.Component {
   constructor(props) {
     super(props);
 
-    this.onChangeMolecule = this.onChangeMolecule.bind(this);
-    this.onChangeSelection = this.onChangeSelection.bind(this);
-    this.onChangeModelData = this.onChangeModelData.bind(this);
-    this.onChangeStyles = this.onChangeStyles.bind(this);
-    this.onChangeShapes = this.onChangeShapes.bind(this);
-    this.onChangeBackgroundColor = this.onChangeBackgroundColor.bind(this);
-    this.onChangeBackgroundOpacity = this.onChangeBackgroundOpacity.bind(this);
-    this.onChangeSelectionType = this.onChangeSelectionType.bind(this);
-    this.onChangeAtomLabelsShown = this.onChangeAtomLabelsShown.bind(this);
-    this.onChangeOrbital = this.onChangeOrbital.bind(this);
-
     this.state = {
       modelData,
       styles,
@@ -48,43 +37,43 @@ class Example extends React.Component {
     };
   }
 
-  onChangeMolecule(newModelData, newStyles) {
+  onChangeMolecule = (newModelData, newStyles) => {
     this.setState({ modelData: newModelData, styles: newStyles });
   }
 
-  onChangeSelection(newSelectedAtomIds) {
+  onChangeSelection = (newSelectedAtomIds) => {
     this.setState({ selectedAtomIds: newSelectedAtomIds });
   }
 
-  onChangeModelData(newModelData) {
+  onChangeModelData = (newModelData) => {
     this.setState({ modelData: newModelData });
   }
 
-  onChangeStyles(newStyles) {
+  onChangeStyles = (newStyles) => {
     this.setState({ styles: newStyles });
   }
 
-  onChangeShapes(newShapes) {
+  onChangeShapes = (newShapes) => {
     this.setState({ shapes: newShapes });
   }
 
-  onChangeBackgroundColor(newBackgroundColor) {
+  onChangeBackgroundColor = (newBackgroundColor) => {
     this.setState({ backgroundColor: newBackgroundColor });
   }
 
-  onChangeBackgroundOpacity(newBackgroundOpacity) {
+  onChangeBackgroundOpacity = (newBackgroundOpacity) => {
     this.setState({ backgroundOpacity: newBackgroundOpacity });
   }
 
-  onChangeSelectionType(newSelectionType) {
+  onChangeSelectionType = (newSelectionType) => {
     this.setState({ selectionType: newSelectionType });
   }
 
-  onChangeAtomLabelsShown(newAtomLabelsShown) {
+  onChangeAtomLabelsShown = (newAtomLabelsShown) => {
     this.setState({ atomLabelsShown: newAtomLabelsShown });
   }
 
-  onChangeOrbital(newOrbital) {
+  onChangeOrbital = (newOrbital) => {
     this.setState({ orbital: newOrbital });
   }
 

@@ -4,6 +4,7 @@
     "react/jsx-no-bind": 0,
     "react/no-unused-prop-types": 1,
   },
+  "parser": "babel-eslint",
   "globals": {
     "window": true,
     "document": true,

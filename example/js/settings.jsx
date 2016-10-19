@@ -10,25 +10,6 @@ class Settings extends React.Component {
   constructor(props) {
     super(props);
 
-    this.onClickSmallButton = this.onClickSmallButton.bind(this);
-    this.onClickLargeButton = this.onClickLargeButton.bind(this);
-    this.onChangeSelection = this.onChangeSelection.bind(this);
-    this.onChangeModelData = this.onChangeModelData.bind(this);
-    this.onChangeStyles = this.onChangeStyles.bind(this);
-    this.onChangeShapes = this.onChangeShapes.bind(this);
-    this.onChangeBackgroundColor = this.onChangeBackgroundColor.bind(this);
-    this.onChangeBackgroundOpacity = this.onChangeBackgroundOpacity.bind(this);
-    this.onBlurSelection = this.onBlurSelection.bind(this);
-    this.onBlurModelData = this.onBlurModelData.bind(this);
-    this.onBlurStyles = this.onBlurStyles.bind(this);
-    this.onBlurShapes = this.onBlurShapes.bind(this);
-    this.onBlurBGColor = this.onBlurBGColor.bind(this);
-    this.onBlurBGOpacity = this.onBlurBGOpacity.bind(this);
-    this.onBlurOrbitalInput = this.onBlurOrbitalInput.bind(this);
-    this.onChangeOrbital = this.onChangeOrbital.bind(this);
-    this.onChangeSelectionType = this.onChangeSelectionType.bind(this);
-    this.onChangeLabelsInput = this.onChangeLabelsInput.bind(this);
-
     this.state = {
       selectedAtomIds: JSON.stringify(props.selectedAtomIds),
       modelData: JSON.stringify(props.modelData),
@@ -56,75 +37,75 @@ class Settings extends React.Component {
     });
   }
 
-  onClickSmallButton() {
+  onClickSmallButton = () => {
     this.props.onChangeMolecule(bipyridineModelData, bipyridineStyles);
   }
 
-  onClickLargeButton() {
+  onClickLargeButton = () => {
     this.props.onChangeMolecule(aidModelData, aidStyles);
   }
 
-  onBlurSelection(event) {
+  onBlurSelection = (event) => {
     this.props.onChangeSelection(JSON.parse(event.target.value));
   }
 
-  onChangeSelection(event) {
+  onChangeSelection = (event) => {
     this.setState({ selectedAtomIds: event.target.value });
   }
 
-  onChangeModelData(event) {
+  onChangeModelData = (event) => {
     this.setState({ modelData: event.target.value });
   }
 
-  onBlurModelData(event) {
+  onBlurModelData = (event) => {
     this.props.onChangeModelData(JSON.parse(event.target.value));
   }
 
-  onChangeStyles(event) {
+  onChangeStyles = (event) => {
     this.setState({ styles: event.target.value });
   }
 
-  onBlurStyles(event) {
+  onBlurStyles = (event) => {
     this.props.onChangeStyles(JSON.parse(event.target.value));
   }
 
-  onChangeShapes(event) {
+  onChangeShapes = (event) => {
     this.setState({ shapes: event.target.value });
   }
 
-  onBlurShapes(event) {
+  onBlurShapes = (event) => {
     this.props.onChangeShapes(JSON.parse(event.target.value));
   }
 
-  onChangeBackgroundColor(event) {
+  onChangeBackgroundColor = (event) => {
     this.setState({ backgroundColor: event.target.value });
   }
 
-  onBlurBGColor(event) {
+  onBlurBGColor = (event) => {
     this.props.onChangeBackgroundColor(event.target.value);
   }
 
-  onChangeBackgroundOpacity(event) {
+  onChangeBackgroundOpacity = (event) => {
     this.setState({ backgroundOpacity: event.target.value });
   }
 
-  onBlurBGOpacity(event) {
+  onBlurBGOpacity = (event) => {
     this.props.onChangeBackgroundOpacity(parseFloat(event.target.value));
   }
 
-  onChangeSelectionType(event) {
+  onChangeSelectionType = (event) => {
     this.props.onChangeSelectionType(event.target.value);
   }
 
-  onChangeLabelsInput(event) {
+  onChangeLabelsInput = (event) => {
     this.props.onChangeAtomLabelsShown(event.target.checked);
   }
 
-  onChangeOrbital(event) {
+  onChangeOrbital = (event) => {
     this.setState({ orbital: event.target.value });
   }
 
-  onBlurOrbitalInput(event) {
+  onBlurOrbitalInput = (event) => {
     this.props.onChangeOrbital(JSON.parse(event.target.value));
   }
 
