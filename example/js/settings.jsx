@@ -7,6 +7,47 @@ import bipyridineStyles from './bipyridine_styles';
 import selectionTypesConstants from '../../src/constants/selection_types_constants';
 
 class Settings extends React.Component {
+
+  static defaultProps = {
+    atomLabelsShown: false,
+    backgroundOpacity: 1.0,
+    backgroundColor: '',
+    orbital: {},
+    selectedAtomIds: [],
+    selectionType: selectionTypesConstants.ATOM,
+    shapes: [],
+    styles: [],
+  }
+
+  static propTypes = {
+    atomLabelsShown: React.PropTypes.bool,
+    backgroundColor: React.PropTypes.string,
+    backgroundOpacity: React.PropTypes.number,
+    modelData: React.PropTypes.oneOfType([
+      React.PropTypes.instanceOf(IMap),
+      React.PropTypes.object,
+    ]).isRequired,
+    shapes: React.PropTypes.arrayOf(React.PropTypes.object),
+    styles: React.PropTypes.objectOf(React.PropTypes.object),
+    onChangeMolecule: React.PropTypes.func.isRequired,
+    onChangeSelection: React.PropTypes.func.isRequired,
+    onChangeModelData: React.PropTypes.func.isRequired,
+    onChangeStyles: React.PropTypes.func.isRequired,
+    onChangeShapes: React.PropTypes.func.isRequired,
+    onChangeBackgroundColor: React.PropTypes.func.isRequired,
+    onChangeBackgroundOpacity: React.PropTypes.func.isRequired,
+    onChangeSelectionType: React.PropTypes.func.isRequired,
+    onChangeAtomLabelsShown: React.PropTypes.func.isRequired,
+    onChangeOrbital: React.PropTypes.func.isRequired,
+    orbital: React.PropTypes.shape({
+      iso_val: React.PropTypes.number,
+      opacity: React.PropTypes.number,
+      cube_file: React.PropTypes.string,
+    }),
+    selectedAtomIds: React.PropTypes.arrayOf(React.PropTypes.number),
+    selectionType: React.PropTypes.string,
+  }
+
   constructor(props) {
     super(props);
 
@@ -192,45 +233,5 @@ class Settings extends React.Component {
     );
   }
 }
-
-Settings.defaultProps = {
-  atomLabelsShown: false,
-  backgroundOpacity: 1.0,
-  backgroundColor: '',
-  orbital: {},
-  selectedAtomIds: [],
-  selectionType: selectionTypesConstants.ATOM,
-  shapes: [],
-  styles: [],
-};
-
-Settings.propTypes = {
-  atomLabelsShown: React.PropTypes.bool,
-  backgroundColor: React.PropTypes.string,
-  backgroundOpacity: React.PropTypes.number,
-  modelData: React.PropTypes.oneOfType([
-    React.PropTypes.instanceOf(IMap),
-    React.PropTypes.object,
-  ]).isRequired,
-  shapes: React.PropTypes.arrayOf(React.PropTypes.object),
-  styles: React.PropTypes.objectOf(React.PropTypes.object),
-  onChangeMolecule: React.PropTypes.func.isRequired,
-  onChangeSelection: React.PropTypes.func.isRequired,
-  onChangeModelData: React.PropTypes.func.isRequired,
-  onChangeStyles: React.PropTypes.func.isRequired,
-  onChangeShapes: React.PropTypes.func.isRequired,
-  onChangeBackgroundColor: React.PropTypes.func.isRequired,
-  onChangeBackgroundOpacity: React.PropTypes.func.isRequired,
-  onChangeSelectionType: React.PropTypes.func.isRequired,
-  onChangeAtomLabelsShown: React.PropTypes.func.isRequired,
-  onChangeOrbital: React.PropTypes.func.isRequired,
-  orbital: React.PropTypes.shape({
-    iso_val: React.PropTypes.number,
-    opacity: React.PropTypes.number,
-    cube_file: React.PropTypes.string,
-  }),
-  selectedAtomIds: React.PropTypes.arrayOf(React.PropTypes.number),
-  selectionType: React.PropTypes.string,
-};
 
 export default Settings;
