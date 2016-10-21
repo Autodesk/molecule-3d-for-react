@@ -1,6 +1,9 @@
 {
   "name": "react-molecule-3d",
   "version": "0.1.4",
+  "engines": {
+    "node": "6.9.1"
+  },
   "description": "3D molecule visualization",
   "main": "dist/bundle.js",
   "files": [
@@ -52,8 +55,8 @@
     "selenium-binaries": "0.8.0",
     "sinon": "^2.0.0-pre.2",
     "style-loader": "^0.13.1",
-    "webpack": "^1.13.0",
-    "webpack-dev-server": "^1.14.1"
+    "webpack": "^1.13.2",
+    "webpack-dev-server": "^1.16.2"
   },
   "scripts": {
     "test": "karma start",
