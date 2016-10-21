@@ -34,6 +34,10 @@ class Example extends React.Component {
       shapes,
       orbital,
       selectedAtomIds: [],
+      atomLabelsShown: false,
+      backgroundColor: undefined,
+      backgroundOpacity: undefined,
+      selectionType: undefined,
     };
   }
 
@@ -82,22 +86,11 @@ class Example extends React.Component {
     return (
       <div style={{ display: 'flex' }}>
         <ReactMolecule3d
-          atomLabelsShown={this.state.atomLabelsShown}
-          backgroundColor={this.state.backgroundColor}
-          backgroundOpacity={this.state.backgroundOpacity}
-          modelData={this.state.modelData}
-          selectedAtomIds={this.state.selectedAtomIds}
-          selectionType={this.state.selectionType}
-          shapes={this.state.shapes}
-          styles={this.state.styles}
-          orbital={this.state.orbital}
+          {...this.state}
           onChangeSelection={this.onChangeSelection}
         />
         <Settings
-          atomLabelsShown={this.state.atomLabelsShown}
-          backgroundColor={this.state.backgroundColor}
-          backgroundOpacity={this.state.backgroundOpacity}
-          modelData={this.state.modelData}
+          {...this.state}
           onChangeMolecule={this.onChangeMolecule}
           onChangeSelection={this.onChangeSelection}
           onChangeModelData={this.onChangeModelData}
@@ -108,11 +101,6 @@ class Example extends React.Component {
           onChangeSelectionType={this.onChangeSelectionType}
           onChangeAtomLabelsShown={this.onChangeAtomLabelsShown}
           onChangeOrbital={this.onChangeOrbital}
-          orbital={this.state.orbital}
-          selectedAtomIds={this.state.selectedAtomIds}
-          selectionType={this.state.selectionType}
-          shapes={this.state.shapes}
-          styles={this.state.styles}
         />
       </div>
     );
