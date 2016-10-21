@@ -1,4 +1,4 @@
-# molecule-3d-for-react
+# Molecule3d
 A data-bound React wrapper for [3dmol.js](http://3dmol.csb.pitt.edu) that visualizes any molecule in 3D.
 
 <img src="https://raw.githubusercontent.com/Autodesk/molecule-3d-for-react/master/doc/close_screenshot.png" alt="screen shot" width="400" />
