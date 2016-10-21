@@ -7,7 +7,6 @@ import selectionTypesConstants from '../constants/selection_types_constants';
 window.$ = jQuery;
 const $3Dmol = require('../vendor/3Dmol');
 
-const DEFAULT_VISUALIZATION_TYPE = 'stick';
 const DEFAULT_FONT_SIZE = 14;
 const ORBITAL_COLOR_POSITIVE = 0xff0000;
 const ORBITAL_COLOR_NEGATIVE = 0x0000ff;
@@ -85,26 +84,13 @@ class ReactMolecule3d extends React.Component {
       modifiedAtom.resn = modelData.atoms[atom.serial].residue_name;
     });
 
-    const styles = this.props.styles;
+    // Create a map of all different style types to their atom serials
+    const styleUpdates = new Map();
     modelData.atoms.forEach((atom, i) => {
-      const style = styles[i] || {};
-      const libStyle = {};
-      const visualizationType = style.visualization_type || DEFAULT_VISUALIZATION_TYPE;
-
-      libStyle[visualizationType] = {};
-      Object.keys(style).forEach((styleKey) => {
-        libStyle[visualizationType][styleKey] = style[styleKey];
-      });
-
-      if (this.state.selectedAtomIds.indexOf(atom.serial) !== -1) {
-        libStyle[visualizationType].color = 0x1FF3FE;
-      }
-
-      if (typeof libStyle[visualizationType].color === 'string') {
-        libStyle[visualizationType].color = libUtils.colorStringToNumber(
-          libStyle[visualizationType].color
-        );
-      }
+      const selected = this.state.selectedAtomIds.indexOf(atom.serial) !== -1;
+      const libStyle = libUtils.getLibStyle(
+        atom, selected, this.props.atomLabelsShown, this.props.styles[i]
+      );
 
       if (this.props.atomLabelsShown) {
         glviewer.addLabel(atom.name, {
@@ -117,8 +103,17 @@ class ReactMolecule3d extends React.Component {
         });
       }
 
-      glviewer.setStyle({ serial: atom.serial }, libStyle);
+      const libStyleString = JSON.stringify(libStyle);
+      if (!styleUpdates.has(libStyleString)) {
+        styleUpdates.set(libStyleString, []);
+      }
+      styleUpdates.get(libStyleString).push(atom.serial);
     });
+
+    // Set these style types using a minimum number of calls to 3DMol
+    for (let [libStyleString, atomSerials] of styleUpdates) {
+      glviewer.setStyle({ serial: atomSerials }, JSON.parse(libStyleString));
+    }
 
     // Shapes
     this.props.shapes.forEach((shape) => {

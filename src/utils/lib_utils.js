@@ -1,5 +1,7 @@
 import shapeConstants from '../constants/shape_constants';
 
+const DEFAULT_VISUALIZATION_TYPE = 'stick';
+
 /**
  * Utils for working with the 3dmol.js library
  */
@@ -61,6 +63,33 @@ const libUtils = {
     }
 
     return shapeSpec;
+  },
+
+  /**
+   * Get the style object needed by 3dMol for the given atom
+   * @param atom {Object}
+   * @returns {Object}
+   */
+  getLibStyle(atom, selected, atomLabelsShown, style = {}) {
+    const libStyle = {};
+    const visualizationType = style.visualization_type || DEFAULT_VISUALIZATION_TYPE;
+
+    libStyle[visualizationType] = {};
+    Object.keys(style).forEach((styleKey) => {
+      libStyle[visualizationType][styleKey] = style[styleKey];
+    });
+
+    if (selected) {
+      libStyle[visualizationType].color = 0x1FF3FE;
+    }
+
+    if (typeof libStyle[visualizationType].color === 'string') {
+      libStyle[visualizationType].color = libUtils.colorStringToNumber(
+        libStyle[visualizationType].color
+      );
+    }
+
+    return libStyle;
   },
 };
 

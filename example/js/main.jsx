@@ -3,11 +3,14 @@ import React from 'react';
 import { render } from 'react-dom';
 import ReactMolecule3d from '../../src/main.js';
 import Settings from './settings.jsx';
+// import modelData from './1kbu';
 // import modelData from './3aid_model_data';
 // import styles from './3aid_styles';
 import modelData from './bipyridine_model_data';
 import styles from './bipyridine_styles';
 import orbital from './orbital';
+
+const styles = {};
 
 const shapes = [{
   type: 'Arrow',
