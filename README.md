@@ -98,6 +98,10 @@ An example is included which provides data-bound inputs that you can play with t
 
     npm run example
 
+## What about 2d?
+Take a look at our sister project, [molecule-2d-for-react](https://github.com/Autodesk/molecule-2d-for-react), for a React component with a similar interface that renders a 2d visualization.
+
+
 ## Development
 Running the example above will also set up a typical development flow, where any changes to the code will be immediately reflected in the browser.
 
