@@ -1,3 +1,4 @@
+import { Set as ISet } from 'immutable';
 import selectionTypesConstants from '../constants/selection_types_constants';
 
 const moleculeUtils = {
@@ -85,6 +86,33 @@ const moleculeUtils = {
     }
 
     throw new Error('selectionType must be either residue or chain');
+  },
+
+  /**
+   * Checks to see if each modelData contains the same atoms and bonds
+   * Shallow, does not verify every tiny piece of information in the modelData
+   * @param modalDataA {Object}
+   * @param modelDataB {Object}
+   * @returns {Boolean}
+   */
+  modelDataEquivalent(modelDataA, modelDataB) {
+    if (!modelDataA || !modelDataB) {
+      return false;
+    }
+
+    const atomIdsA = new ISet(modelDataA.atoms.map(atom => atom.serial));
+    const atomIdsB = new ISet(modelDataB.atoms.map(atom => atom.serial));
+    const bondRelationsA = new ISet(modelDataA.bonds.map(bond =>
+      `${bond.atom1_index}=>${bond.atom2_index}`)
+    );
+    const bondRelationsB = new ISet(modelDataB.bonds.map(bond =>
+      `${bond.atom1_index}=>${bond.atom2_index}`)
+    );
+
+    const haveSameAtoms = atomIdsA.equals(atomIdsB);
+    const haveSameBonds = bondRelationsA.equals(bondRelationsB);
+
+    return haveSameAtoms && haveSameBonds;
   },
 };
 

@@ -231,4 +231,63 @@ describe('moleculeUtils', () => {
       });
     });
   });
+
+  describe('modelDataEquivalent', () => {
+    let modelDataA;
+    let modelDataB;
+
+    beforeEach(() => {
+      modelDataA = {
+        atoms: [
+          { serial: 0 },
+          { serial: 1 },
+          { serial: 2 },
+        ],
+        bonds: [
+          { atom1_index: 0, atom2_index: 1 },
+          { atom1_index: 2, atom2_index: 1 },
+        ],
+      };
+      modelDataB = {
+        atoms: [
+          { serial: 0 },
+          { serial: 1 },
+          { serial: 2 },
+        ],
+        bonds: [
+          { atom1_index: 0, atom2_index: 1 },
+          { atom1_index: 2, atom2_index: 1 },
+        ],
+      };
+    });
+
+    describe('when atoms and bonds are empty', () => {
+      beforeEach(() => {
+        modelDataA.atoms = [];
+        modelDataB.atoms = [];
+        modelDataA.bonds = [];
+        modelDataB.bonds = [];
+      });
+
+      it('returns true', () => {
+        expect(moleculeUtils.modelDataEquivalent(modelDataA, modelDataB)).to.equal(true);
+      });
+    });
+
+    describe('when contain same atom and bonds', () => {
+      it('returns true', () => {
+        expect(moleculeUtils.modelDataEquivalent(modelDataA, modelDataB)).to.equal(true);
+      });
+    });
+
+    describe('when atoms and bonds are different', () => {
+      beforeEach(() => {
+        modelDataA.bonds.push({ atom1_index: 0, atom2_index: 2 });
+      });
+
+      it('returns false', () => {
+        expect(moleculeUtils.modelDataEquivalent(modelDataA, modelDataB)).to.equal(false);
+      });
+    });
+  });
 });

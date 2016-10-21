@@ -1,26 +1,35 @@
 {
-  "name": "nbmolviz3d",
+  "name": "molecule-3d-for-react",
   "version": "0.1.4",
-  "description": "3D molecule visualization",
+  "description": "3D molecule visualization with React and 3Dmol.js",
   "main": "dist/bundle.js",
   "files": [
     "dist/"
   ],
   "keywords": [
     "molecule",
+    "react",
+    "chemical",
     "visualization",
     "3d"
   ],
   "dependencies": {
     "babel-polyfill": "^6.13.0",
-    "backbone": "^1.3.3",
+    "immutable": "^3.8.1",
     "jquery": "^3.1.0",
-    "keymirror": "^0.1.1"
+    "keymirror": "^0.1.1",
+    "react": "^15.3.2",
+    "react-dom": "^15.3.2"
   },
   "devDependencies": {
     "babel-core": "^6.7.7",
+    "babel-eslint": "^7.0.0",
     "babel-loader": "^6.2.4",
-    "babel-preset-es2015": "^6.6.0",
+    "babel-preset-es2015": "^6.16.0",
+    "babel-preset-es2016": "^6.16.0",
+    "babel-preset-es2017": "^6.16.0",
+    "babel-preset-react": "^6.11.1",
+    "babel-preset-stage-2": "^6.17.0",
     "chai": "^3.5.0",
     "css-loader": "^0.23.1",
     "eslint": "^3.5.0",
@@ -58,6 +67,6 @@
   "license": "Apache 2.0",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Autodesk/nbmolviz3d.git"
+    "url": "https://github.com/Autodesk/molecule-3d-for-react.git"
   }
 }
