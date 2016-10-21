@@ -12,7 +12,7 @@ const DEFAULT_FONT_SIZE = 14;
 const ORBITAL_COLOR_POSITIVE = 0xff0000;
 const ORBITAL_COLOR_NEGATIVE = 0x0000ff;
 
-class ReactMolecule3d extends React.Component {
+class Molecule3d extends React.Component {
   static defaultProps = {
     atomLabelsShown: false,
     backgroundOpacity: 1.0,
@@ -201,7 +201,7 @@ class ReactMolecule3d extends React.Component {
   render() {
     return (
       <div
-        className="react-molecule-3d"
+        className="molecule-3d"
         style={{
           width: this.props.width,
           height: this.props.height,
@@ -214,4 +214,4 @@ class ReactMolecule3d extends React.Component {
   }
 }
 
-export default ReactMolecule3d;
+export default Molecule3d;

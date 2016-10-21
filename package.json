@@ -1,7 +1,7 @@
 {
-  "name": "react-molecule-3d",
+  "name": "molecule-3d-for-react",
   "version": "0.1.4",
-  "description": "3D molecule visualization",
+  "description": "3D molecule visualization with React and 3Dmol.js",
   "main": "dist/bundle.js",
   "files": [
     "dist/"
@@ -67,6 +67,6 @@
   "license": "Apache 2.0",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Autodesk/react-molecule-3d.git"
+    "url": "https://github.com/Autodesk/molecule-3d-for-react.git"
   }
 }

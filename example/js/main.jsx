@@ -1,7 +1,7 @@
 import 'babel-polyfill';
 import React from 'react';
 import { render } from 'react-dom';
-import ReactMolecule3d from '../../src/main.js';
+import Molecule3d from '../../src/main.js';
 import Settings from './settings.jsx';
 // import modelData from './3aid_model_data';
 // import styles from './3aid_styles';
@@ -85,7 +85,7 @@ class Example extends React.Component {
   render() {
     return (
       <div style={{ display: 'flex' }}>
-        <ReactMolecule3d
+        <Molecule3d
           {...this.state}
           onChangeSelection={this.onChangeSelection}
         />
@@ -109,5 +109,5 @@ class Example extends React.Component {
 
 render(
   <Example />,
-  document.querySelector('.react-molecule-3d')
+  document.querySelector('.molecule-3d')
 );
