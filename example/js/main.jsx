@@ -1,7 +1,7 @@
 import 'babel-polyfill';
 import React from 'react';
 import { render } from 'react-dom';
-import ReactMolecule3d from '../../src/main.js';
+import Molecule3d from '../../src/main.js';
 import Settings from './settings.jsx';
 // import modelData from './1kbu';
 // import modelData from './3aid_model_data';
@@ -37,6 +37,10 @@ class Example extends React.Component {
       shapes,
       orbital,
       selectedAtomIds: [],
+      atomLabelsShown: false,
+      backgroundColor: undefined,
+      backgroundOpacity: undefined,
+      selectionType: undefined,
     };
   }
 
@@ -84,23 +88,12 @@ class Example extends React.Component {
   render() {
     return (
       <div style={{ display: 'flex' }}>
-        <ReactMolecule3d
-          atomLabelsShown={this.state.atomLabelsShown}
-          backgroundColor={this.state.backgroundColor}
-          backgroundOpacity={this.state.backgroundOpacity}
-          modelData={this.state.modelData}
-          selectedAtomIds={this.state.selectedAtomIds}
-          selectionType={this.state.selectionType}
-          shapes={this.state.shapes}
-          styles={this.state.styles}
-          orbital={this.state.orbital}
+        <Molecule3d
+          {...this.state}
           onChangeSelection={this.onChangeSelection}
         />
         <Settings
-          atomLabelsShown={this.state.atomLabelsShown}
-          backgroundColor={this.state.backgroundColor}
-          backgroundOpacity={this.state.backgroundOpacity}
-          modelData={this.state.modelData}
+          {...this.state}
           onChangeMolecule={this.onChangeMolecule}
           onChangeSelection={this.onChangeSelection}
           onChangeModelData={this.onChangeModelData}
@@ -111,11 +104,6 @@ class Example extends React.Component {
           onChangeSelectionType={this.onChangeSelectionType}
           onChangeAtomLabelsShown={this.onChangeAtomLabelsShown}
           onChangeOrbital={this.onChangeOrbital}
-          orbital={this.state.orbital}
-          selectedAtomIds={this.state.selectedAtomIds}
-          selectionType={this.state.selectionType}
-          shapes={this.state.shapes}
-          styles={this.state.styles}
         />
       </div>
     );
@@ -124,5 +112,5 @@ class Example extends React.Component {
 
 render(
   <Example />,
-  document.querySelector('.react-molecule-3d')
+  document.querySelector('.molecule-3d')
 );

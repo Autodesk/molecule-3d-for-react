@@ -13,6 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import ReactMolecule3d from './components/react_molecule_3d.jsx';
+import Molecule3d from './components/molecule_3d.jsx';
 
-export default ReactMolecule3d;
+export default Molecule3d;

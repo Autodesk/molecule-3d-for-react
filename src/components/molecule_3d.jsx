@@ -11,7 +11,46 @@ const DEFAULT_FONT_SIZE = 14;
 const ORBITAL_COLOR_POSITIVE = 0xff0000;
 const ORBITAL_COLOR_NEGATIVE = 0x0000ff;
 
-class ReactMolecule3d extends React.Component {
+class Molecule3d extends React.Component {
+  static defaultProps = {
+    atomLabelsShown: false,
+    backgroundOpacity: 1.0,
+    backgroundColor: '#73757c',
+    height: '500px',
+    orbital: {},
+    selectedAtomIds: [],
+    selectionType: selectionTypesConstants.ATOM,
+    shapes: [],
+    styles: {},
+    width: '500px',
+  }
+
+  static propTypes = {
+    atomLabelsShown: React.PropTypes.bool,
+    backgroundColor: React.PropTypes.string,
+    backgroundOpacity: React.PropTypes.number,
+    height: React.PropTypes.string,
+    modelData: React.PropTypes.shape({
+      atoms: React.PropTypes.array,
+      bonds: React.PropTypes.array,
+    }).isRequired,
+    onChangeSelection: React.PropTypes.func,
+    orbital: React.PropTypes.shape({
+      cube_file: React.PropTypes.string,
+      iso_val: React.PropTypes.number,
+      opacity: React.PropTypes.number,
+    }),
+    selectedAtomIds: React.PropTypes.arrayOf(React.PropTypes.number),
+    selectionType: React.PropTypes.oneOf([
+      selectionTypesConstants.ATOM,
+      selectionTypesConstants.RESIDUE,
+      selectionTypesConstants.CHAIN,
+    ]),
+    shapes: React.PropTypes.arrayOf(React.PropTypes.object),
+    styles: React.PropTypes.objectOf(React.PropTypes.object),
+    width: React.PropTypes.string,
+  }
+
   constructor(props) {
     super(props);
 
@@ -157,7 +196,7 @@ class ReactMolecule3d extends React.Component {
   render() {
     return (
       <div
-        className="react-molecule-3d"
+        className="molecule-3d"
         style={{
           width: this.props.width,
           height: this.props.height,
@@ -170,43 +209,4 @@ class ReactMolecule3d extends React.Component {
   }
 }
 
-ReactMolecule3d.defaultProps = {
-  atomLabelsShown: false,
-  backgroundOpacity: 1.0,
-  backgroundColor: '#73757c',
-  height: '500px',
-  orbital: {},
-  selectedAtomIds: [],
-  selectionType: selectionTypesConstants.ATOM,
-  shapes: [],
-  styles: {},
-  width: '500px',
-};
-
-ReactMolecule3d.propTypes = {
-  atomLabelsShown: React.PropTypes.bool,
-  backgroundColor: React.PropTypes.string,
-  backgroundOpacity: React.PropTypes.number,
-  height: React.PropTypes.string,
-  modelData: React.PropTypes.shape({
-    atoms: React.PropTypes.array,
-    bonds: React.PropTypes.array,
-  }).isRequired,
-  onChangeSelection: React.PropTypes.func,
-  orbital: React.PropTypes.shape({
-    cube_file: React.PropTypes.string,
-    iso_val: React.PropTypes.number,
-    opacity: React.PropTypes.number,
-  }),
-  selectedAtomIds: React.PropTypes.arrayOf(React.PropTypes.number),
-  selectionType: React.PropTypes.oneOf([
-    selectionTypesConstants.ATOM,
-    selectionTypesConstants.RESIDUE,
-    selectionTypesConstants.CHAIN,
-  ]),
-  shapes: React.PropTypes.arrayOf(React.PropTypes.object),
-  styles: React.PropTypes.objectOf(React.PropTypes.object),
-  width: React.PropTypes.string,
-};
-
-export default ReactMolecule3d;
+export default Molecule3d;

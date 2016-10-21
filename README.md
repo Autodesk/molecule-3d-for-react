@@ -1,21 +1,21 @@
-# react-molecule-3d
+# Molecule3d
 A data-bound React wrapper for [3dmol.js](http://3dmol.csb.pitt.edu) that visualizes any molecule in 3D.
 
-<img src="https://raw.githubusercontent.com/Autodesk/react-molecule-3d/master/doc/close_screenshot.png" alt="screen shot" width="400" />
+<img src="https://raw.githubusercontent.com/Autodesk/molecule-3d-for-react/master/doc/close_screenshot.png" alt="screen shot" width="400" />
 
 ## Installation
 
-    npm install react-molecule-3d
+    npm install molecule-3d-for-react
 
 ## Usage
-    <ReactMolecule3d
+    <Molecule3d
       modelData={{
         atoms: [...],
         bonds: [...],
       }}
     />
 
-See below for the full spec of what data can be passed in, and check out [example/js/main.js](https://github.com/Autodesk/react-molecule-3d/blob/master/example/js/main.js) for a working example.
+See below for the full spec of what data can be passed in, and check out [example/js/main.js](https://github.com/Autodesk/molecule-3d-for-react/blob/master/example/js/main.js) for a working example.
 
 ## Props
 In order to set up your molecule visualization, just pass in the proper props data to the React component. Here are all of the parameters with explanations:
@@ -42,7 +42,7 @@ JSON data representing the actual molecular input.  Of the form:
       }, ... ],
     }
 
-An example of full working modelData for a real molecule can be found in [example/js/bipyridine_model_data.js](https://github.com/Autodesk/react-molecule-3d/blob/master/example/js/bipyridine_model_data.js).
+An example of full working modelData for a real molecule can be found in [example/js/bipyridine_model_data.js](https://github.com/Autodesk/molecule-3d-for-react/blob/master/example/js/bipyridine_model_data.js).
 
 ### backgroundColor {String} ['#73757C']
 The background color of the visualization.
@@ -63,7 +63,7 @@ An array indicating how to style individual atoms.  Atoms are indicated by index
       }, ...
     ]
 
-An example of a styles array for the bipyridine molecule can be found in [example/js/bipyridine_styles.js](https://github.com/Autodesk/react-molecule-3d/blob/master/example/js/bipyridine_styles.js).
+An example of a styles array for the bipyridine molecule can be found in [example/js/bipyridine_styles.js](https://github.com/Autodesk/molecule-3d-for-react/blob/master/example/js/bipyridine_styles.js).
 
 ### selectedAtomIds {Array of Numbers} [[]]
 An array of atom indices indicating which atoms should be visually selected.
@@ -92,26 +92,30 @@ Indicates an orbital to display using 3Dmol.js's [addIsosurface method](http://3
 
 ## Example
 
-<img src="https://raw.githubusercontent.com/Autodesk/react-molecule-3d/master/doc/example_screenshot.png" alt="screen shot" width="400" />
+<img src="https://raw.githubusercontent.com/Autodesk/molecule-3d-for-react/master/doc/example_screenshot.png" alt="screen shot" width="400" />
 
 An example is included which provides data-bound inputs that you can play with to see how they affect the visualization.  To run it, use the command:
 
     npm run example
 
+## What about 2d?
+Take a look at our sister project, [molecule-2d-for-react](https://github.com/Autodesk/molecule-2d-for-react), for a React component with a similar interface that renders a 2d visualization.
+
+
 ## Development
 Running the example above will also set up a typical development flow, where any changes to the code will be immediately reflected in the browser.
 
 ### Development within another project
-If you're using this in another project and want to make changes to this repository locally and see them reflected in your other project, first you'll need to do some setup.  You can point your other project to use the local copy of react-molecule-3d like this:
+If you're using this in another project and want to make changes to this repository locally and see them reflected in your other project, first you'll need to do some setup.  You can point your other project to use the local copy of molecule-3d-for-react like this:
 
-    cd ~/path/to/react-molecule-3d
+    cd ~/path/to/molecule-3d-for-react
     npm link
     cd ~/path/to/other-project
-    npm link react-molecule-3d
+    npm link molecule-3d-for-react
 
 See [this great blog post](http://justjs.com/posts/npm-link-developing-your-own-npm-modules-without-tears) for more info on `npm link`.
 
-Once you've linked your other project, you'll need to build react-molecule-3d (and likely your other project, too) every time you want your changes to reflect in your other project.  You can do this manually with `npm run build`.  If you want to rebuild react-molecule-3d automatically every time a change is made, run `npm run watch`.
+Once you've linked your other project, you'll need to build molecule-3d-for-react (and likely your other project, too) every time you want your changes to reflect in your other project.  You can do this manually with `npm run build`.  If you want to rebuild molecule-3d-for-react automatically every time a change is made, run `npm run watch`.
 
 ### Running Tests
 Unit tests can be run with:
