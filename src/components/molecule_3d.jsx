@@ -69,10 +69,6 @@ class Molecule3d extends React.Component {
     });
   }
 
-  componentWillUpdate() {
-    this.oldModelData = this.props.modelData;
-  }
-
   componentDidUpdate() {
     this.render3dMol();
   }
@@ -108,23 +104,28 @@ class Molecule3d extends React.Component {
       defaultcolors: $3Dmol.rasmolElementColors,
     });
 
-    glviewer.clear();
+    const renderingSameModelData = moleculeUtils.modelDataEquivalent(
+      this.oldModelData, this.props.modelData
+    );
+    if (!renderingSameModelData) {
+      glviewer.clear();
 
-    glviewer.addModel(moleculeUtils.modelDataToCDJSON(modelData), 'json', {
-      keepH: true,
-    });
+      glviewer.addModel(moleculeUtils.modelDataToCDJSON(modelData), 'json', {
+        keepH: true,
+      });
 
-    // Hack in chain and residue data, since it's not supported by chemdoodle json
-    glviewer.getModel().selectedAtoms().forEach((atom) => {
-      const modifiedAtom = atom;
-      modifiedAtom.atom = modelData.atoms[atom.serial].name;
-      modifiedAtom.chain = modelData.atoms[atom.serial].chain;
-      modifiedAtom.resi = modelData.atoms[atom.serial].residue_index;
-      modifiedAtom.resn = modelData.atoms[atom.serial].residue_name;
-    });
+      // Hack in chain and residue data, since it's not supported by chemdoodle json
+      glviewer.getModel().selectedAtoms().forEach((atom) => {
+        const modifiedAtom = atom;
+        modifiedAtom.atom = modelData.atoms[atom.serial].name;
+        modifiedAtom.chain = modelData.atoms[atom.serial].chain;
+        modifiedAtom.resi = modelData.atoms[atom.serial].residue_index;
+        modifiedAtom.resn = modelData.atoms[atom.serial].residue_name;
+      });
+    }
 
-    // Create a map of all different style types to their atom serials
-    const styleUpdates = new Map();
+    const styleUpdates = new Map(); // style update strings to atom ids needed
+    const stylesByAtom = new Map(); // all atom ids to style string
     modelData.atoms.forEach((atom, i) => {
       const selected = this.state.selectedAtomIds.indexOf(atom.serial) !== -1;
       const libStyle = libUtils.getLibStyle(
@@ -143,11 +144,24 @@ class Molecule3d extends React.Component {
       }
 
       const libStyleString = JSON.stringify(libStyle);
+      stylesByAtom.set(atom.serial, libStyleString);
+
+      // If the style string for this atom is the same as last time, then no
+      // need to set it again
+      if (this.lastStylesByAtom &&
+        this.lastStylesByAtom.get(atom.serial) === libStyleString) {
+        return;
+      }
+
+      // Initialize list of atom serials for this style string, if needed
       if (!styleUpdates.has(libStyleString)) {
         styleUpdates.set(libStyleString, []);
       }
+
       styleUpdates.get(libStyleString).push(atom.serial);
     });
+
+    this.lastStylesByAtom = stylesByAtom;
 
     // Set these style types using a minimum number of calls to 3DMol
     for (let [libStyleString, atomSerials] of styleUpdates) {
@@ -185,11 +199,12 @@ class Molecule3d extends React.Component {
     glviewer.setClickable({}, true, this.onClick);
     glviewer.render();
 
-    if (!moleculeUtils.modelDataEquivalent(this.oldModelData, this.props.modelData)) {
+    if (!renderingSameModelData) {
       glviewer.zoomTo();
       glviewer.zoom(0.8, 2000);
     }
 
+    this.oldModelData = modelData;
     this.glviewer = glviewer;
   }
 

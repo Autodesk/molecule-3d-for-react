@@ -10,8 +10,6 @@ import modelData from './bipyridine_model_data';
 import styles from './bipyridine_styles';
 import orbital from './orbital';
 
-const styles = {};
-
 const shapes = [{
   type: 'Arrow',
   color: '#00ff00',
