@@ -171,6 +171,7 @@ class Molecule3d extends React.Component {
     }
 
     // Shapes
+    glviewer.removeAllShapes();
     this.props.shapes.forEach((shape) => {
       if (shape.type) {
         glviewer[`add${shape.type}`](libUtils.getShapeSpec(shape, this.setSelectionTrait));
