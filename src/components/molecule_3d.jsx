@@ -108,6 +108,8 @@ class Molecule3d extends React.Component {
       this.oldModelData, this.props.modelData
     );
     if (!renderingSameModelData) {
+      this.lastStylesByAtom = null;
+
       glviewer.clear();
 
       glviewer.addModel(moleculeUtils.modelDataToCDJSON(modelData), 'json', {
@@ -164,7 +166,7 @@ class Molecule3d extends React.Component {
     this.lastStylesByAtom = stylesByAtom;
 
     // Set these style types using a minimum number of calls to 3DMol
-    for (let [libStyleString, atomSerials] of styleUpdates) {
+    for (const [libStyleString, atomSerials] of styleUpdates) {
       glviewer.setStyle({ serial: atomSerials }, JSON.parse(libStyleString));
     }
 

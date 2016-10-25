@@ -89,8 +89,9 @@ const moleculeUtils = {
   },
 
   /**
-   * Checks to see if each modelData contains the same atoms and bonds
-   * Shallow, does not verify every tiny piece of information in the modelData
+   * Checks to see if each modelData contains the same atoms and bonds.
+   * Saves time by not checking every last piece of data right now.
+   * Currently checks atom and bond ids, and atom positions
    * @param modalDataA {Object}
    * @param modelDataB {Object}
    * @returns {Boolean}
@@ -112,7 +113,20 @@ const moleculeUtils = {
     const haveSameAtoms = atomIdsA.equals(atomIdsB);
     const haveSameBonds = bondRelationsA.equals(bondRelationsB);
 
-    return haveSameAtoms && haveSameBonds;
+    if (!haveSameAtoms || !haveSameBonds) {
+      return false;
+    }
+
+    const atomIdsToPositions = new Map();
+    for (const atom of modelDataA.atoms) {
+      atomIdsToPositions.set(atom.serial, atom.positions || []);
+    }
+    return modelDataB.atoms.every(atom =>
+      atomIdsToPositions.get(atom.serial).every((position, index) => {
+        const positionsAtomB = atom.positions || [];
+        return positionsAtomB[index] === position;
+      })
+    );
   },
 };
 

@@ -239,9 +239,9 @@ describe('moleculeUtils', () => {
     beforeEach(() => {
       modelDataA = {
         atoms: [
-          { serial: 0 },
-          { serial: 1 },
-          { serial: 2 },
+          { serial: 0, positions: [] },
+          { serial: 1, positions: [] },
+          { serial: 2, positions: [] },
         ],
         bonds: [
           { atom1_index: 0, atom2_index: 1 },
@@ -275,8 +275,20 @@ describe('moleculeUtils', () => {
     });
 
     describe('when contain same atom and bonds', () => {
-      it('returns true', () => {
-        expect(moleculeUtils.modelDataEquivalent(modelDataA, modelDataB)).to.equal(true);
+      describe('when positions are the same', () => {
+        it('returns true', () => {
+          expect(moleculeUtils.modelDataEquivalent(modelDataA, modelDataB)).to.equal(true);
+        });
+      });
+
+      describe('when positions are different', () => {
+        beforeEach(() => {
+          modelDataA.atoms[0].positions = [3.14159265358979];
+        });
+
+        it('returns false', () => {
+          expect(moleculeUtils.modelDataEquivalent(modelDataA, modelDataB)).to.equal(false);
+        });
       });
     });
 
