@@ -1,4 +1,4 @@
-const os = require('os');
+const BINPATH = './node_modules/nightwatch/bin/';
 
 module.exports = {
   src_folders: [
@@ -7,32 +7,27 @@ module.exports = {
   output_folder: './reports', // reports (test outcome) output by nightwatch
   selenium: { // downloaded by selenium-download module (see readme)
     start_process: true, // tells nightwatch to start/stop the selenium process
-    server_path: os.homedir() + '/.selenium-binaries/selenium/2.53.1/selenium-server-standalone-2.53.1.jar',
+    server_path: `${BINPATH}selenium.jar`,
+    log_path: '',
     host: '127.0.0.1',
     port: 4444, // standard selenium port
-    cli_args: { // chromedriver is downloaded by selenium-download (see readme)
-      'webdriver.chrome.driver': os.homedir() + '/.selenium-binaries/chromedriver/2.22/chromedriver',
-    },
   },
   test_settings: {
     default: {
       screenshots: {
-        enabled: false, // if you want to keep screenshots
-        path: './screenshots', // save screenshots here
+        enabled: false,
+        path: './screenshots',
       },
       globals: {
         waitForConditionTimeout: 5000, // sometimes internet is slow so wait.
       },
       launch_url: 'http://localhost:4000',
-      desiredCapabilities: { // use Chrome as the default browser for tests
-        browserName: 'chrome',
-        javascriptEnabled: true,
-      },
-    },
-    chrome: {
       desiredCapabilities: {
-        browserName: 'chrome',
-        javascriptEnabled: true, // set to false to test progressive enhancement
+        browserName: 'phantomjs',
+        javascriptEnabled: true,
+        acceptSslCerts: true,
+        'phantomjs.binary.path': './node_modules/.bin/phantomjs',
+        'phantomjs.cli.args': [],
       },
     },
   },

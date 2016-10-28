@@ -109,5 +109,5 @@ class Example extends React.Component {
 
 render(
   <Example />,
-  document.querySelector('.molecule-3d')
+  document.querySelector('.container')
 );
