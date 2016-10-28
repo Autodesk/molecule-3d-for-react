@@ -1,4 +1,6 @@
 # Molecule3d
+[![Build Status](https://travis-ci.org/Autodesk/molecule-3d-for-react.svg?branch=master)](https://travis-ci.org/Autodesk/molecule-3d-for-react)
+
 A data-bound React wrapper for [3dmol.js](http://3dmol.csb.pitt.edu) that visualizes any molecule in 3D.
 
 <img src="https://raw.githubusercontent.com/Autodesk/molecule-3d-for-react/master/doc/close_screenshot.png" alt="screen shot" width="400" />
@@ -127,14 +129,11 @@ End-to-end tests can be run with:
     npm run e2e
 
 ### Releasing a new version
-A new version should be released via npm every time new code is merged to master.  Currently, this process is manual and obviously must be done by a collaborator of the npm package.
-
-On master, upgrading the version looks like the following:
+Travis automatically publishes any new tagged commit to NPM.  The best way to take advantage of this is to first create a new tagged commit using `npm version`:
 
     npm version patch -m "Upgrade to %s for reasons"
-    git push origin master
-    git push origin --tags
-    npm publish
+
+Then push that commit to a new release branch, push the tag with `git push origin --tags` and open a pull request on Github.  When you see that Travis has succeeded in deploying, merge it to master.
 
 ## License
 
