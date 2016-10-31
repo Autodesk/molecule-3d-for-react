@@ -3,6 +3,7 @@ node_js:
 - 6.4.0
 script:
 - npm test
+- npm run setup-selenium
 - npm run example &
 - npm run e2e
 deploy:
