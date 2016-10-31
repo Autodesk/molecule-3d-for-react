@@ -1,6 +1,6 @@
 {
   "name": "molecule-3d-for-react",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "3D molecule visualization with React and 3Dmol.js",
   "main": "dist/bundle.js",
   "files": [
@@ -63,7 +63,7 @@
     "watch": "webpack -p --config webpack.config.js --watch",
     "example": "NODE_ENV=DEVELOPMENT webpack-dev-server --content-base example/ --config example/webpack.config.js --progress --colors",
     "e2e": "./node_modules/nightwatch/bin/nightwatch",
-    "postinstall": "node scripts/download_selenium.js",
+    "setup-selenium": "node scripts/download_selenium.js",
     "prepublish": "npm run build"
   },
   "author": "Autodesk Bio/Nano",
