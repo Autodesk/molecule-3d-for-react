@@ -153,8 +153,8 @@ class Molecule3d extends React.Component {
       Molecule3d.render3dMolModel(glviewer, this.props.modelData);
     }
 
-    const styleUpdates = new Map(); // style update strings to atom ids needed
-    const stylesByAtom = new Map(); // all atom ids to style string
+    const styleUpdates = Object.create(null); // style update strings to atom ids needed
+    const stylesByAtom = Object.create(null); // all atom ids to style string
     this.props.modelData.atoms.forEach((atom, i) => {
       const selected = this.state.selectedAtomIds.indexOf(atom.serial) !== -1;
       const libStyle = libUtils.getLibStyle(
@@ -173,29 +173,31 @@ class Molecule3d extends React.Component {
       }
 
       const libStyleString = JSON.stringify(libStyle);
-      stylesByAtom.set(atom.serial, libStyleString);
+      stylesByAtom[atom.serial] = libStyleString;
 
       // If the style string for this atom is the same as last time, then no
       // need to set it again
       if (this.lastStylesByAtom &&
-        this.lastStylesByAtom.get(atom.serial) === libStyleString) {
+        this.lastStylesByAtom[atom.serial] === libStyleString) {
         return;
       }
 
       // Initialize list of atom serials for this style string, if needed
-      if (!styleUpdates.has(libStyleString)) {
-        styleUpdates.set(libStyleString, []);
+      if (!styleUpdates[libStyleString]) {
+        styleUpdates[libStyleString] = [];
       }
 
-      styleUpdates.get(libStyleString).push(atom.serial);
+      styleUpdates[libStyleString].push(atom.serial);
     });
 
     this.lastStylesByAtom = stylesByAtom;
 
     // Set these style types using a minimum number of calls to 3DMol
-    for (const [libStyleString, atomSerials] of styleUpdates) {
-      glviewer.setStyle({ serial: atomSerials }, JSON.parse(libStyleString));
-    }
+    Object.entries(styleUpdates).forEach(([libStyleString, atomSerials]) => {
+      glviewer.setStyle(
+        { serial: atomSerials }, JSON.parse(libStyleString)
+      );
+    });
 
     Molecule3d.render3dMolShapes(glviewer, this.props.shapes);
     Molecule3d.render3dMolOrbital(glviewer, this.props.orbital);
