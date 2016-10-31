@@ -2,6 +2,9 @@
   "name": "molecule-3d-for-react",
   "version": "0.2.2",
   "description": "3D molecule visualization with React and 3Dmol.js",
+  "engines": {
+    "node": "6.9.1"
+  },
   "main": "dist/bundle.js",
   "files": [
     "dist/"
@@ -53,8 +56,8 @@
     "selenium-download": "^2.0.6",
     "sinon": "^2.0.0-pre.2",
     "style-loader": "^0.13.1",
-    "webpack": "^1.13.0",
-    "webpack-dev-server": "^1.14.1"
+    "webpack": "^1.13.2",
+    "webpack-dev-server": "^1.16.2"
   },
   "scripts": {
     "test": "karma start --single-run",

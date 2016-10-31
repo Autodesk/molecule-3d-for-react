@@ -7,7 +7,6 @@ import selectionTypesConstants from '../constants/selection_types_constants';
 window.$ = jQuery;
 const $3Dmol = require('../vendor/3Dmol');
 
-const DEFAULT_VISUALIZATION_TYPE = 'stick';
 const DEFAULT_FONT_SIZE = 14;
 const ORBITAL_COLOR_POSITIVE = 0xff0000;
 const ORBITAL_COLOR_NEGATIVE = 0x0000ff;
@@ -52,6 +51,48 @@ class Molecule3d extends React.Component {
     width: React.PropTypes.string,
   }
 
+  static render3dMolModel(glviewer, modelData) {
+    glviewer.clear();
+
+    glviewer.addModel(moleculeUtils.modelDataToCDJSON(modelData), 'json', {
+      keepH: true,
+    });
+
+    // Hack in chain and residue data, since it's not supported by chemdoodle json
+    glviewer.getModel().selectedAtoms().forEach((atom) => {
+      const modifiedAtom = atom;
+      modifiedAtom.atom = modelData.atoms[atom.serial].name;
+      modifiedAtom.chain = modelData.atoms[atom.serial].chain;
+      modifiedAtom.resi = modelData.atoms[atom.serial].residue_index;
+      modifiedAtom.resn = modelData.atoms[atom.serial].residue_name;
+    });
+  }
+
+  static render3dMolShapes(glviewer, shapes) {
+    glviewer.removeAllShapes();
+    shapes.forEach((shape) => {
+      if (shape.type) {
+        glviewer[`add${shape.type}`](libUtils.getShapeSpec(shape));
+      }
+    });
+  }
+
+  static render3dMolOrbital(glviewer, orbital) {
+    if (orbital.cube_file) {
+      const volumeData = new $3Dmol.VolumeData(orbital.cube_file, 'cube');
+      glviewer.addIsosurface(volumeData, {
+        isoval: orbital.iso_val,
+        color: ORBITAL_COLOR_POSITIVE,
+        opacity: orbital.opacity,
+      });
+      glviewer.addIsosurface(volumeData, {
+        isoval: -orbital.iso_val,
+        color: ORBITAL_COLOR_NEGATIVE,
+        opacity: orbital.opacity,
+      });
+    }
+  }
+
   constructor(props) {
     super(props);
 
@@ -70,15 +111,11 @@ class Molecule3d extends React.Component {
     });
   }
 
-  componentWillUpdate() {
-    this.oldModelData = this.props.modelData;
-  }
-
   componentDidUpdate() {
     this.render3dMol();
   }
 
-  onClick = (glAtom) => {
+  onClickAtom = (glAtom) => {
     const atoms = this.props.modelData.atoms;
     const atom = atoms[glAtom.serial];
     const selectionType = this.props.selectionType;
@@ -99,9 +136,8 @@ class Molecule3d extends React.Component {
   }
 
   render3dMol() {
-    const modelData = this.props.modelData;
-
-    if (!modelData.atoms.length || !modelData.bonds.length) {
+    if (!this.props.modelData.atoms.length ||
+        !this.props.modelData.bonds.length) {
       return;
     }
 
@@ -109,41 +145,21 @@ class Molecule3d extends React.Component {
       defaultcolors: $3Dmol.rasmolElementColors,
     });
 
-    glviewer.clear();
+    const renderingSameModelData = moleculeUtils.modelDataEquivalent(
+      this.oldModelData, this.props.modelData
+    );
+    if (!renderingSameModelData) {
+      this.lastStylesByAtom = null;
+      Molecule3d.render3dMolModel(glviewer, this.props.modelData);
+    }
 
-    glviewer.addModel(moleculeUtils.modelDataToCDJSON(modelData), 'json', {
-      keepH: true,
-    });
-
-    // Hack in chain and residue data, since it's not supported by chemdoodle json
-    glviewer.getModel().selectedAtoms().forEach((atom) => {
-      const modifiedAtom = atom;
-      modifiedAtom.atom = modelData.atoms[atom.serial].name;
-      modifiedAtom.chain = modelData.atoms[atom.serial].chain;
-      modifiedAtom.resi = modelData.atoms[atom.serial].residue_index;
-      modifiedAtom.resn = modelData.atoms[atom.serial].residue_name;
-    });
-
-    const styles = this.props.styles;
-    modelData.atoms.forEach((atom, i) => {
-      const style = styles[i] || {};
-      const libStyle = {};
-      const visualizationType = style.visualization_type || DEFAULT_VISUALIZATION_TYPE;
-
-      libStyle[visualizationType] = {};
-      Object.keys(style).forEach((styleKey) => {
-        libStyle[visualizationType][styleKey] = style[styleKey];
-      });
-
-      if (this.state.selectedAtomIds.indexOf(atom.serial) !== -1) {
-        libStyle[visualizationType].color = 0x1FF3FE;
-      }
-
-      if (typeof libStyle[visualizationType].color === 'string') {
-        libStyle[visualizationType].color = libUtils.colorStringToNumber(
-          libStyle[visualizationType].color
-        );
-      }
+    const styleUpdates = Object.create(null); // style update strings to atom ids needed
+    const stylesByAtom = Object.create(null); // all atom ids to style string
+    this.props.modelData.atoms.forEach((atom, i) => {
+      const selected = this.state.selectedAtomIds.indexOf(atom.serial) !== -1;
+      const libStyle = libUtils.getLibStyle(
+        atom, selected, this.props.atomLabelsShown, this.props.styles[i]
+      );
 
       if (this.props.atomLabelsShown) {
         glviewer.addLabel(atom.name, {
@@ -156,45 +172,50 @@ class Molecule3d extends React.Component {
         });
       }
 
-      glviewer.setStyle({ serial: atom.serial }, libStyle);
-    });
+      const libStyleString = JSON.stringify(libStyle);
+      stylesByAtom[atom.serial] = libStyleString;
 
-    // Shapes
-    this.props.shapes.forEach((shape) => {
-      if (shape.type) {
-        glviewer[`add${shape.type}`](libUtils.getShapeSpec(shape, this.setSelectionTrait));
+      // If the style string for this atom is the same as last time, then no
+      // need to set it again
+      if (this.lastStylesByAtom &&
+        this.lastStylesByAtom[atom.serial] === libStyleString) {
+        return;
       }
+
+      // Initialize list of atom serials for this style string, if needed
+      if (!styleUpdates[libStyleString]) {
+        styleUpdates[libStyleString] = [];
+      }
+
+      styleUpdates[libStyleString].push(atom.serial);
     });
 
-    // Orbital
-    const orbital = this.props.orbital;
-    if (orbital.cube_file) {
-      const volumeData = new $3Dmol.VolumeData(orbital.cube_file, 'cube');
-      glviewer.addIsosurface(volumeData, {
-        isoval: orbital.iso_val,
-        color: ORBITAL_COLOR_POSITIVE,
-        opacity: orbital.opacity,
-      });
-      glviewer.addIsosurface(volumeData, {
-        isoval: -orbital.iso_val,
-        color: ORBITAL_COLOR_NEGATIVE,
-        opacity: orbital.opacity,
-      });
-    }
+    this.lastStylesByAtom = stylesByAtom;
+
+    // Set these style types using a minimum number of calls to 3DMol
+    Object.entries(styleUpdates).forEach(([libStyleString, atomSerials]) => {
+      glviewer.setStyle(
+        { serial: atomSerials }, JSON.parse(libStyleString)
+      );
+    });
+
+    Molecule3d.render3dMolShapes(glviewer, this.props.shapes);
+    Molecule3d.render3dMolOrbital(glviewer, this.props.orbital);
 
     glviewer.setBackgroundColor(
       libUtils.colorStringToNumber(this.props.backgroundColor),
       this.props.backgroundOpacity
     );
 
-    glviewer.setClickable({}, true, this.onClick);
+    glviewer.setClickable({}, true, this.onClickAtom);
     glviewer.render();
 
-    if (!moleculeUtils.modelDataEquivalent(this.oldModelData, this.props.modelData)) {
+    if (!renderingSameModelData) {
       glviewer.zoomTo();
       glviewer.zoom(0.8, 2000);
     }
 
+    this.oldModelData = this.props.modelData;
     this.glviewer = glviewer;
   }
 
