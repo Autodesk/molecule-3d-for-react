@@ -47,6 +47,7 @@ class Example extends React.Component {
   }
 
   onChangeSelection = (newSelectedAtomIds) => {
+    console.log('glviewer?', this.molecule3d.glviewer);
     this.setState({ selectedAtomIds: newSelectedAtomIds });
   }
 
@@ -89,6 +90,7 @@ class Example extends React.Component {
         <Molecule3d
           {...this.state}
           onChangeSelection={this.onChangeSelection}
+          ref={(c) => { this.molecule3d = c; }}
         />
         <Settings
           {...this.state}
