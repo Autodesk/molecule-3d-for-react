@@ -52,6 +52,7 @@
     "phantomjs": "^2.1.7",
     "phantomjs-prebuilt": "^2.1.7",
     "raw-loader": "^0.5.1",
+    "react-addons-test-utils": "^15.3.2",
     "sass-loader": "^3.2.0",
     "selenium-download": "^2.0.6",
     "sinon": "^2.0.0-pre.2",
