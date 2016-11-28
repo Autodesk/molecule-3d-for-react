@@ -34,6 +34,9 @@ module.exports = function(config) {
 
 
     webpack: {
+      resolve: {
+        extensions: ['', '.js', '.jsx'],
+      },
       module: {
         loaders: [{
           test: /\.(js|jsx)$/, exclude: /(bower_components|node_modules)/,

@@ -202,6 +202,10 @@ class Molecule3d extends React.Component {
       );
     });
 
+    if (!this.props.atomLabelsShown) {
+      glviewer.removeAllLabels();
+    }
+
     Molecule3d.render3dMolShapes(glviewer, this.props.shapes);
     Molecule3d.render3dMolOrbital(glviewer, this.props.orbital);
 
