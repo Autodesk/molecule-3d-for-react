@@ -8,7 +8,7 @@ import Molecule3d from '../../src/components/molecule_3d';
 import bipyridineModelData from '../../example/js/bipyridine_model_data';
 import factories from '../fixtures/factories';
 
-const $3Dmol = require('../../src/vendor/3Dmol');
+const $3Dmol = require('3dmol');
 
 describe('Molecule3d', () => {
   const modelData = bipyridineModelData;
