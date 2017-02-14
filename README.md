@@ -126,6 +126,7 @@ Unit tests can be run with:
 
 End-to-end tests can be run with:
 
+    npm run setup-selenium
     npm run e2e
 
 ### Releasing a new version
