@@ -5,7 +5,7 @@ import moleculeUtils from '../utils/molecule_utils';
 import selectionTypesConstants from '../constants/selection_types_constants';
 
 window.$ = jQuery;
-const $3Dmol = require('../vendor/3Dmol');
+const $3Dmol = require('3dmol');
 
 const DEFAULT_FONT_SIZE = 14;
 const ORBITAL_COLOR_POSITIVE = 0xff0000;
