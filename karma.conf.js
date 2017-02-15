@@ -34,6 +34,11 @@ module.exports = function(config) {
 
 
     webpack: {
+      externals: {
+        "react/lib/ExecutionEnvironment": true,
+        "react/lib/ReactContext": true,
+        "react/addons": true
+      },
       resolve: {
         extensions: ['', '.js', '.jsx'],
       },
@@ -45,6 +50,9 @@ module.exports = function(config) {
           test: /\.scss$/,
           include: /example\/css/,
           loaders: ['style', 'css', 'sass'],
+        }, {
+          test: /\.json$/,
+          loader: 'json',
         }]
       }
     },

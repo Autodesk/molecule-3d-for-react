@@ -1,13 +1,18 @@
 const factories = {
   // 3dMol's glViewer class
   getGlViewer() {
+    let model = null;
     return {
       addLabel: () => {},
-      addModel: () => {},
-      clear: () => {},
-      getModel: () => ({
-        selectedAtoms: () => [],
-      }),
+      addModel: () => {
+        model = {
+          selectedAtoms: () => [],
+        };
+      },
+      clear: () => {
+        model = null;
+      },
+      getModel: () => model,
       removeAllLabels: () => {},
       removeAllShapes: () => {},
       render: () => {},
