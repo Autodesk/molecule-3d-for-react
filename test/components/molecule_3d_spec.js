@@ -32,7 +32,7 @@ describe('Molecule3d', () => {
     beforeEach(() => {
       glViewer = factories.getGlViewer();
       sinon.spy(glViewer, 'addLabel');
-      sinon.stub($3Dmol, 'createViewer', () => glViewer);
+      sinon.stub($3Dmol, 'createViewer').callsFake(() => glViewer);
     });
 
     afterEach(() => {
