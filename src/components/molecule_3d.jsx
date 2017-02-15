@@ -17,6 +17,10 @@ class Molecule3d extends React.Component {
     backgroundOpacity: 1.0,
     backgroundColor: '#73757c',
     height: '500px',
+    onRenderNewData: (glviewer) => {
+      glviewer.zoomTo();
+      glviewer.zoom(0.8, 2000);
+    },
     orbital: {},
     selectedAtomIds: [],
     selectionType: selectionTypesConstants.ATOM,
@@ -35,6 +39,7 @@ class Molecule3d extends React.Component {
       bonds: React.PropTypes.array,
     }).isRequired,
     onChangeSelection: React.PropTypes.func,
+    onRenderNewData: React.PropTypes.func,
     orbital: React.PropTypes.shape({
       cube_file: React.PropTypes.string,
       iso_val: React.PropTypes.number,
@@ -215,8 +220,7 @@ class Molecule3d extends React.Component {
     glviewer.render();
 
     if (!renderingSameModelData) {
-      glviewer.zoomTo();
-      glviewer.zoom(0.8, 2000);
+      this.props.onRenderNewData(glviewer);
     }
 
     this.oldModelData = this.props.modelData;
