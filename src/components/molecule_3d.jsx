@@ -223,7 +223,7 @@ class Molecule3d extends React.Component {
 
     if (!this.oldModelData) {
       glviewer.zoomTo();
-      glviewer.zoom(0.8, 2000);
+      glviewer.zoom(0.8, 0);
     }
 
     this.oldModelData = this.props.modelData;
