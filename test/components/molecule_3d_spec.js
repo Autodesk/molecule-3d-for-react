@@ -12,11 +12,12 @@ import factories from '../fixtures/factories';
 const $3Dmol = require('3dmol');
 
 describe('Molecule3d', () => {
-  const modelData = bipyridineModelData;
+  let modelData;
   let renderer;
 
   beforeEach(() => {
     renderer = ReactTestUtils.createRenderer();
+    modelData = bipyridineModelData;
   });
 
   describe('render', () => {
@@ -69,12 +70,52 @@ describe('Molecule3d', () => {
       });
     });
 
+    describe('when initially loading empty modelData', () => {
+      beforeEach(() => {
+        modelData = {
+          atoms: [],
+          bonds: [],
+        };
+      });
+
+      it('doesn\'t render glviewer', () => {
+        const wrapper = mount(<Molecule3d modelData={modelData} />);
+        expect(wrapper.node.glviewer).to.equal(undefined);
+      });
+    });
+
     describe('when emptying modelData after set', () => {
       it('removes all viewer models', () => {
         const wrapper = mount(<Molecule3d modelData={modelData} />);
         expect(wrapper.node.glviewer.getModel()).to.not.equal(null);
         wrapper.setProps({ modelData: { atoms: [], bonds: [] } });
         expect(wrapper.node.glviewer.getModel()).to.equal(null);
+      });
+    });
+
+    describe('when reloading modelData after emptying', () => {
+      it('removes all viewer models and adds new ones in', () => {
+        const wrapper = mount(<Molecule3d modelData={modelData} />);
+        expect(wrapper.node.glviewer.getModel()).to.not.equal(null);
+        wrapper.setProps({ modelData: { atoms: [], bonds: [] } });
+        expect(wrapper.node.glviewer.getModel()).to.equal(null);
+        wrapper.setProps({ modelData });
+        expect(wrapper.node.glviewer.getModel()).to.not.equal(null);
+      });
+    });
+
+    describe('when loading partially complete modelData', () => {
+      beforeEach(() => {
+        modelData = {
+          atoms: modelData.atoms,
+          bonds: [],
+        };
+        sinon.spy(glViewer, 'addModel');
+      });
+
+      it('tries to render', () => {
+        const wrapper = mount(<Molecule3d modelData={modelData} />);
+        expect(wrapper.node.glviewer).to.equal(glViewer);
       });
     });
   });
