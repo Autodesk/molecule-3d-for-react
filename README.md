@@ -92,6 +92,9 @@ Indicates an orbital to display using 3Dmol.js's [addIsosurface method](http://3
       opacity,
     }
 
+###  onRenderNewData {function} [(glviewer) => {}]
+A callback for when the modelData has changed and it has been re-rendered in the viewer.
+
 ## Example
 
 <img src="https://raw.githubusercontent.com/Autodesk/molecule-3d-for-react/master/doc/example_screenshot.png" alt="screen shot" width="400" />
