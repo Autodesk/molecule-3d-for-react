@@ -56,8 +56,16 @@ class Molecule3d extends React.Component {
     width: React.PropTypes.string,
   }
 
+  static isModelDataEmpty(modelData) {
+    return modelData.atoms.length === 0 && modelData.bonds.length === 0;
+  }
+
   static render3dMolModel(glviewer, modelData) {
     glviewer.clear();
+
+    if (Molecule3d.isModelDataEmpty(modelData)) {
+      return;
+    }
 
     glviewer.addModel(moleculeUtils.modelDataToCDJSON(modelData), 'json', {
       keepH: true,
@@ -141,13 +149,12 @@ class Molecule3d extends React.Component {
   }
 
   render3dMol() {
-    if (!this.props.modelData.atoms.length ||
-        !this.props.modelData.bonds.length) {
+    if (!this.glviewer && Molecule3d.isModelDataEmpty(this.props.modelData)) {
       return;
     }
 
     const glviewer = this.glviewer || $3Dmol.createViewer(jQuery(this.container), {
-      defaultcolors: $3Dmol.rasmolElementColors,
+      defaultcolors: $3Dmol.elementColors.rasmol,
     });
 
     const renderingSameModelData = moleculeUtils.modelDataEquivalent(

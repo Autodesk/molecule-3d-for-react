@@ -4,6 +4,7 @@ import React from 'react';
 import ReactTestUtils from 'react-addons-test-utils';
 import { expect } from 'chai';
 import sinon from 'sinon';
+import { mount } from 'enzyme';
 import Molecule3d from '../../src/components/molecule_3d';
 import bipyridineModelData from '../../example/js/bipyridine_model_data';
 import factories from '../fixtures/factories';
@@ -32,7 +33,7 @@ describe('Molecule3d', () => {
     beforeEach(() => {
       glViewer = factories.getGlViewer();
       sinon.spy(glViewer, 'addLabel');
-      sinon.stub($3Dmol, 'createViewer', () => glViewer);
+      sinon.stub($3Dmol, 'createViewer').callsFake(() => glViewer);
     });
 
     afterEach(() => {
@@ -65,6 +66,15 @@ describe('Molecule3d', () => {
       it('removes all labels', () => {
         expect(glViewer.addLabel.called).to.equal(false);
         expect(glViewer.removeAllLabels.calledOnce).to.equal(true);
+      });
+    });
+
+    describe('when emptying modelData after set', () => {
+      it('removes all viewer models', () => {
+        const wrapper = mount(<Molecule3d modelData={modelData} />);
+        expect(wrapper.node.glviewer.getModel()).to.not.equal(null);
+        wrapper.setProps({ modelData: { atoms: [], bonds: [] } });
+        expect(wrapper.node.glviewer.getModel()).to.equal(null);
       });
     });
   });
