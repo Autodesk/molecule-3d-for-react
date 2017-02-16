@@ -17,7 +17,7 @@ class Molecule3d extends React.Component {
     backgroundOpacity: 1.0,
     backgroundColor: '#73757c',
     height: '500px',
-    onRenderNewData: (glviewer) => {},
+    onRenderNewData: () => {},
     orbital: {},
     selectedAtomIds: [],
     selectionType: selectionTypesConstants.ATOM,
