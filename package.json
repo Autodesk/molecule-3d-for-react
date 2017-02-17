@@ -1,6 +1,6 @@
 {
   "name": "molecule-3d-for-react",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "3D molecule visualization with React and 3Dmol.js",
   "engines": {
     "node": "6.9.1"
