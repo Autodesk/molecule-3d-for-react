@@ -223,7 +223,13 @@ class Molecule3d extends React.Component {
     glviewer.setClickable({}, true, this.onClickAtom);
     glviewer.render();
 
+    if (!this.oldModelData) {
+      glviewer.zoom();
+      glviewer.zoomTo(0.8);
+    }
+
     if (!renderingSameModelData) {
+      glviewer.fitSlab();
       this.props.onRenderNewData(glviewer);
     }
 

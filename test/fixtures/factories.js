@@ -12,6 +12,7 @@ const factories = {
       clear: () => {
         model = null;
       },
+      fitSlab: () => {},
       getModel: () => model,
       removeAllLabels: () => {},
       removeAllShapes: () => {},
