@@ -24,12 +24,28 @@ const shapes = [{
     z: 3,
   },
 }];
+const labels = [
+  {
+    backgroundColor: '0x000000',
+    backgroundOpacity: 1.0,
+    borderColor: 'black',
+    fontColor: '0xffffff',
+    fontSize: 14,
+    position: {
+      x: 0,
+      y: 0,
+      z: 3,
+    },
+    text: 'I\'m a label',
+  },
+];
 
 class Example extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
+      labels,
       modelData,
       styles,
       shapes,
@@ -82,6 +98,10 @@ class Example extends React.Component {
     this.setState({ orbital: newOrbital });
   }
 
+  onChangeLabels = (newLabels) => {
+    this.setState({ labels: newLabels });
+  }
+
 
   render() {
     return (
@@ -102,6 +122,7 @@ class Example extends React.Component {
           onChangeSelectionType={this.onChangeSelectionType}
           onChangeAtomLabelsShown={this.onChangeAtomLabelsShown}
           onChangeOrbital={this.onChangeOrbital}
+          onChangeLabels={this.onChangeLabels}
         />
       </div>
     );
