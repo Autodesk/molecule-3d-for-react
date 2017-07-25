@@ -90,10 +90,8 @@ class Molecule3d extends React.Component {
   }
 
   static render3dMolLabels(glviewer, labels) {
-    console.log(labels);
     glviewer.removeAllLabels();
     labels.forEach((label) => {
-      console.log(label);
       glviewer.addLabel(label.text, label);
     });
   }
