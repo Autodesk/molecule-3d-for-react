@@ -235,12 +235,23 @@ class Molecule3d extends React.Component {
 
     this.oldModelData = this.props.modelData;
     this.glviewer = glviewer;
+    const self = this;
+
+    // AMV: a slight hack to get the viewer to expand to the correct container width
+    const intId = setInterval(() => {
+      if (self.container.children.length > 0 && self.container.children[0].offsetParent) {
+        glviewer.resize();
+        clearInterval(intId);
+      }
+    },
+    50); // polling time in ms
   }
 
   render() {
     return (
       <div
         className="molecule-3d"
+        id="m3d4reactviewer"
         style={{
           width: this.props.width,
           height: this.props.height,
