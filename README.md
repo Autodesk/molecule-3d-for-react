@@ -84,7 +84,7 @@ Indicates any shapes to display in the visualization using 3Dmol.js's [addShape 
     }]
 
 ### labels {Array of Objects} [[]]
-Labels to draw using 3Dmol.js's [addShape method](http://3dmol.csb.pitt.edu/doc/$3Dmol.GLViewer.html#addLabel).  The text for the field is expected as `label.text`. For example:
+Labels to draw using 3Dmol.js's [addLabel method](http://3dmol.csb.pitt.edu/doc/$3Dmol.GLViewer.html#addLabel).  The text for the field is expected as `label.text`. For example:
 
 ```javascript
     [{'backgroundColor': '0x000000',
