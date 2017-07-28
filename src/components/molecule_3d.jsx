@@ -10,6 +10,7 @@ const $3Dmol = require('3dmol');
 const DEFAULT_FONT_SIZE = 14;
 const ORBITAL_COLOR_POSITIVE = 0xff0000;
 const ORBITAL_COLOR_NEGATIVE = 0x0000ff;
+const ORBITAL_DEFAULT_OPACITY = 0.8;
 
 class Molecule3d extends React.Component {
   static defaultProps = {
@@ -41,6 +42,8 @@ class Molecule3d extends React.Component {
       cube_file: React.PropTypes.string,
       iso_val: React.PropTypes.number,
       opacity: React.PropTypes.number,
+      positiveVolumetricColor: React.PropTypes.string,
+      negativeVolumetricColor: React.PropTypes.string,
     }),
     selectedAtomIds: React.PropTypes.arrayOf(React.PropTypes.number),
     selectionType: React.PropTypes.oneOf([
@@ -92,13 +95,13 @@ class Molecule3d extends React.Component {
       const volumeData = new $3Dmol.VolumeData(orbital.cube_file, 'cube');
       glviewer.addIsosurface(volumeData, {
         isoval: orbital.iso_val,
-        color: ORBITAL_COLOR_POSITIVE,
-        opacity: orbital.opacity,
+        color: orbital.positiveVolumetricColor || ORBITAL_COLOR_POSITIVE,
+        opacity: orbital.opacity || ORBITAL_DEFAULT_OPACITY,
       });
       glviewer.addIsosurface(volumeData, {
         isoval: -orbital.iso_val,
-        color: ORBITAL_COLOR_NEGATIVE,
-        opacity: orbital.opacity,
+        color: orbital.negativeVolumetricColor || ORBITAL_COLOR_NEGATIVE,
+        opacity: orbital.opacity || ORBITAL_DEFAULT_OPACITY,
       });
     }
   }
