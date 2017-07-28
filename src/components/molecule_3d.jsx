@@ -160,15 +160,9 @@ class Molecule3d extends React.Component {
       return;
     }
 
-    let glviewer = null;
-
-    if (this.glviewer) {
-      glviewer = this.glviewer;
-    } else {
-      glviewer = $3Dmol.createViewer(
-        jQuery(this.container),
-        { defaultcolors: $3Dmol.elementColors.rasmol });
-    }
+    const glviewer = this.glviewer || $3Dmol.createViewer(jQuery(this.container), {
+      defaultcolors: $3Dmol.elementColors.rasmol,
+    });
 
     const renderingSameModelData = moleculeUtils.modelDataEquivalent(
       this.oldModelData, this.props.modelData
