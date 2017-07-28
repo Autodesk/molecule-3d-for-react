@@ -254,7 +254,6 @@ class Molecule3d extends React.Component {
     return (
       <div
         className="molecule-3d"
-        id="m3d4reactviewer"
         style={{
           width: this.props.width,
           height: this.props.height,
