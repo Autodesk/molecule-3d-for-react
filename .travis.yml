@@ -1,8 +1,11 @@
 language: node_js
 node_js:
 - 6.4.0
+jdk:
+- oraclejdk8
 script:
 - npm test
+- java -version
 - npm run setup-selenium
 - npm run example &
 - npm run e2e

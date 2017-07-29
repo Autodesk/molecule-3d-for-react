@@ -64,7 +64,7 @@
     "json-loader": "^0.5.4"
   },
   "scripts": {
-    "test": "java -version && karma start --single-run",
+    "test": "karma start --single-run",
     "tdd": "karma start",
     "build": "webpack -p --config webpack.config.js",
     "watch": "webpack -p --config webpack.config.js --watch",
