@@ -6,6 +6,7 @@ import Settings from './settings.jsx';
 // import modelData from './1kbu';
 // import modelData from './3aid_model_data';
 // import styles from './3aid_styles';
+// import modelData from './dna_model_data';
 import modelData from './bipyridine_model_data';
 import styles from './bipyridine_styles';
 import orbital from './orbital';
