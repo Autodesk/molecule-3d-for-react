@@ -20,6 +20,7 @@ const factories = {
       setBackgroundColor: () => {},
       setClickable: () => {},
       setStyle: () => {},
+      setViewStyle: () => {},
       zoom: () => {},
       zoomTo: () => {},
     };
