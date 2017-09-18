@@ -79,10 +79,13 @@ class Molecule3d extends React.Component {
     // Hack in chain and residue data, since it's not supported by chemdoodle json
     glviewer.getModel().selectedAtoms().forEach((atom) => {
       const modifiedAtom = atom;
+      const resn = (modelData.atoms[atom.serial].residue_name || '').replace(
+        /[0-9]+/, ''
+      );
       modifiedAtom.atom = modelData.atoms[atom.serial].name;
       modifiedAtom.chain = modelData.atoms[atom.serial].chain;
       modifiedAtom.resi = modelData.atoms[atom.serial].residue_index;
-      modifiedAtom.resn = modelData.atoms[atom.serial].residue_name;
+      modifiedAtom.resn = resn;
     });
   }
 
