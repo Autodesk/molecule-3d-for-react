@@ -10,6 +10,7 @@ const $3Dmol = require('3dmol');
 const DEFAULT_FONT_SIZE = 14;
 const ORBITAL_COLOR_POSITIVE = 0xff0000;
 const ORBITAL_COLOR_NEGATIVE = 0x0000ff;
+const ORBITAL_DEFAULT_OPACITY = 0.8;
 
 class Molecule3d extends React.Component {
   static defaultProps = {
@@ -22,6 +23,7 @@ class Molecule3d extends React.Component {
     selectedAtomIds: [],
     selectionType: selectionTypesConstants.ATOM,
     shapes: [],
+    labels: [],
     styles: {},
     width: '500px',
     outlineWidth: 0.0,
@@ -45,6 +47,8 @@ class Molecule3d extends React.Component {
       cube_file: React.PropTypes.string,
       iso_val: React.PropTypes.number,
       opacity: React.PropTypes.number,
+      positiveVolumetricColor: React.PropTypes.string,
+      negativeVolumetricColor: React.PropTypes.string,
     }),
     selectedAtomIds: React.PropTypes.arrayOf(React.PropTypes.number),
     selectionType: React.PropTypes.oneOf([
@@ -53,6 +57,7 @@ class Molecule3d extends React.Component {
       selectionTypesConstants.CHAIN,
     ]),
     shapes: React.PropTypes.arrayOf(React.PropTypes.object),
+    labels: React.PropTypes.arrayOf(React.PropTypes.object),
     styles: React.PropTypes.objectOf(React.PropTypes.object),
     width: React.PropTypes.string,
     nearClip: React.PropTypes.number,
@@ -98,18 +103,25 @@ class Molecule3d extends React.Component {
     });
   }
 
+  static render3dMolLabels(glviewer, labels) {
+    glviewer.removeAllLabels();
+    labels.forEach((label) => {
+      glviewer.addLabel(label.text, label);
+    });
+  }
+
   static render3dMolOrbital(glviewer, orbital) {
     if (orbital.cube_file) {
       const volumeData = new $3Dmol.VolumeData(orbital.cube_file, 'cube');
       glviewer.addIsosurface(volumeData, {
         isoval: orbital.iso_val,
-        color: ORBITAL_COLOR_POSITIVE,
-        opacity: orbital.opacity,
+        color: orbital.positiveVolumetricColor || ORBITAL_COLOR_POSITIVE,
+        opacity: orbital.opacity || ORBITAL_DEFAULT_OPACITY,
       });
       glviewer.addIsosurface(volumeData, {
         isoval: -orbital.iso_val,
-        color: ORBITAL_COLOR_NEGATIVE,
-        opacity: orbital.opacity,
+        color: orbital.negativeVolumetricColor || ORBITAL_COLOR_NEGATIVE,
+        opacity: orbital.opacity || ORBITAL_DEFAULT_OPACITY,
       });
     }
   }
@@ -235,11 +247,8 @@ class Molecule3d extends React.Component {
       );
     });
 
-    if (!this.props.atomLabelsShown) {
-      glviewer.removeAllLabels();
-    }
-
     Molecule3d.render3dMolShapes(glviewer, this.props.shapes);
+    Molecule3d.render3dMolLabels(glviewer, this.props.labels);
     Molecule3d.render3dMolOrbital(glviewer, this.props.orbital);
 
     let customSlab = false;
