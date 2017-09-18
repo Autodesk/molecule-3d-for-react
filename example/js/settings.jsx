@@ -12,6 +12,7 @@ class Settings extends React.Component {
     atomLabelsShown: false,
     backgroundOpacity: 1.0,
     backgroundColor: '',
+    labels: [],
     orbital: {},
     selectedAtomIds: [],
     selectionType: selectionTypesConstants.ATOM,
@@ -23,6 +24,19 @@ class Settings extends React.Component {
     atomLabelsShown: React.PropTypes.bool,
     backgroundColor: React.PropTypes.string,
     backgroundOpacity: React.PropTypes.number,
+    labels: React.PropTypes.arrayOf(React.PropTypes.shape({
+      backgroundColor: React.PropTypes.string,
+      backgroundOpacity: React.PropTypes.number,
+      borderColor: React.PropTypes.string,
+      fontColor: React.PropTypes.string,
+      fontSize: React.PropTypes.number,
+      position: {
+        x: React.PropTypes.number,
+        y: React.PropTypes.number,
+        z: React.PropTypes.number,
+      },
+      text: React.PropTypes.string,
+    })),
     modelData: React.PropTypes.oneOfType([
       React.PropTypes.instanceOf(IMap),
       React.PropTypes.object,
@@ -39,6 +53,7 @@ class Settings extends React.Component {
     onChangeSelectionType: React.PropTypes.func.isRequired,
     onChangeAtomLabelsShown: React.PropTypes.func.isRequired,
     onChangeOrbital: React.PropTypes.func.isRequired,
+    onChangeLabels: React.PropTypes.func.isRequired,
     orbital: React.PropTypes.shape({
       iso_val: React.PropTypes.number,
       opacity: React.PropTypes.number,
@@ -52,6 +67,7 @@ class Settings extends React.Component {
     super(props);
 
     this.state = {
+      labels: JSON.stringify(props.labels),
       selectedAtomIds: JSON.stringify(props.selectedAtomIds),
       modelData: JSON.stringify(props.modelData),
       shapes: JSON.stringify(props.shapes),
@@ -150,6 +166,14 @@ class Settings extends React.Component {
     this.props.onChangeOrbital(JSON.parse(event.target.value));
   }
 
+  onChangeLabels = (event) => {
+    this.setState({ labels: event.target.value });
+  }
+
+  onBlurLabelsInput = (event) => {
+    this.props.onChangeLabels(JSON.parse(event.target.value));
+  }
+
   render() {
     return (
       <div>
@@ -228,6 +252,13 @@ class Settings extends React.Component {
           value={this.state.orbital}
           onChange={this.onChangeOrbital}
           onBlur={this.onBlurOrbitalInput}
+        />
+
+        <h4>labels</h4>
+        <input
+          value={this.state.labels}
+          onChange={this.onChangeLabels}
+          onBlur={this.onBlurLabelsInput}
         />
       </div>
     );

@@ -23,6 +23,7 @@ class Molecule3d extends React.Component {
     selectedAtomIds: [],
     selectionType: selectionTypesConstants.ATOM,
     shapes: [],
+    labels: [],
     styles: {},
     width: '500px',
     outlineWidth: 0.0,
@@ -56,6 +57,7 @@ class Molecule3d extends React.Component {
       selectionTypesConstants.CHAIN,
     ]),
     shapes: React.PropTypes.arrayOf(React.PropTypes.object),
+    labels: React.PropTypes.arrayOf(React.PropTypes.object),
     styles: React.PropTypes.objectOf(React.PropTypes.object),
     width: React.PropTypes.string,
     nearClip: React.PropTypes.number,
@@ -98,6 +100,13 @@ class Molecule3d extends React.Component {
       if (shape.type) {
         glviewer[`add${shape.type}`](libUtils.getShapeSpec(shape));
       }
+    });
+  }
+
+  static render3dMolLabels(glviewer, labels) {
+    glviewer.removeAllLabels();
+    labels.forEach((label) => {
+      glviewer.addLabel(label.text, label);
     });
   }
 
@@ -238,11 +247,8 @@ class Molecule3d extends React.Component {
       );
     });
 
-    if (!this.props.atomLabelsShown) {
-      glviewer.removeAllLabels();
-    }
-
     Molecule3d.render3dMolShapes(glviewer, this.props.shapes);
+    Molecule3d.render3dMolLabels(glviewer, this.props.labels);
     Molecule3d.render3dMolOrbital(glviewer, this.props.orbital);
 
     let customSlab = false;
