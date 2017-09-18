@@ -5,7 +5,7 @@ import moleculeUtils from '../utils/molecule_utils';
 import selectionTypesConstants from '../constants/selection_types_constants';
 
 window.$ = jQuery;
-const $3Dmol = require('../vendor/3Dmol');
+const $3Dmol = require('3dmol');
 
 const DEFAULT_FONT_SIZE = 14;
 const ORBITAL_COLOR_POSITIVE = 0xff0000;
@@ -17,12 +17,17 @@ class Molecule3d extends React.Component {
     backgroundOpacity: 1.0,
     backgroundColor: '#73757c',
     height: '500px',
+    onRenderNewData: () => {},
     orbital: {},
     selectedAtomIds: [],
     selectionType: selectionTypesConstants.ATOM,
     shapes: [],
     styles: {},
     width: '500px',
+    outlineWidth: 0.0,
+    outlineColor: '#000000',
+    nearClip: null,
+    farClip: null,
   }
 
   static propTypes = {
@@ -35,6 +40,7 @@ class Molecule3d extends React.Component {
       bonds: React.PropTypes.array,
     }).isRequired,
     onChangeSelection: React.PropTypes.func,
+    onRenderNewData: React.PropTypes.func,
     orbital: React.PropTypes.shape({
       cube_file: React.PropTypes.string,
       iso_val: React.PropTypes.number,
@@ -49,10 +55,22 @@ class Molecule3d extends React.Component {
     shapes: React.PropTypes.arrayOf(React.PropTypes.object),
     styles: React.PropTypes.objectOf(React.PropTypes.object),
     width: React.PropTypes.string,
+    nearClip: React.PropTypes.number,
+    farClip: React.PropTypes.number,
+    outlineWidth: React.PropTypes.number,
+    outlineColor: React.PropTypes.string,
+  }
+
+  static isModelDataEmpty(modelData) {
+    return modelData.atoms.length === 0 && modelData.bonds.length === 0;
   }
 
   static render3dMolModel(glviewer, modelData) {
     glviewer.clear();
+
+    if (Molecule3d.isModelDataEmpty(modelData)) {
+      return;
+    }
 
     glviewer.addModel(moleculeUtils.modelDataToCDJSON(modelData), 'json', {
       keepH: true,
@@ -102,6 +120,8 @@ class Molecule3d extends React.Component {
     this.state = {
       selectedAtomIds: props.selectedAtomIds,
     };
+
+    this.lastOutline = { width: 0.0 };
   }
 
   componentDidMount() {
@@ -139,13 +159,12 @@ class Molecule3d extends React.Component {
   }
 
   render3dMol() {
-    if (!this.props.modelData.atoms.length ||
-        !this.props.modelData.bonds.length) {
+    if (!this.glviewer && Molecule3d.isModelDataEmpty(this.props.modelData)) {
       return;
     }
 
     const glviewer = this.glviewer || $3Dmol.createViewer(jQuery(this.container), {
-      defaultcolors: $3Dmol.rasmolElementColors,
+      defaultcolors: $3Dmol.elementColors.rasmol,
     });
 
     const renderingSameModelData = moleculeUtils.modelDataEquivalent(
@@ -154,6 +173,20 @@ class Molecule3d extends React.Component {
     if (!renderingSameModelData) {
       this.lastStylesByAtom = null;
       Molecule3d.render3dMolModel(glviewer, this.props.modelData);
+    }
+
+    if (this.props.outlineWidth !== this.lastOutline.width ||
+        this.props.outlineColor !== this.lastOutline.color) {
+      if (this.props.outlineWidth) {
+        this.lastOutline = {
+          style: 'outline',
+          width: this.props.outlineWidth,
+          color: this.props.outlineColor,
+        };
+      } else {
+        this.lastOutline = {};
+      }
+      glviewer.setViewStyle(this.lastOutline);
     }
 
     const styleUpdates = Object.create(null); // style update strings to atom ids needed
@@ -209,6 +242,14 @@ class Molecule3d extends React.Component {
     Molecule3d.render3dMolShapes(glviewer, this.props.shapes);
     Molecule3d.render3dMolOrbital(glviewer, this.props.orbital);
 
+    let customSlab = false;
+
+    if (typeof (this.props.nearClip) === 'number' &&
+        typeof (this.props.farClip) === 'number') {
+      glviewer.setSlab(this.props.nearClip, this.props.farClip);
+      customSlab = true;
+    }
+
     glviewer.setBackgroundColor(
       libUtils.colorStringToNumber(this.props.backgroundColor),
       this.props.backgroundOpacity
@@ -217,9 +258,15 @@ class Molecule3d extends React.Component {
     glviewer.setClickable({}, true, this.onClickAtom);
     glviewer.render();
 
+    if (!this.oldModelData) {
+      glviewer.zoom();
+      glviewer.zoomTo(0.8);
+    }
+
+
     if (!renderingSameModelData) {
-      glviewer.zoomTo();
-      glviewer.zoom(0.8, 2000);
+      if (!customSlab) glviewer.fitSlab();
+      this.props.onRenderNewData(glviewer);
     }
 
     this.oldModelData = this.props.modelData;
