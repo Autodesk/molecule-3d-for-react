@@ -75,8 +75,10 @@ const libUtils = {
     const visualizationType = style.visualization_type || DEFAULT_VISUALIZATION_TYPE;
 
     libStyle[visualizationType] = {};
-    Object.keys(style).forEach((styleKey) => {
-      libStyle[visualizationType][styleKey] = style[styleKey];
+    Object.entries(style).forEach(([styleKey, styleValue]) => {
+      if (styleKey !== 'visualization_type') {
+        libStyle[visualizationType][styleKey] = styleValue;
+      }
     });
 
     if (selected) {

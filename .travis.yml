@@ -1,8 +1,13 @@
 language: node_js
 node_js:
 - 6.4.0
+addons:
+  apt:
+    packages:
+      - oracle-java8-set-default
 script:
 - npm test
+- java -version
 - npm run setup-selenium
 - npm run example &
 - npm run e2e

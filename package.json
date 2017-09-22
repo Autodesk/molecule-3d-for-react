@@ -1,6 +1,6 @@
 {
   "name": "molecule-3d-for-react",
-  "version": "0.4.2",
+  "version": "0.4.3",
   "description": "3D molecule visualization with React and 3Dmol.js",
   "engines": {
     "node": "6.9.1"
@@ -55,7 +55,7 @@
     "raw-loader": "^0.5.1",
     "react-addons-test-utils": "^15.3.2",
     "sass-loader": "^3.2.0",
-    "selenium-download": "^2.0.6",
+    "selenium-download": "^2.0.10",
     "sinon": "^2.0.0-pre.2",
     "style-loader": "^0.13.1",
     "webpack": "^1.13.2",

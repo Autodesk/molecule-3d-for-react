@@ -83,6 +83,22 @@ Indicates any shapes to display in the visualization using 3Dmol.js's [addShape 
 	  z: 0,
     }]
 
+### labels {Array of Objects} [[]]
+Labels to draw using 3Dmol.js's [addLabel method](http://3dmol.csb.pitt.edu/doc/$3Dmol.GLViewer.html#addLabel).  The text for the field is expected as `label.text`. For example:
+
+```javascript
+    [{'backgroundColor': '0x000000',
+      'backgroundOpacity': 1.0,
+      'borderColor': 'black',
+      'fontColor': '0xffffff',
+      'fontSize': 14,
+      'position':
+       {'x': -1.84,
+        'y': 8.30,
+        'z': 33.87},
+      'text': 'PRO1'}]
+```
+
 ### orbital {Object} [{}]
 Indicates an orbital to display using 3Dmol.js's [addIsosurface method](http://3dmol.csb.pitt.edu/doc/$3Dmol.GLViewer.html#addIsosurface).  Of the type:
 
