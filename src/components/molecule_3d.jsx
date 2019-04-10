@@ -1,5 +1,6 @@
 import jQuery from 'jquery';
 import React from 'react';
+import PropTypes from 'prop-types';
 import libUtils from '../utils/lib_utils';
 import moleculeUtils from '../utils/molecule_utils';
 import selectionTypesConstants from '../constants/selection_types_constants';
@@ -33,37 +34,37 @@ class Molecule3d extends React.Component {
   }
 
   static propTypes = {
-    atomLabelsShown: React.PropTypes.bool,
-    backgroundColor: React.PropTypes.string,
-    backgroundOpacity: React.PropTypes.number,
-    height: React.PropTypes.string,
-    modelData: React.PropTypes.shape({
-      atoms: React.PropTypes.array,
-      bonds: React.PropTypes.array,
+    atomLabelsShown: PropTypes.bool,
+    backgroundColor: PropTypes.string,
+    backgroundOpacity: PropTypes.number,
+    height: PropTypes.string,
+    modelData: PropTypes.shape({
+      atoms: PropTypes.array,
+      bonds: PropTypes.array,
     }).isRequired,
-    onChangeSelection: React.PropTypes.func,
-    onRenderNewData: React.PropTypes.func,
-    orbital: React.PropTypes.shape({
-      cube_file: React.PropTypes.string,
-      iso_val: React.PropTypes.number,
-      opacity: React.PropTypes.number,
-      positiveVolumetricColor: React.PropTypes.string,
-      negativeVolumetricColor: React.PropTypes.string,
+    onChangeSelection: PropTypes.func,
+    onRenderNewData: PropTypes.func,
+    orbital: PropTypes.shape({
+      cube_file: PropTypes.string,
+      iso_val: PropTypes.number,
+      opacity: PropTypes.number,
+      positiveVolumetricColor: PropTypes.string,
+      negativeVolumetricColor: PropTypes.string,
     }),
-    selectedAtomIds: React.PropTypes.arrayOf(React.PropTypes.number),
-    selectionType: React.PropTypes.oneOf([
+    selectedAtomIds: PropTypes.arrayOf(PropTypes.number),
+    selectionType: PropTypes.oneOf([
       selectionTypesConstants.ATOM,
       selectionTypesConstants.RESIDUE,
       selectionTypesConstants.CHAIN,
     ]),
-    shapes: React.PropTypes.arrayOf(React.PropTypes.object),
-    labels: React.PropTypes.arrayOf(React.PropTypes.object),
-    styles: React.PropTypes.objectOf(React.PropTypes.object),
-    width: React.PropTypes.string,
-    nearClip: React.PropTypes.number,
-    farClip: React.PropTypes.number,
-    outlineWidth: React.PropTypes.number,
-    outlineColor: React.PropTypes.string,
+    shapes: PropTypes.arrayOf(PropTypes.object),
+    labels: PropTypes.arrayOf(PropTypes.object),
+    styles: PropTypes.objectOf(PropTypes.object),
+    width: PropTypes.string,
+    nearClip: PropTypes.number,
+    farClip: PropTypes.number,
+    outlineWidth: PropTypes.number,
+    outlineColor: PropTypes.string,
   }
 
   static isModelDataEmpty(modelData) {
