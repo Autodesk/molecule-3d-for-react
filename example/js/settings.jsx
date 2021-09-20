@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Map as IMap } from 'immutable';
 import aidModelData from './3aid_model_data';
 import aidStyles from './3aid_styles';
@@ -21,46 +22,46 @@ class Settings extends React.Component {
   }
 
   static propTypes = {
-    atomLabelsShown: React.PropTypes.bool,
-    backgroundColor: React.PropTypes.string,
-    backgroundOpacity: React.PropTypes.number,
-    labels: React.PropTypes.arrayOf(React.PropTypes.shape({
-      backgroundColor: React.PropTypes.string,
-      backgroundOpacity: React.PropTypes.number,
-      borderColor: React.PropTypes.string,
-      fontColor: React.PropTypes.string,
-      fontSize: React.PropTypes.number,
+    atomLabelsShown: PropTypes.bool,
+    backgroundColor: PropTypes.string,
+    backgroundOpacity: PropTypes.number,
+    labels: PropTypes.arrayOf(PropTypes.shape({
+      backgroundColor: PropTypes.string,
+      backgroundOpacity: PropTypes.number,
+      borderColor: PropTypes.string,
+      fontColor: PropTypes.string,
+      fontSize: PropTypes.number,
       position: {
-        x: React.PropTypes.number,
-        y: React.PropTypes.number,
-        z: React.PropTypes.number,
+        x: PropTypes.number,
+        y: PropTypes.number,
+        z: PropTypes.number,
       },
-      text: React.PropTypes.string,
+      text: PropTypes.string,
     })),
-    modelData: React.PropTypes.oneOfType([
-      React.PropTypes.instanceOf(IMap),
-      React.PropTypes.object,
+    modelData: PropTypes.oneOfType([
+      PropTypes.instanceOf(IMap),
+      PropTypes.object,
     ]).isRequired,
-    shapes: React.PropTypes.arrayOf(React.PropTypes.object),
-    styles: React.PropTypes.objectOf(React.PropTypes.object),
-    onChangeMolecule: React.PropTypes.func.isRequired,
-    onChangeSelection: React.PropTypes.func.isRequired,
-    onChangeModelData: React.PropTypes.func.isRequired,
-    onChangeStyles: React.PropTypes.func.isRequired,
-    onChangeShapes: React.PropTypes.func.isRequired,
-    onChangeBackgroundColor: React.PropTypes.func.isRequired,
-    onChangeBackgroundOpacity: React.PropTypes.func.isRequired,
-    onChangeSelectionType: React.PropTypes.func.isRequired,
-    onChangeAtomLabelsShown: React.PropTypes.func.isRequired,
-    onChangeOrbital: React.PropTypes.func.isRequired,
-    onChangeLabels: React.PropTypes.func.isRequired,
-    orbital: React.PropTypes.shape({
-      iso_val: React.PropTypes.number,
-      opacity: React.PropTypes.number,
-      cube_file: React.PropTypes.string,
+    shapes: PropTypes.arrayOf(PropTypes.object),
+    styles: PropTypes.objectOf(PropTypes.object),
+    onChangeMolecule: PropTypes.func.isRequired,
+    onChangeSelection: PropTypes.func.isRequired,
+    onChangeModelData: PropTypes.func.isRequired,
+    onChangeStyles: PropTypes.func.isRequired,
+    onChangeShapes: PropTypes.func.isRequired,
+    onChangeBackgroundColor: PropTypes.func.isRequired,
+    onChangeBackgroundOpacity: PropTypes.func.isRequired,
+    onChangeSelectionType: PropTypes.func.isRequired,
+    onChangeAtomLabelsShown: PropTypes.func.isRequired,
+    onChangeOrbital: PropTypes.func.isRequired,
+    onChangeLabels: PropTypes.func.isRequired,
+    orbital: PropTypes.shape({
+      iso_val: PropTypes.number,
+      opacity: PropTypes.number,
+      cube_file: PropTypes.string,
     }),
-    selectedAtomIds: React.PropTypes.arrayOf(React.PropTypes.number),
-    selectionType: React.PropTypes.string,
+    selectedAtomIds: PropTypes.arrayOf(PropTypes.number),
+    selectionType: PropTypes.string,
   }
 
   constructor(props) {
